@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" type="text/css" href="bootstrupdemo/css/bootstrap.css"/>
+		<link rel="stylesheet" type="text/css" href="css/public.css"/>
+		<link rel="stylesheet" type="text/css" href="css/style-for-register.css"/>
+		<title></title>
+	</head>
+	<body>
+		 <header class="bg-dark">
+		 	<div class="margin-register d-flex">
+		 		<div class="log">
+		 			<a href="index.html"><img src="images/head-top.png"/></a>
+		 		</div>
+		 		<div class="webname d-flex">
+		 			<b class="mx-2">|</b>
+		 			<b>华为商城</b>
+		 		</div>
+		 	</div>
+		 </header>
+		 <div class="main">
+		 	<div class="m-box h-100">
+		 			<form>
+		 		<div class="m-box-top w-100">
+		 			<a id="choosecount-1" class="d-inline-block bg-danger text-white" href="#">
+		 				<i></i>
+		 				<span class="text-white">手机号</span>
+		 			</a>
+		 			<a id="choosecount-2" class="d-inline-block text-white" href="#">
+		 				<i></i>
+		 				<span class="text-white">电子邮箱</span>
+		 			</a>
+		 			<i class="text-dark float-right">已有华为账号<a class="text-info bg-light" href="login.html">登录></a></i>
+		 		</div>
+	<!--手机号和邮箱tab切换-->
+		 		<div id="mbox" class="m-box-c w-100 bg-white d-block">
+		 			<div class="cbox">
+		 				<div id="choosecount">
+		 					<div class="input-l">国 家/地 区</div>
+		 					<div class="input-r">中 国</div>
+		 					<i class="d-inline-block"></i>
+		 				</div>
+		 			</div>
+		<!--//输入后label消失--> 		
+		 			<div id="phonebox">
+		 				<div class="input-l">+86(中国)<i class="d-inline-block"></i></div>
+		 				<div class="input-r"></div>
+		 				<div class="input-content">
+		 					<label>
+		 					<input type="tel" name="user" id="tel1" number="true" required placeholder="请输入手机号"/>
+		 					</label>
+		 				</div>
+		 			</div>
+		 			<span class="content1"></span>
+		 			<div id="randomcode">
+		 				<div class="input-l">图 形 验 证 码<span></span></div>
+		 				<div class="input-r"></div>
+		 				<div class="input-content">
+		 					<label>
+		 						<input type="text" name="txt" id="txt" value="" required placeholder="请输图形验证码" />
+		 					</label>
+		 					<span id="verifyCode1" class="h-100 float-lg-right ml-4"></span>
+		 					</div>
+		 			</div>
+		 			<span class="content2 my-4"></span>
+		 			<div id="msgphone">
+		 				<div class="input-l">短 信 验 证 码<span class="float-right">获取验证码</span></div>
+		 				<div class="input-r"></div>
+		 				<div class="input-content">
+		 					<label class="table-hover">
+		 					     <input type="text" name="txt" id="txt" value="" required placeholder="请输短信验证码"/>
+		 					</label>
+		 				</div>
+		 			</div>
+		 			<span class="content3 my-4"></span>
+		 			<div id="set-password">	
+		 				<div class="input-l">密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;码<span></span></div>
+		 				<div class="input-r"></div>
+		 				<div class="input-content">
+		 					<label>
+		 					<input type="password" name="password" id="pass"  value="" required minlength=10 placeholder="请输入密码" />
+		 					</label>
+		 				</div>
+		 			</div>
+		 			<span class="content4 my-4"></span>
+		 			<div class="confirmpass">
+		 				<div class="input-l">确 认 密 码<span></span></div>
+		 				<div class="input-r"></div>
+		 				<div class="input-content">
+		 					<label>
+		 					<input type="password" name="passagain" id="passagain" value="" required equalTo="#pass" placeholder="请输再次输入密码" />
+		 					</label>
+		 				</div>
+		 			</div>
+		 			<span class="content5 my-4"></span>
+		 			<div class="register bg-white border-0 text-center mt-5">
+		 				<input type="submit" class="w-50 h-100" name="reg1 " id="reg" value="注册"/>
+		 				<div class="regmsg"></div>
+		 			</div>
+		 		</div>
+		 		
+		 		<div id="m2box" class="m-box-c w-100 bg-white d-none">
+		 			<div class="cbox">
+		 				<div id="choosecount">
+		 					<div class="input-l">国 家/地 区</div>
+		 					<div class="input-r">中 国</div>
+		 					<i class="d-inline-block"></i>
+		 				</div>
+		 			</div>
+		<!--//输入后label消失--> 			
+		 			<div id="phonebox">
+		 				<div class="input-l">邮件地址<i class="d-inline-block"></i></div>
+		 				<div class="input-r"></div>
+		 				<div class="input-content">
+		 					<label>
+		 					<input type="tel" name="email" id="tel" required email="true" placeholder="请输入邮件地址"/>
+		 					</label>
+		 				</div>
+		 			</div>
+		 			<div id="randomcode">
+		 				<div class="input-l">图 形 验 证 码<span></span></div>
+		 				<div class="input-r"></div>
+		 				<div class="input-content">
+		 					<label>
+		 						<input type="text" name="txt1" id="txt1"  required value="" placeholder="请输图形验证码" />
+		 					</label>
+		 					<span id="verifyCode2" class="h-100 float-lg-right ml-4"></span>
+		 				</div>
+		 			</div>
+		 			<div id="msgphone">
+		 				<div class="input-l">邮 件 验 证 码<span class="ml-5 float-right">获取验证码</span></div>
+		 				<div class="input-r"></div>
+		 				<div class="input-content">
+		 					<label class="table-hover">
+		 					<input type="text" name="txt2" id="txt2" value=""  required placeholder="请输邮件验证码"/>
+		 					</label>
+		 				</div>
+		 			</div>
+		 			<div id="set-password">	
+		 				<div class="input-l">密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;码<span></span></div>
+		 				<div class="input-r"></div>
+		 				<div class="input-content">
+		 					<label>
+		 					<input type="password" name="txt1" id="pass1" value="" minlength=10 required placeholder="请输入密码" />
+		 					</label>
+		 				</div>
+		 			</div>
+		 			<div class="confirmpass">
+		 				<div class="input-l">确 认 密 码<span></span></div>
+		 				<div class="input-r"></div>
+		 				<div class="input-content">
+		 					<label>
+		 					<input type="password" name="txt1" id="passagain1" value=""  equalTo="#pass" required placeholder="请输再次输入密码" />
+		 					</label>
+		 				</div>
+		 			</div>
+		 			<div id="phonebox">
+		 				<div class="input-l">+86(中国)<i class="d-inline-block"></i></div>
+		 				<div class="input-r"></div>
+		 				<div class="input-content">
+		 					<label>
+		 					<input type="tel" name="tel1" id="tel1" number="true"  required placeholder="请输入手机号"/>
+		 					</label>
+		 				</div>
+		 			</div>
+		 			<div id="msgphone">
+		 				<div class="input-l">短 信 验 证 码<span class="ml-5 float-right">获取验证码</span></div>
+		 				<div class="input-r"></div>
+		 				<div class="input-content">
+		 					<label class="table-hover">
+		 					     <input type="text" name="txt" id="txt" number="true" required value="" placeholder="请输短信验证码"/>
+		 					</label>
+		 				</div>
+		 			</div>
+		 			<div class="register bg-white border-0 text-center mt-5">
+		 				<input type="submit" class="w-50 h-100" name="reg2" id="reg" value="注册"/>
+		 				<div class="regmsg"></div>
+		 			</div>
+		 		</div>
+		 		<div class="m-box-b w-100"></div>
+		 		<div class="m-box-last">
+		 			<p class="mb-0">
+		 				<a href="#">华为帐号用户协议</a>
+		 				<span>|</span>
+		 				<a href="#">关于华为帐号与隐私的声明</a>
+		 				<span>|</span>
+		 				<a href="#">常见问题</a>
+		 			</p>
+		 			<p class="mb-0">Copyright © 2011-2018  华为软件技术有限公司  版权所有  保留一切权利  苏B2-20070200号 | 苏ICP备09062682号-9</p>
+		 		</div>
+		 		</form>
+		 	</div>
+		 </div>
+	</body>
+	<script src="js/jquery.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/gVerify.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/jquery.validate.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/jquery.validate.messages_zh.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		var ombox = $("#mbox");
+        if(ombox.css("display","block")){
+        var verifyCode = new GVerify({
+        id:"verifyCode1",
+        type:"blend",
+        width: "120", 
+	    height: "60",
+	    code:""
+       })}else{
+		var verifyCode = new GVerify({
+        id:"verifyCode2",
+        type:"blend",
+        width: "120", 
+	    height: "60",
+	    code:""
+	  })       	
+     }
+     
+      $("#choosecount-2").click(function(){
+      	$(this).css({"background":"#B40707"});
+      	$("#choosecount-1").css({"background":"#ccc"}).removeClass("bg-danger");
+      	$("#mbox").addClass("d-none").removeClass("d-block");
+      	$("#m2box").addClass("d-block").removeClass("d-none");
+      })
+      $("#choosecount-1").click(function(){
+      	$(this).css({"background":"#B40707"});
+      	$("#choosecount-2").css({"background":"#ccc"});
+      	$("#m2box").addClass("d-none").removeClass("d-block");
+      	$("#mbox").addClass("d-block").removeClass("d-none");
+      })
+      $(function(){
+      	$("form").validate();
+      })
+      $(function(){
+      	$("#reg").click(function(){
+		$.ajax({
+			type:"post",
+			url:"http://datainfo.duapp.com/shopdata/userinfo.php",
+			data:{
+				status:"register",
+				userID:$("input[name=user]").val(),
+				password:$("input[name=password]").val()
+			},
+			success:function(res){
+				switch(res){
+					case "0":$(".content1").html("用户名重名，请重新设置");break;
+					case "1":
+						$(".content2").html("注册成功，3秒后跳转登录");
+						setTimeout(()=>{
+							location.href = "http://localhost/虞洛浦/HUAWEI/login.html";
+						},3000)
+						break;
+					case "2":$("span").html("你把我的数据库玩坏了");break;
+				}
+			}
+		});
+		
+	})
+      })
+	</script>
+</html>

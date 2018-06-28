@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" type="text/css" href="bootstrupdemo/css/bootstrap.css"/>
+		<link rel="stylesheet" type="text/css" href="css/style-for-shopcar.css"/>
+		<link rel="stylesheet" type="text/css" href="css/public.css"/>
+		<title></title>
+	</head>
+	<body>
+		<div class="header">
+		<div class="Smtop margin d-flex justify-content-between">
+			<div class="Smt-l h-100">
+				<ul class="d-flex">
+					<li><a href="http://vmall.com">首页</a></li>
+					<li><a href="http://vmall.com">华为官网</a></li>
+					<li><a href="http://vmall.com">荣耀官网</a></li>
+					<li><a href="http://vmall.com">花粉俱乐部</a></li>
+					<li><a href="http://vmall.com">帮助中心</a></li>
+					<li><a href="http://vmall.com">V码(优购码)</a></li>
+					<li><a href="http://vmall.com">企业购</a></li>
+					<li><a href="http://vmall.com">Select Region</a></li>
+					<li>
+						<div class="Smt-dropdown">
+							<div class="h"><a href="#">更多精彩</a><i class="iconfont icon-ddl-arr"></i></div>
+							<div class="b"></div>
+						</div>
+					</li>
+				</ul>
+			</div>
+			<div class="Smt-r">
+				<ul class="d-flex">
+					<li><a href="login.html">请登录</a></li>
+					<li><a href="register.html">注册</a></li>
+					<li><a href="#">我的订单</a></li>
+					<li><a href="shopcar.html"><i class="mx-2 iconfont icon-gouwuche"></i>购物车</a></li>
+				</ul>
+			</div>
+		</div>
+		<header class="bg-white">
+			<div class="margin d-flex justify-content-between">
+				<div class="h-left d-flex">
+					<div class="logo"><a href="#"><img src="images/logo20170801113951.png"/></a></div>
+				</div>
+				<div class="h-right">
+				</div>
+			</div>
+			<div class="hr-10"></div>
+		</header>
+		<div class="main">
+			<div class="margin">
+				<div class="tips">
+					<span>您还没有登录！登录后可查看之前加入的商品</span>
+					<a href="login.html">登录</a>
+				</div>
+				<div class="carcont d-none">
+					<div class="d-flex flex-column">
+						<p><img src="https://res8.vmallres.com/20180504/images/echannel/icon/icon-header-minicart.png" alt="" /></p>
+						<p>您的购物车里什么也没有哦</p>
+						<a href="index.html">去逛逛</a>
+					</div>
+				</div>
+				<div class="carcont1">
+					<div class="hr-20"></div>
+					<div class="carlist">
+						<ul class="d-flex h-100">
+							<li>商品</li>
+							<li>单价</li>
+							<li>数量</li>
+							<li>小计</li>
+							<li>操作</li>
+						</ul>
+					</div>
+					<div class="hr-10"></div>
+					<div class="pro-list d-flex flex-column">
+						<!--<ul class="d-flex h-100">
+							<li class="d-flex"><img src="" alt="" /><p>HUAWEI Mate 10 Pro 6GB+128GB 全网通版（樱粉金）</p></li>
+							<li>¥ 4999.00</li>
+							<li><input type="number" value="1" min="1"></li>
+							<li>小计</li>
+							<li><a>删除</a></li>
+						</ul>-->
+					</div>
+					<div class="hr-10"></div>
+					<div class="pricezo d-flex justify-content-end">
+						<div class="number d-flex"><a href="gridslist.html">总计：</a><span>$2323</span></div>
+						<div class="mit"><a href="login.html">结算</a></div>
+					</div>
+				</div>
+				<div class="recomm-goods">
+						   <div class="recom-top">
+						   	 <h2 class="title">热销推荐</h2>
+						   </div>
+						   <div class="recom-center w-100 d-flex justify-content-between">
+						   	<!--//button/////////////////////////////////////////-->
+						   	<a href="#" class="btnleft"><</a>
+						   	  <ul class="h-100 d-flex gridlist">
+						   	  	<li class=""><a href="gridslist.html"><img src="https://res.vmallres.com/pimages//product/6901443224104/142_142_1522652416476mp.jpg"/><p>HUAWEI P20</p><p>￥4288</p></a></li>
+						   	  	<li><a href="gridslist.html"><img src="https://res.vmallres.com/pimages//product/6901443232413/142_142_1523952379540mp.jpg"/><p>荣耀10</p><p>￥2599</p></a></li>
+						   	  	<li><a href="gridslist.html"><img src="https://res.vmallres.com/pimages//product/2601010007209/142_142_1518319292106mp.jpg"/><p>HUAWEI Mate 10</p><p>￥4199</p></a></li>
+						   	  	<li><a href="gridslist.html"><img src="https://res.vmallres.com/pimages//product/6901443210206/142_142_1513158421271mp.jpg"/><p>荣耀V10</p><p>￥2499</p></a></li>
+						   	  	<li><a href="gridslist.html"><img src="https://res.vmallres.com/pimages//product/6901443226283/142_142_1525396437867mp.jpg"/><p>HUAWEI nova 3e</p><p>￥2199</p></a></li>
+						   	  </ul>
+						   	<a href="#" class="btnright">></a>
+						   </div>
+						</div>
+						<div id="search-pager" class="pagination"></div>
+			</div>
+		</div>
+		<div id="footin"></div>
+	</body>
+	<script src="js/jquery.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/jquery.cookie.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/shoppingcar.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+	
+	
+	</script>
+</html>

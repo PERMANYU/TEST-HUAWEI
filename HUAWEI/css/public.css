@@ -1,0 +1,36 @@
+*{margin: 0;padding: 0;!important;}
+.margin{width: 1200px;margin:0 auto;overflow: hidden;}
+.margin-login{max-width: 998px;margin: 0 auto;}
+.margin-register{width:auto;max-width: 960px;margin: 0 auto;}
+html,body{width: 100%;height: 100%;}
+ul li {list-style:none;}
+img {display:block;}
+body {font:14px/1.5 "微软雅黑"; color:#a4a4a4;}
+a {color:#a4a4a4; text-decoration:none;}
+body,ol,ul,h1,h2,h3,h4,h5,h6,p,th,td,dl,dd,form,fieldset,legend,input,textarea,select,td,figure{margin:0;padding:0;}
+a,u,s,del{color:#666;text-decoration:none;}
+fieldset,a img,.bor0{border:0;}
+i,em,b{font-style:normal;font-weight:100;}
+li{list-style:none;}
+img{vertical-align:middle;}
+table{border-collapse:collapse;}
+input,textarea{outline:none;}
+textarea{resize:none;}
+.ind2{text-indent:2em;}
+a{cursor: pointer;}
+
+/*图片居中*/
+.valign{text-align:center;}
+.valign:after{content:"";display:inline-block;vertical-align:middle;height:100%;width:0;}
+.valign img{vertical-align:middle;}
+
+/*文本溢出隐藏出现省略号*/
+.over{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+
+/*定位水平垂直居中*/
+.center{left:0;right:0;bottom:0;top:0;margin:auto;}
+
+/*清除浮动*/
+.clear{zoom:1;/*解决ie高度塌陷问题*/}
+.clear:before{content:"";display:table;}
+.clear:after{content:"";display:block;clear:both;}

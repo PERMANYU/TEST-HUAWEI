@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" type="text/css" href="bootstrupdemo/css/bootstrap.css"/>
+		<link rel="stylesheet" type="text/css" href="css/public.css"/>
+		<link rel="stylesheet" type="text/css" href="css/style-for-login.css"/>
+		<title></title>
+	</head>
+	<body>
+		<header>
+			<div class="margin-login d-flex row justify-content-start">
+				<div class="h-logo">
+					<a href="index.html"><img src="images/huaweiLogo.png" alt="" /></a>
+				</div>
+				<div class="web-name">
+					<b>|</b>
+					<i>华为商城</i>
+				</div>
+			</div>
+		</header>
+	    <div class="main w-100">
+	    	<div class="margin-login h-100">
+	    		<div class="login-box">
+	    		    	<div class="log-t">
+	    		    	        <span id="btnLogin1" class="text-danger">账号登录</span>
+	    		    			<span id="btnLogin2">密码登录</span>
+	    		       </div>
+	    		       <div class="reque text-danger"></div>
+	    		       <div class="log-main1 d-block">
+	    		       	  <div class="log-c">
+	    		       	  	  <table border="0" cellspacing="0" cellpadding="0" class="w-100">
+	   <!--//此处有表单验证--> 		      
+	                           <thead>
+	    		       	  	  		<tr>
+	    		       	  	  			<td class="underline">
+	    		       	  	  				<label class="w-75" for="tel">		
+	    		       	  	  				<input class="w-100" type="tel" name="user" id="tel" value="" placeholder="手机号/邮件地址"/>
+	    		       	  	  				</label>
+	    		       	  	  			</td>
+	    		       	  	  			<span class="content1 text-danger"></span>
+	    		       	  	  		</tr>
+	    		       	  	  		<tr>
+	    		       	  	  			<td class="underline">
+	    		       	  	  				<label class="w-75" for="">	    		       	  	  					
+	    		       	  	  				<input class="w-100" type="password" name="password" id="pass" value="" placeholder="密码"/>
+	    		       	  	  				</label>
+	    		       	  	  			</td>
+	    		       	  	  			<span class="content2 text-danger"></span>
+	    		       	  	  		</tr>
+	    		       	  	  		<tr>
+	    		       	  	  			<td>
+	    		       	  	  				<span id="remb_name">
+	    		       	  	  					<input type="checkbox" class="checkbox" name="" id="" value="" />
+	    		       	  	  					<label for="rember_name">
+	    		       	  	  						<i id="rem_nameicon"></i>
+	    		       	  	  						记住华为账号
+	    		       	  	  					</label>
+	    		       	  	  					<div class="hidden" style="display:none">在公用电脑上不要选择此项推荐在个人电脑上选择此项</div>
+	    		       	  	  				</span>
+	    <!--//此处有划过效果-->		       	  	  				
+	                                    <span id="content3"class="content3 text-info ml-5"></span>
+	    		       	  	  			</td>
+	    		       	  	  		</tr>
+	    		       	  	  		<tr>
+	    		       	  	  			<td>
+	    		       	  	  				<div>
+	    		       	  	  					<span id="login_msg" style="display: block;"></span>
+	    		       	  	  				</div>
+	    		       	  	  				<input type="button" name="" id="btnLogin" value="登录" />
+	    		       	  	  			</td>
+	    		       	  	  		</tr>
+	    		       	  	  		<tr>
+	    		       	  	  			<td>
+	    		       	  	  		        <span class="float-right">
+	    		       	  	  		        	<a class="text-info" href="#">更多</a>
+	    		       	  	  		        </span>
+	    		       	  	  			</td>
+	    		       	  	  		</tr>
+	    		       	  	  		<tr>
+	    		       	  	  			<td>
+	    		       	  	  			    <span class="w-100 d-block text-center">
+	    		       	  	  			    	<a class="text-info" href="register.html">注册账号</a>
+	    		       	  	  			    	 <i class="text-info align-middle">|</i>
+	    		       	  	  			        <a class="text-info" href="#">忘记密码</a>
+	    		       	  	  			    </span>
+	    		       	  	  			</td>
+	    		       	  	  		</tr>
+	    		       	  	  	</thead>
+	    		       	  	  </table>
+	    		       	  </div>
+	    		       	  <div class="log-b">
+	    		       	  	 <div class="log-bt">
+	    		       	  	 	  <i class="line-L"></i>
+	    		       	  	 	  <span>其他方式登录</span>
+	    		       	  	 	  <i class="line-R"></i>
+	    		       	  	 </div>
+	    		       	  	 <div class="log-bb">
+	<!--此处有效果-->
+	    		       	  	 	   <span class="qq" title="QQ"><a href="#"></a></span>
+	    		       	  	 	   <span class="zhifu" title="支付宝"><a href="#"></a></span>
+	    		       	  	 	   <span class="weixin" title="微信"><a href="#"></a></span>
+	    		       	  	 </div>
+	    		       	  </div>
+	    		       </div>	       
+	<!--//此处有隐藏效果--> 	
+	    		       <div class="log-main2 d-none">
+	    		        <div class="log-c">
+	    		            <div class="log-cimg">
+	    		            	<div class="erwei">
+	    		            	  <img class="d-block w-100 h-100" src="images/getqrWeb.png"/>
+	    		            	</div>
+	    		            </div>
+	    		            <div class="iphone">
+	    		          <!--此处有效果-->  	
+	    		            </div>	
+	    		        </div>
+	    		        <div class="log-b w-100">
+	    		            	<p>使用<span class="text-info">华为移动服务APP</span>扫一扫</p>
+	    		            	<p>若您使用华为手机，请进入“设置”>“华为帐号”扫码登录。</p>
+	    		        </div>
+	                </div>  
+	    	   </div>
+	    	</div>
+	    </div>
+	    <div class="foot">
+	    	<div class=" margin-login">
+	    		
+	    		<p>
+	    			<a href="#">华为帐号用户协议</a><em>|</em>
+	    			<a href="#">关于华为帐号与隐私的声明</a><em>|</em>
+	    			<a href="#">常见问题</a>
+	    		</p>
+	    		<p>
+	    			Copyright © 2011-2018    华为技术有限公司   版权所有   保留一切权利  苏B2-20070200号           |           苏ICP备09062682号-9
+	    		</p>
+	    	</div>
+	    </div>
+	</body>
+	<script src="js/jquery.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+	$(function(){
+			$("#btnLogin2").on("click",function(){
+      	    $(this).css({"color":"#b40707"});
+         	$("#btnLogin1").css({"color":"#ccc"}).removeClass("text-danger");;
+      	    $(".log-main1").addClass("d-none").removeClass("d-block");
+      	    $(".log-main2").addClass("d-block").removeClass("d-none");
+      })
+            $("#btnLogin1").on("click",function(){
+      	$(this).css({"color":"#B40707"});
+      	$("#btnLogin2").css({"color":"#ccc"})
+      	$(".log-main2").addClass("d-none").removeClass("d-block");
+      	$(".log-main1").addClass("d-block").removeClass("d-none");
+      })
+		})
+	$(function(){
+		$("#btnLogin").click(function(){
+		$.ajax({
+			type:"post",
+			url:"http://datainfo.duapp.com/shopdata/userinfo.php",
+			data:{
+				status:"login",
+				userID:$("input[name=user]").val(),
+				password:$("input[name=password]").val()
+			},
+			success:function(res){
+				switch(res){
+					case "0":$(".content1").html("用户名不存在");break;
+					case "2":$(".content2").html("帐号密码不符");break;
+					default:
+						$(".content3").html("登陆成功,3秒后跳转购物页面");
+						setTimeout(()=>{
+							location.href = "http://localhost/虞洛浦/HUAWEI/index.html";
+						},3000)
+				}
+			}
+		});
+	})
+	})
+	</script>
+</html>
