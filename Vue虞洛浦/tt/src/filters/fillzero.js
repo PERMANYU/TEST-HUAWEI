@@ -1,0 +1,1 @@
+export const fillzero=(n,m)=>{return '补零'}

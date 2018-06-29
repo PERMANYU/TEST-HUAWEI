@@ -1,0 +1,11 @@
+export const SHOW_LOADING='SHOW_LOADING';
+export const HIDE_LOADING='HIDE_LOADING';
+export const SHOW_NAV='SHOW_NAV';
+export const HIDE_NAV='HIDE_NAV';
+export const SHOW_FOOT='SHOW_FOOT';
+export const HIDE_FOOT='HIDE_FOOT';
+export const CuserData='CuserData';//存
+export const SuserData='SuserData';//删除用户信息
+export const Cindex='Cindex';
+export const Cnews='Cnews';
+export const UPDATE_USER='UPDATE_USER';
