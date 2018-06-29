@@ -1,0 +1,26 @@
+{
+	"name": "test", 
+    "description": "我的第一个插件", 
+    "version": "11.9.900.152",
+    "manifest_version" : 2,
+    "browser_action" : {
+        "default_icon" : "1.png"
+    },
+    "permissions" : [
+        "tabs" , "http://*/*" , "https://*/*"
+    ],
+    "content_scripts" : [
+        {
+            "matches" : ["https://www.baidu.com/*"],
+            "js":["myscript.js"]
+        },
+        {
+            "matches" : ["https://item.jd.com/*"],
+            "js":["test1.js"]
+        },
+        {
+            "matches" : ["https://cart.jd.com/*"],
+            "js":["test2.js"]
+        }
+    ]
+}
