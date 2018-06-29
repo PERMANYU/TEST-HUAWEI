@@ -1,0 +1,35 @@
+.ui-header-ti {
+    position:relative;
+}
+.ui-header-ti h2 {
+    color:#2b577a;
+    font-size:15px;
+    font-weight:400;
+    height:2.5rem;
+    line-height:2.5rem;
+    padding:0 0.625rem;
+}
+
+.ui-header-ti .more {
+    color:#888;
+    padding-right:0.625rem;
+    font-size:14px;
+    height:2.5rem;
+    line-height:2.5rem;
+    position:absolute;
+    right:0;
+    top:0;
+}
+
+.ui-header-ti .more i {
+    position:absolute;
+    right:0;
+    top:0;
+    line-height:39px;
+    font-size:1.8rem;
+
+}
+
+.ui-header-cr{
+    padding-bottom:.625rem;
+}
