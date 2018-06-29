@@ -1,0 +1,261 @@
+
+公共实用类：
+
+    border 边框/border-0无边框/border-top-0上方无，其他有
+        rounded 圆角/rounded-top顶部圆角/rounded-circle 圆/rounded-0无圆角
+        clearfix 清除浮动/float-left左浮动/float-right浮动
+        text-情景 文字颜色 text-white
+        display 显示模式    d-显示模式  d-sm/md/lg/xl-显示模式
+            .d-none     不可见
+            .d-inline   行内
+            .d-inline-block 行内块
+            .d-block    块
+            .d-flex 弹性盒模式
+
+
+弹性盒子
+
+            d-flex flex-row 横向  flex-sm/md/lg/xl-row
+            d-flex flex-row-reverse 横向倒叙
+            d-flex flex-column  竖向  flex-sm/md/lg/xl-column
+            对齐内容    justify水平 align-items垂直
+            d-flex justify-content-start/center/end/between/around 横向 左/中/右/两测顶齐均分/非两测顶齐均分
+                   justify-content-xm/md/lg/xl-start
+            对齐项目    垂直
+            d-flex align-items-start/center/end/baseline/stretch    stretch拉伸
+                   align-items-sm-start
+            对齐自我
+            d-flex align-self-start/center/end/baseline/stretch    stretch拉伸
+                   align-self-sm-start
+            d-flex flex-nowrap  不换行
+            d-flex flex-wrap    换行
+            d-flex flex-wrap-reverse    换行倒叙
+            order-1到12  排序
+
+
+位置
+
+            fixed-top 固定顶   fixed-bottom 固定底部 sticky-top 吸顶
+
+
+尺寸
+
+            w-25    相对父级宽25%     h-25 高 25/50/75/100
+            mw-50   最大宽     mh-30 最大高
+
+
+间距
+
+            m == margin     p==padding  用在调整栅格时用p，不然会换行
+            t、b、l、r 上下左右    mt-0 清除上边距 数字0-5
+            x、y 横向纵向    mx-auto 水平居中    px-3 横向内边距为3
+
+ 
+布局工具：
+
+        内外边距：    基于1rem值 五级刻度    mr-n    n=1-5 mr=margin-right
+
+文本  text-sm-left 
+
+            text-left/center/right/justify
+            text-truncate 省略号 text-nowrap不换行
+            text-lowercase/text-uppercase/text-capitalize   大小写
+            font-weight-bold 加粗 font-italic斜体
+
+
+内联元素垂直对齐
+
+            .align-baseline基线 /align-top顶部/align-middle中间/align-bottom底部/align-text-bottom文本低部/align-text-top文本顶部
+
+
+读文档 
+
+    下载
+    依赖（Dependencies）
+        bootstrap的js需要jq支持
+    布局
+        响应式定宽 container 响应断点 576px/768px/992px/1200px
+        流体宽度   container-fluid  跨越视口的整个宽度
+
+
+栅格系统    row>col
+
+        12列栅格
+        内容应放置在列中，只有列可能是行的直接子网格层基于最小宽度，这意味着它们适用于该层和其上的所有层
+        嵌套  col 里面套row>col
+        row行>col列
+        col-sm 适用sm md lg xl 
+
+        无（自动/指定）        540px        720像素        960像素        1140px
+        .col/.col-n         .col-sm-n    .col-md-n    .col-lg-n    .col-xl-n   n 代表数字1-12
+
+        设置一列的宽度，并使兄弟列自动调整大小 col col-6 col  当前列6，其他均分
+        col-{breakpoint}-auto类  根据其内容的自然宽度来对列进行大小调整
+        跨多行等宽列   <div class="w-100"></div>  相对父宽的百分比
+        垂直对齐（操作row or col)
+            操作row   align-items-start/center/end 行 上start 中center 下end
+            操作col   align-self-start/center/end 行 上start 中center 下end
+        水平对齐（操作row)
+            操作row   justify-content-start/center/end/around/between around均分 between两边
+        列之间的沟槽可以被删除(操作row)
+            no-gutters 只作用一级子列 相当于mx-0
+        排序
+            .order-n 控制您的内容的可视化顺序   n 1-12
+        抵消列
+            ml-auto、mr-auto 左、右边距自动，只要有空间就做成margin
+        
+
+
+
+标题，正文，列表：-----------------1~2
+
+    标题： <h1>-<h6>   or  .h1-.h6
+        副标:  <small>    or  .small
+        列表： list-inline 剔除ul点和缩进,list-inline-item li转行内一行显示     text-truncate  截断显示省略号文本
+    code 一定要避开HTML尖括号
+        code：表示一段代码
+        pre：表示一个代码块
+        var：表示变量
+        kbd：表示用户需要按下的键
+        samp：表示代码输出
+
+
+图片----------------3
+
+        img-fluid   响应式
+        img-thumbnail 缩略图，边缘有一圈边框线
+
+
+表格----------------4
+
+        将基类添加.table到任何类<table>
+        table-inverse  反色
+        thead-inverse、thead-default 表头效果
+        .table-striped  条纹行
+        table-bordered  单元格的所有方面添加边框
+        table-hover 悬停状态
+        table-sm    表更紧凑
+        语境类 table-语境
+            active活性、default默认、primary主、secondary次、success成功、danger危险、warning警告、info信息、light高亮
+            注意反色表语境 bg-语境 实现
+        .table-responsive 响应表 横向会出现滚动条
+
+
+标题图像-------------5
+
+       figure标签+figure类>img+figure-img 类 + img-fluid/figcaption标签+figcaption类
+       <figure class="figure">
+            <img class="figure-img img-fluid">
+            <figcaption class="figure-caption">
+
+
+按钮 button   a-------------6
+
+            btn btn-情境  btn-link
+            btn-outline-语境  边框按钮
+            .btn-lg .btn-sm 尺寸  btn-block   块级
+            active 激活   disabled禁用 按钮给属性，a给类
+            复选框和单选按钮    需要jquery popper
+            data-toggle="buttons" + .btn-group > .btn + checkbox/radio
+
+
+卡片----------------7~10
+
+            card    卡片容器
+                card-header 页眉
+                card-img-top 顶部图片
+                card-body/card-img-overlay 卡主体/图片上的卡主体
+                    card-title 标题
+                    card-subtitle 副标
+                    card-text 文本
+                    card-link 链接
+                list-group  列表组
+                    list-group-item 列表项目
+                card-img-bottom 底部图片
+                card-footer 页脚
+            卡组   card-group>card 无边距    一行card一组
+                  card-deck>card 有边距     一行card一组
+            瀑布流卡列     card-columns>card        所有card一组
+
+
+轮播图-----------------11
+
+            carousel
+                carousel-indicators 指示器
+                carousel-inner  轮播内容
+                    carousel-item   active 轮播项 当前项（必填）
+                    carousel-item
+                        img img-fluid 图 响应式
+                        carousel-caption    文本描述
+                carousel-control-prev   上一页
+                    carousel-control-prev-icon 上一页图标
+                carousel-control-next
+            特点：图片宽自适应，需要设置最大高度给carousel+carousel-item
+
+
+下拉菜单--------------------12
+
+            建立在第三方库Popper.js上
+            dropdown/dropup 下拉/上拉
+                dropdown-toggle/dropdown-toggle-split 按钮/分裂按钮   data-toggle="dropdown" 触发器（必须）
+                dropdown-menu/dropdown-menu-right 菜单/右对齐
+                    dropdown-header 标题
+                    dropdown-item/disabled   菜单项/禁用
+                    dropdown-divider    分割线
+
+
+表单---------------------13
+
+            form-inline    行内表单 操作form
+                form-group/form-group row 表单组 / 水平形式
+                    form-control/readonly   对表单元素外观，焦点状态，格式化 /只读属性
+                    form-control-lg/sm    对表单元素尺寸格式化
+                    form-text   描述
+                    form-check/disabled/form-check-inline  复选框容器  / 禁用/行内复选
+                        form-check-label/col-form-label 数据label/水平形式需要添加
+                            form-check-input 复选框
+
+
+列表组----------------------14
+
+            list-group
+                list-group-item/list-group-item-action  列表项/有按下动作
+                d-flex/justify-content-between/align-items-center   flex定位/内部两端对齐/内部垂直居中
+                    badge badge-primary badge-pill 徽章/主/药丸
+
+
+模态框----------------15
+
+            不支持嵌套模式，模态HTML放在顶级位置
+            fade    淡入
+            bd-example-modal-lg/sm>modal-lg/sm  尺寸
+
+
+导航--------------------16
+
+            nav/justify-content-center/justify-content-end/flex-column/nav-tabs/nav-pills/nav-fill
+                导航/居中/靠右/垂直/选项卡/药丸/扩展填充
+                nav-item/nav-link/active/disabled 导航项/链接/激活/禁用
+            nav flex-column flex-sm-row  sm尺寸开始横向，再小纵向排列
+
+
+导航栏------------------------17
+
+            Navbars需要包装.navbar和.navbar-expand-sm 用于响应式折叠
+            Navbars及其内容使用flexbox构建
+            支持少量子组件
+                navbar-brand 为您的公司，产品或项目名称，LOGO
+                navbar-nav 用于轻便的导航
+                navbar-toggler用于小屏幕导航
+                    navbar-toggler-icon 小屏幕导航图标
+                form-inline任何表单控件
+                navbar-text 添加垂直居中的文本字符串
+                .collapse   .navbar-collapse 小屏幕下要隐藏导航栏内容
+
+
+分页------------------------18
+
+          nav 标签
+                pagination/pagination-lg/sm/justify-content-center 居中对齐
+                    page-item/disabled/active   页码项
+                        page-link   链接
