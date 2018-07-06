@@ -1,0 +1,95 @@
+--------------------------------------------------------------------------
+1. 项目分析,组件安排
+
+|-node_modules
+|-src
+	|- components
+		|- App
+		|- NavBar / FootBar
+		|- Home / Follow / Column / User
+		|- Article / Login / Reg
+		|- Slider / Error / List 
+	|- common(filters)
+		|- date.js / fillzero.js/...
+	|- public
+		|-data == nodejs/php inter
+			|- 数据
+		|- 静态资源
+	|- assets
+		|- css
+		|- img
+		|- js
+	|- store
+		|- ..
+	Index.js / RouterConfig.js
+package.json
+------------------------------------------------
+2. 布局(切图,mint-ui,elementUI...ant.design),模板移植
+	样式：全局引入
+		src / import 
+------------------------------------------------
+3. 路由搭建
+ 	样式冲突（命名冲突（错开））
+ 	import 模块名 from '../css/xx.css'
+
+ 	模块名.类名
+------------------------------------------------
+4. 数据交互
+	fetch(url,{配置}).then().catch()
+
+	home->newlist  	dataName="home" listData={this.state.listData}
+	follow->newlist dataName="follow" listData={this.state.listData}
+	↓
+	newlist -》link pathname:'detail/'+item.id,
+                    query:{dataName:dataName}
+    ↓
+    detail this.props.router.location.query.dataName
+5.	全局方法（过滤事件，补零）
+	|-common
+		date.js
+		fillzero.js
+		...
+		index.js
+			import date/fillzero ..
+			export {
+				date,fillzero
+			}
+	  <Provider store={store}>
+	    <BrowserRouter>
+	      <App/>
+	    </BrowserRouter>
+	  </Provider>
+------------------------------------------------
+6. 非状态管理，控制navbar / footbar / loading 
+
+	this.props.router.location.pathname -> navbar / footbar
+
+6.5 全局loading
+   pubsub [App订阅,  home/follow/.. 发布]
+   问题：用户速度切换，this.setState报错
+   分析：fetch中断--无法中断
+   解决：
+   	1.	高光盒（lightBox）√  / 自个维护一个组件属性 this.自定义属性
+   	2. 	状态管理，数据回来不修改组件，修改状态
+
+------------------------------------------------
+7. 同级组件传值思路：
+	a)	子A->父->子B
+		父方法(){this.refs.子.方法}
+	b) pub/sub模式 消息通知(观察者模式)  npm install npm install pubsub-js -D
+		var pubsub = new PubSub(); 
+		订阅:	onUserAdd=pubsub.subscribe('消息名',回调函数(数据,'消息名'))
+		发布：  pubsub.publish('消息名',数据)
+		清除指定订阅：pubsub.unsubscribe(onUserAdd);
+		清除所有：pubsub.unsubscribeAll()
+
+		注意：发布方不存在了，相关的订阅注意清除
+
+	c) 状态管理(redux)
+------------------------------------------------
+片段(fragments) :
+
+	为一个组件返回多个元素。 可以让你将子元素列表添加到一个分组中，并且不会在DOM中增加额外节点
+	<React.Fragment key="bmw"></..>
+
+dangerouslySetInnerHTML={{__html: 数据 }}>  非转义输出

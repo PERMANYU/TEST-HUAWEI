@@ -1,0 +1,182 @@
+react 处理 样式:
+	在index.html ： 引入  link/style  场景：应用的公共样式
+	在组件里面引入： import './css/xx.css'  是全局
+	模块化:	import 变量  from './css/xx.css' 模块   使用?
+		webpack配置 "style-loader!css-loader?modules"
+		<xx className={变量.类名}
+	jsx:
+		className="类名" className={返回字符}
+		style={{key:value,key:value}}
+		css3 动画
+
+
+环境搭建：
+	a)webpack + webpack-dev-server
+		/ 指向 index所在位置，图片,数据 都指向 / 
+		js / css / jsx 相对定位
+	b) npm install create-react-app	-g   官方脚手架
+		create-react-app 目录名| .
+		npm start 开发模式
+		npm build 打包
+
+		更改默认的端口号:
+		1.	node_modules\react-scripts\scripts
+		const DEFAULT_PORT = parseInt(process.env.PORT, 10) || 3001;
+
+		2.	npm run eject
+		 修改script/start.js
+
+
+		本地资源导入(import) 不可以导入src之外的包
+
+		问题:jsx前景图片	指向了 public目录
+		解决: 模块化引入图片
+
+		去除eslint 警告：
+			npm run eject
+			找到项目下config/webpack.config.dev|prod
+			注释关于eslint的导入和rules规则
+
+		打包 + 预览：
+			npm run  build  / yarn run build
+			serve -s build --port 端口 --open 
+			serve 服务器命令行工具（npm i serve -g)
+
+			public目录里面的资源会直接copy到build目录，src里面的资源会打包模块化
+
+		help: https://github.com/facebook/create-react-app
+
+		解决方案:
+			项目资源，尽量从src目录下引入，打包时会模块化
+--------------------------------------------------------------------------------
+
+生命周期流程:
+	实例化 ->  存在期  -> 销毁时
+	实例化:
+		es5: 
+			1.取得默认属性(getDefaultProps) 外部传入的props
+			2.初始状态(getInitailState)  state状态
+		    3.即将挂载 componentWillMount
+		    4.描画DOM  render
+		    5.挂载完毕 componentDidMount
+		es6:
+			1.取得默认属性(getDefaultProps) 外部传入的props
+			2.初始状态(getInitailState)  state状态
+				1 && 2 都在构造器里面完成 
+				constructor(props){
+					super(props) == getDefaultProps
+					this.state={} == getInitailState
+
+				}
+		    3.即将挂载 componentWillMount
+		    4.描画DOM  render
+		    5.挂载完毕 componentDidMount
+	存在期:
+		1.是否更新 shouldComponentUpdate  指视图
+		2.即将更新 componentWillUpdate
+		3.描画dom  render
+		4.描画结束 componentDidUpdate
+	销毁时:
+		即将卸载 componentWillUnmount
+
+
+实例化->存在(更新)->销毁时
+	getDefaultProps->getInitialState->componentWillMount->render->componentDidMount
+	->shouldComponentUpdate->componentWillUpdate->render->componentDidUpdate->
+	->componentWillUnmount
+---------------------------------------------------------------------------------------
+
+数据交互：
+	react-resource / axios   一样用
+	jquery
+		$.ajax({
+			type:'get/post',
+		url:'...',
+			success:function(res){},
+			error:function(){}
+		})	
+
+	fetch	原生就有
+	fetch(url).then(成功函数(res))
+	res.ok -> true/false 成功/失败
+	res.status - > 状态码
+	res.body 数据 数据流(stream)
+	res.text() 转换 文本(string) 
+		过程异步：	return res.text()
+		同步： res.text().then((data)=>{})	data:转换后的数据
+	res.json() 转  对象
+
+------------------------------------------------------------------------------------
+
+数据交互：
+	官方脚手架 静态数据读取时，参考根指向public  '/data' == public/data
+	fetch	原生就有
+	fetch(url+数据,{配置}).then(成功函数(res))
+	res.ok -> true/false 成功/失败
+	res.status - > 状态码
+	res.body 数据 数据流(stream)
+	res.text() 转换 文本(string) 
+		过程异步：	return res.text()
+		同步： res.text().then((data)=>{})	data:转换后的数据
+	res.json() 转  对象
+	配置:
+		method:'POST'
+		headers:{"Content-type":"application/x-www-form-urlencoded"},
+		body:'a=1&b=2'|
+
+jsonp:  fetch不带jsonp请求  需要依赖第三库
+	npm install fetch-jsonp -D
+	import xxx from 'xxx'
+	用法:
+		fetchJsonp(url+数据,{配置}).then(success(res)).catch(error)
+		特点: 是个promise 返回promise 数据是个流
+		解析：res.json()  -> 流转换数据 是异步
+		配置:
+			timeout: 延时  5000
+			jsonpCallback: 回调函数key callback
+			jsonpCallbackFunction: null 
+
+
+--------------------------------------------------------------------------------
+思想:
+	组件拆分目标:为了复用
+	组件如何拆：单一原则
+	状态应该给谁: 
+		尽量给顶层组件(状态提升),->props->子组件
+		可以从 props(属性) 或者 state(状态) 得到，那么它可能不应该在 state(状态) 中
+		方法-》操作数据(数据|状态在哪，方法就应该在哪)
+	props取名：从组件本身的角度来命名, 而不是它被使用的上下文环境
+	纯函数:不会试图改变它们的输入，并且对于同样的输入,始终可以得到相同的结果,React 
+	组件都必须是纯函数，并禁止修改其自身 props
+		function(a,b){不会随机，不会修改a和b的值，输出可控}
+	setState: 是异步的,会将多个 setState() 调用合并为一次更新,所以不能同步依赖上一个setState的值，作为下一个setState的参数
+		解决：
+			1) this.setState(function(prevState,props){})
+			  函数接收前一个状态值作为第 1 个参数， 并将更新后的值作为第 2个参数
+		      
+		      更新会被合并,浅合并
+		    2) 函数节流(异步操作)
+		    3) ev.target......
+
+无状态(没有state)组件（简写）创建：
+	const 组件名=(props)=>(jsx)
+	const 组件名=props=>jsx
+	const 组件名=(props)=>{
+		let xx=props.xx
+		return html
+	}
+
+无状态组件/UI组件,特点：
+	不能访问this对象(this.ref,this.state  ... )
+	只能访问props
+	无需实例化，渲染性能高
+	this.方法/钩子（生命周期)  也不需要
+
+订阅发布:
+	pub/sub模式 消息通知(观察者模式)  npm install npm install pubsub-js -D
+		订阅:	onUserAdd=pubsub.subscribe('消息名',回调函数('消息名',数据))
+		发布：  pubsub.publish('消息名',数据)
+		清除指定订阅：pubsub.unsubscribe(onUserAdd);  √
+ 		清除所有：pubsub.unsubscribeAll()  ×
+
+		注意：组件不存在了，相关的订阅注意清除

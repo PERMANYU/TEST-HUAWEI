@@ -1,0 +1,82 @@
+----------------------react----------------------
+干嘛的：前端框架，把用户界面抽象成一个个的组件，按需组合成页面
+官网：https://reactjs.org/
+	  http://www.css88.com/react/
+
+	  			angularJs		vue			react   	angular(ts)
+过滤器			√				√			-			√
+指令			√				√			-			√
+模板引擎		√				√			-			√
+组件			元素			√			√			√
+控制器			√
+				元数据
+				指令(元素，类,注释，属性)
+				DOM				VDOM		VDOM		VDOM	
+
+共同点：
+	虚拟DOM(angularJs除外  angular有)，数据驱动,组件式开发
+
+JSX：js + html		类XML语法
+	oo.js/  oo.jsx  合法的
+
+语法要求：
+	标签要闭合
+	元素必须要有一个顶层元素
+	变量首字母大写代表组件，小写对应是JSX元素
+	html属性，小驼峰命名 tabindex -> tabIndex
+精髓：多组件组合，jsx+函数式编程（运算写成一系列的函数嵌套）
+
+
+------------------------------------------
+
+ES6 创建组件：	
+	import React from 'react';
+	class 组件名 extends React.Component{
+		constrctor(props){ //组件有状态 constrctor就出现
+			super(props) //类如果有继承 super就要出现
+				需要在组件构造器内处理传递过来的props时，props参数就出现
+			
+			this.state={ // 本地状态
+
+			}
+		}
+		render(){
+			return jsx
+		}
+		方法1(){} 自定义的方法
+		方法2(){}
+	}
+ES5 创建组件：	
+	var React = require('react');
+	let 组件名 = React.createClass({
+	  getInitialState:function(){  //组件状态
+	  	return {
+	  		数据:值
+	  	}
+	  }
+	  render:function(){
+	    return jsx
+	  }
+	});
+使用组件：
+	<HelloWorld/>
+	<HelloWorld></HelloWorld>
+
+渲染（描画）页面
+	import ReactDom from 'react-dom';
+	var RactDom = require('react-dom');
+
+	ReactDom.render(组件/jsx,插入点)
+------------------------------------------
+
+组件属性(props)：
+	调用组件：<组件名 属性名=值 属性名2=值2 .. />	传递属性
+	组件内部: {this.props.属性名}   jsx表达式  使用属性
+			  this 代表的是组件本身  
+
+	值类型：字符||{表达式}
+	this.props.属性名==array 需要循环
+	arr值：this.props.属性名.map(function(){
+		return html
+	})
+	json {json} 报错， 对象无法直接通过{obj}展示->{obj.key}

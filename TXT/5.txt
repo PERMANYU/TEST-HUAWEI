@@ -1,0 +1,126 @@
+地理定位：
+	移动互联网形态:
+		社交:
+			微信，微博，陌陌，探探
+		团购:
+			美团，滴滴
+		大数据:
+			分析（出行习惯)
+	定位原理:
+		pc:
+			ip地址(误差)
+		phone:
+			GPS(准确)
+	原生:
+		navigator.geolocation
+		navigator.geolocation.getCurrentPosition(success,error,options)
+		wathID = navigator.geolocation.watchPosition(success,error,options)
+		navigator.geolocation.clearWatchPosition(wathID)
+
+		error: 
+			code 错误码 
+				1 用户拒绝
+				2 获取失败
+				3 超时
+				0 位置错误
+			message 错误信息
+		success:
+			res.coords 坐标
+			res.coords.longitude 经度	121.48761259999999
+			res.coords.latitude 纬度	31.3802223
+			res.coords.accuracy 精确度 低于60不可用
+			res.coords.altitude 海拔高度
+			res.coords.altitudeAccuracy 海拔高度精确度
+			res.coords.heading 朝向
+			res.coords.speed 速度
+	百度地图:
+		http://api.map.baidu.com/api?v=2.0&ak=0933b0c4da0af91731e5dd9ffbc58511
+
+
+
+----------------------------------------------------------------------------------------------------
+
+nodeJs:
+	干嘛的： 写后台管理程序
+	目标：数据服务，文件服务，web服务
+	类似：	php  .net   java(jsp) ....
+优势：
+	性能高，方便、入门难度低、大公司都在用（BAT）
+劣势：
+	服务器提供的相对较少
+	能用的上的学习资料少，对程序员的要求高了
+
+环境：nodejs + web服务器 + 数据库
+	php -> wamp	w:window a:aphche m:mysql P:php
+		-> php(后台管理程序) mysql(库) aphche(web服务器)
+	java -> jdk
+	nodejs:
+		安装：双击->一路下一步
+			官网：https://nodejs.org/en/ 
+			镜像：http://npm.taobao.org/
+			nodejs 环境 	npm 环境
+			测试环境： 命令行(运行->cmd)->node -v
+
+版本：
+	Vx(主).x(子).x（修正） 包(目录)->模块(文件)
+	主版本： 变化了，1/3的API发生巨变 , 使用方式变化了
+	子：	API没有删减，使用方式没变化,内部实现发生了变化
+	修正版：什么都没变，处理一下bug
+
+	V6.8.x   稳定
+	V6.9.x 非稳定版  
+	Vx.x.x-beta 测试
+	vx.x.x-rc  测试稳定
+
+编写：
+	IDE(有RUN环境,真实服务器)|编辑器|node命令行
+	
+运行：命令行
+	1  dos:		win+r->cmd回车->cd 目录-> node 文件名.js | node 文件名
+				IDE|编辑器环境下，运行dos命令行
+				webstrom->terminal(ALT+f12)		|   run 
+				vscode->终端
+	2  linux(git):  终端->cd 目录-> node 文件名.js | node 文件名
+					当前目录->右键->git bash-> node 文件名
+	3  node命令行:  多用在调试
+		dos-> node 回车-> 编写+运行
+------------------------------------------------------------
+DOM/BOM 不可用
+ECMA 可用
+------------------------------------------------------------
+服务: 
+	web服务器(http服务): apache , ngnix , tomcat   localhost|www.abc.com
+	数据库: mysql | sqlserver | mongoDB | orangcl
+		数据库: 数字|字符
+		磁盘（硬盘) 文件本身(图，视频,PDF)   文件服务器
+	后台管理程序:
+		nodejs,java........
+
+---------http模块------搭建web服务器-------
+
+1） 引入http模块	require('http')
+	2)	server/app = http.createServer(函数(req,res));//创建服务   返回http对象
+			req 请求  浏览器->服务器
+				req.url  地址   提取get数据
+				req.on('data|end') 提取post数据 所有的http[s]都会触发end事件
+  			res 响应  服务器->浏览器
+  				响应头设置:	res.writeHead(200,{'Content-Type':'text/html;charset=utf-8'});
+  				res.write(字符/数据<string><buffer>)
+	3) 	监听：
+		server.listen(端口，[地址]，[回调])    回调：监听成功，回调一次
+			端口: 1-65535	1024以下系统占用   80
+			地址: 虚拟localhost  真实域名xx.duapp.com
+
+---------fs模块------文件操作-------
+fs.readFile(路径/文件名,[编码],回调(err,data));
+		err 错误 null没有错误
+		data 数据,buffer流
+
+静态页面托管:
+	fs.readFile(文件名,[编码],回调(err,data));
+		err 错误 null没有错误
+		data 数据,buffer流
+	staticWWW 函数
+
+静态数据请求(http):
+	href/src/url()/locaction.href/submit/ajax........

@@ -1,0 +1,4631 @@
+﻿===========================
+三阶段大纲：
+1. touchWeb
+	兼容手机设备的js
+2. nodejs 
+	目的：后台管理+mysql/mongodb  为全站搭建后台
+3. vue
+4. vue项目
+5. react
+6. react项目
+7. angular
+8. 混合开发(phoneGap,js_sdk,公众号,小程序)
+	目的：调取设备
+	模拟面试
+=============================
+第一周知识概览：
+本地存储
+多媒体
+绘图（canvas）
+echarts
+原生移动端js
+zepto、touchJs
+iscroll、swiper
+第三方地图库
+=============================
+
+本地存储
+	1. cookie 存东西
+		特点： 小(~4k),服务器环境(每次都会随着请求，发往服务器)，过期时间，完全兼容
+		document.cookie=值
+	2. localStorage 、 sessionStorage
+		特点： 大(~5M),不会发往服务器,没有过期时间
+	共同点：
+		不安全、不能跨域、不能跨浏览器
+=============================
+localStorage:	window的属性  返回 一个localStorage对象  
+
+	属性：
+		localStorage.key=value 种、写
+		localStorage.key;  获取，读
+		delete localStorage.key 删除
+		for in  localStorage 枚举 批量删除
+	方法： √
+		localStorage.setItem(key,value) 种、写
+		localStorage.getItem(key) 读
+		localStorage.removeItem(key) 删除一个
+		localStorage.clear() 批量删除
+	事件：
+		window.onstorage 检测key 发生了变化  当前页面无法检测到
+			ev.key 返回 变化的key
+			ev.newValue	变化后的值
+			ev.oldValue 前
+	写到localStorage里面的都是字符
+		json	->	str 序列化
+		str 	->	json 反序列化，实体化
+sessionStorage 生命周期 会话结束时
+	属性：同上
+	方法：同上
+-------------------------------------------------------
+图片站位：http://temp.im/320x150
+document.querySelector('css选择器');	 一个
+document.querySelectorAll('css选择器') 一组，多个，一堆，一坨
+
+obj.dataset.属性 取、设置data-属性的值  返回 string
+<xx bulala="sdf"></..> obj.getAttribute('bullaa')
+<xx data-a-bac-cdd="xxx">
+obj.dataset.aBacCdd 获取
+-------------------------------------------------------
+多媒体：
+	视频
+		PC：
+			50% H5 、 50%	flash/player播放  actionscript3.0 OOP 类java   as cc挂了 
+		touch：
+			video
+video:
+	dom属性：
+		src:'视频源'
+		autoplay="autoplay"	-> autoplay 自动播放
+		controls 是否出现控制句柄  true/false controls="controls"
+		poster 预览图
+		loop 循环
+		....
+		w3c.org/video
+	js属性：
+		autoplay:"autoplay"
+		v.currentTime 磁头位置，播放时间 读写
+		v.volume 音量 0 - 1
+		v.muted 是否静音  true/false
+		v.playbackRate 返回 播放速率 默认 1  0-8
+		v.duration 总时间（长度)
+		v.autoplay   true/false
+		v.controls   true/false
+		v.loop       true/false
+		......
+	方法：
+		v.play() 播放
+		v.pause() 暂停
+		v.webkitRequestFullScreen();
+		...
+	事件：
+		v.ontimeupdate=fn  播放时
+		v.onended=fn 播放完毕时
+
+source：
+	提供多视频源
+
+需求：自定义控制器句柄(DOM模拟)
+
+
+es5:
+	构造函数: function 函数名(){
+		this.属性,
+		this.init()自动初始化
+	}
+	方法：函数名.prototype.方法名=fn(){}
+
+es6
+	class 类名 extends 父类{
+	 	constructor(){
+	 		super()
+		 	this.属性=值
+			...
+	 	}
+
+		方法名(){}
+		....
+	}
+
+	实例：
+		{
+			属性:xx
+			data:xx 数据	
+			btn1:xx 顺序播放  可选
+			btn2:xx 随机播放
+			btn3:xx 顺序播放
+			btn4:xx 列表循环
+			now:xx  当前播放索引
+			audio:xx 播放器
+			state:xx 播放状态  (顺序播放...)
+			...
+			_proto_:{
+				方法:fn
+				init(){} 渲染DOM，添加各种事件
+				playMusic(){} 播放
+				clearAllState(){}
+				rnd(){}  工具方法 应该封装公共库
+				...
+			}
+		}
+
+
+
+===============================================
+作业：
+	视频oop改写  es5 es6   不new Video()
+	jq 项目 里面但凡用到cookie的，全改，给班长->飞秋
+===============================================
+
+CANVAS:
+	干嘛的：画图的
+	目标： 做效果、画图表（柱状图，饼图..)、小游戏
+	特点： 没有事件系统
+canvas: 是个标签、天生透明、提供画布、绘制靠js、宽高需要DOM属性来指定
+	兼容： IE9+
+画笔：
+	o2d = canvas.getContext('2d');
+	o2d==画笔 、特点：所有和绘制相关属性、方法、都在画笔o2d身上
+
+	属性：
+		o2d.strokeStyle='rgba(255,34,24,1)';描边色
+     	o2d.fillStyle='blue';填充色
+      	o2d.lineWidth=10;线条粗细
+      	o2d.font='字体大小 字体'
+      	o2d.lineCap='butt' round square 端点样式
+      	o2d.lineJoin='miter';//bevel 斜切 round  接洽点样式
+      	o2d.shadowOffsetX=number x 方向偏移
+      	o2d.shadowOffsetY=number y 方向偏移
+      	o2d.shadowBlur=number 模糊、失焦、扩散
+      	o2d.shadowColor='blue/#xxxxx/rgb/rgba'
+      	o2d.textAlign='right';//left|center|right  文字水平对齐 默认left
+      	o2d.textBaseline='bottom';//top|middle|bottom 文字垂直对齐 默认文本基线
+	方法：
+		o2d.moveTo(x,y) 移动到
+		o2d.lineTo(x,y) 连线到
+		o2d.closePath();闭合路径  绘制在最后一笔
+		o2d.fill() 填充  使用fillStyle的颜色，默认是黑色
+		o2d.stroke() 描边 使用strokeStyle的颜色，默认是黑色
+		o2d.beginPath();	开启新路径
+		o2d.strokeRect(x,y,w,h) 描边矩形
+		o2d.fillRect(x,y,w,h) 填充矩形	绘制的是图形
+		o2d.rect(x,y,w,h) 路径矩形 需要描边才看的到
+		o2d.clearRect(x,y,w,h) 擦除操作	
+		o2d.arc(cx,cy,r,start,end,false); 路径  start=开始弧度 false 是否顺逆 是个路径
+		o2d.fillText(string,x,y) 填充文字
+		o2d.strokeText(string,x,y) 描边文字
+		gd.measureText('九叔').width  返回文字宽
+		o2d.isPointInPath(x,y) 返回 true/false  只检测路径
+		o2d.save() 保存当前画笔状态
+		o2d.restore() 回复上一次保存的画笔状态
+		o2d.translate(x,y) 平移
+		o2d.rotate(弧度值) 旋转
+		o2d.scale(x,y)  默认1  必须两个值都要写2017-8-15
+
+
+绘制流程
+	1.	选色、线条样式、变形 -> 配置画笔
+	beginPath/save
+	2.	moveTo/lineTo/drawImage... 	-> 绘制
+	closePath/restore
+	3.	fill/stroke -> 填充、描边  -> 着色
+动画:	定时器(setInterval,requestAnimationFrame)
+		帧频：
+			低： 30	 DOM渲染
+			高:  16~17   1000/60     60fps  canvas渲染
+
+效果：
+		分析：线在动(点构成)->点(需要数据)在动
+		运动：定时器->画点->点.速度(数据取)->连线->边缘碰撞检测
+		拖尾：oldArr 控制length oldArr.push(aPoint)
+		变色: 作业
+事件：
+	没有事件系统,事件添加给画布，画笔没有事件系统
+	添加canvas,手动检测区域
+
+		矩形：ev.clientX>x && ev.clientX<x+w && ev.clientY>y && ev.clientY<y+h
+		圆:
+			cx2=clientX   cx1= x坐标
+			a=cx1-cx2
+			b=cx2-cy2
+			c=Math.sqrt(a*a+b*b);
+			if(c<r){检测}
+		异形:
+			规则形状 || 规则形状
+
+	自动检测
+			o2d/gd.isPointInPath(x,y) 返回 true/false 一个点是否在意个路径范围内
+
+	变形: 操作的是画笔	(中心点都在画布左上角)
+		平移: 效果累加
+			o2d/gd.translate(x,y)
+		旋转: 不会累加
+			o2d/gd.rotate(弧度值) -> d2a
+			旋转是画笔（中心点画布左上角）
+			需求：中心点在物体中心
+				理解：物体+中心点绘制画布左上角->旋转/缩放->平移目标位置
+				t书写：ranslate(w/2+x,h/2+y)->rotate(弧度)->fillRect(-w/2,-h/2);
+		缩放:
+			o2d/gd.scale(x,y) 俩个值都必须写
+		....
+
+	作业：
+		屏保：要有颜色变化
+		心动邮箱
+		canvas绘制米老鼠
+
+画笔：
+	o2d = canvas.getContext('2d');
+	o2d==画笔 、特点：所有和绘制相关属性、方法、都在画笔o2d身上
+
+	属性：
+		o2d.strokeStyle='rgba(255,34,24,1)';描边色
+     	o2d.fillStyle='blue';填充色  blue|#fff|rgb|rgba|createPattern(图)
+      	o2d.lineWidth=10;线条粗细
+      	o2d.font='字体大小 字体'
+      	o2d.lineCap='butt' round square 端点样式
+      	o2d.lineJoin='miter';//bevel 斜切 round  接洽点样式
+      	o2d.shadowOffsetX=number x 方向偏移
+      	o2d.shadowOffsetY=number y 方向偏移
+      	o2d.shadowBlur=number 模糊、失焦、扩散
+      	o2d.shadowColor='blue/#xxxxx/rgb/rgba'
+      	o2d.textAlign='right';//left|center|right  文字水平对齐 默认left
+      	o2d.textBaseline='bottom';//top|middle|bottom 文字垂直对齐 默认文本基线
+	方法：
+		o2d.moveTo(x,y) 移动到
+		o2d.lineTo(x,y) 连线到
+		o2d.closePath();闭合路径  绘制在最后一笔
+		o2d.fill() 填充  使用fillStyle的颜色，默认是黑色
+		o2d.stroke() 描边 使用strokeStyle的颜色，默认是黑色
+		o2d.beginPath();	开启新路径
+		o2d.strokeRect(x,y,w,h) 描边矩形
+		o2d.fillRect(x,y,w,h) 填充矩形	绘制的是图形
+		o2d.rect(x,y,w,h) 路径矩形 需要描边才看的到
+		o2d.clearRect(x,y,w,h) 擦除操作	
+		o2d.arc(cx,cy,r,start,end,false); 路径  start=开始弧度 false 是否顺逆 是个路径
+		o2d.fillText(string,x,y) 填充文字
+		o2d.strokeText(string,x,y) 描边文字
+		gd.measureText('九叔').width  返回文字宽
+		o2d.isPointInPath(x,y) 返回 true/false  只检测路径
+		o2d.save() 保存当前画笔状态
+		o2d.restore() 回复上一次保存的画笔状态
+		o2d.translate(x,y) 平移
+		o2d.rotate(弧度值) 旋转
+		o2d.scale(x,y)  默认1 
+		oC.toDataURL('类型') 图片导出 格式base64
+
+绘制流程
+	1.	选色、线条样式、变形 -> 配置画笔
+	beginPath/save
+	2.	moveTo/lineTo/drawImage... 	-> 绘制
+	closePath/restore
+	3.	fill/stroke -> 填充、描边  -> 着色
+
+图片操作：
+	canvas -画布导出-> 图片
+	图形填充  - 平铺背景
+	图片画笔  - game
+
+canvas导出  格式base64
+	oC.toDataURL('类型') image/png image/jpeg image/gif 
+	返回： base64 
+
+图片填充
+	提供图片(资源)->加载完毕->使用图片
+	var pat = o2d.createPattern(图片对象|canvas|视频对象,平铺方式)
+		平铺方式: string	=  'repeat|no-repeat|repeat-x|repeat-y'
+		返回值： pattern 对象  可以作为xxxStyle的值
+
+图片绘制：（画笔状态）
+	gd.drawImage(图片对象,x,y)  x y 绘制到的画布位置
+	gd.drawImage(图片对象,x,y,w,h)  w h 画多大
+	gd.drawImage(图片对象,sx,sy,sw,sh,dx,dy,dw,dh)  
+		s = source 原图	位置 宽高
+		d = destination 目标（画布）画在哪，画多大
+
+游戏：
+	产品设计/策划:
+		故事脚本,角色形象
+	UI设计:
+		形象
+	开发:
+		OOP
+		1. 资源加载
+		   图片批量加载，进度 已加载(onload)/要加载总数
+		2. 角色抽象  类  实例：
+			鱼
+				属性：type x y rotate speed cur
+				方法: move draw
+			炮筒
+				属性: type x y rotate cur timer
+				方法: draw emit 
+			炮弹
+				属性: type x y rotate  timer speed
+				方法: draw move clear
+			金币
+				属性：type x y timer
+				方法: draw move clear
+			渔网
+			记分牌
+			..
+		3. 业务
+
+	作业：
+		捕鱼：
+			1. 网的类型
+			2. 积分牌
+			3. += 换炮
+
+
+echarts:
+	干嘛的：画图表的（直线图、曲线图、区域图、柱状图、饼状图、散状点图、仪表图、气泡图、瀑布流图）
+	echarts:  √		canvas  兼容一般   ZRender(渲染)  百度产品
+	hcharts:  svg/vml	兼容性不错   
+官网：http://echarts.baidu.com/
+学习一个库：
+		0. 下载库(cdn、本地、模块化安装+引入)
+		1. 快速上手/教程/quick start/...  概览
+		2. 查文档API(根据需求)  document/doc/API/文档....
+			属性：options{属性:xx}
+			方法:
+			事件:
+			...
+		3. 工作、找实例、改装
+		4. 社区、圈子（群）
+	使用：
+		1.	使用全局暴露对象
+		2.  实例化/初始化 目的：生成实例
+		3.  使用实例.方法()/属性
+		4.	传递、设置数据(option)
+
+	option  结构关系 看配置选项
+
+
+touch端 事件js
+	移动端测试：
+		1) 模拟器	F12		不靠谱 70%   模拟软件安装
+		2) 真机   
+			a) 页面 传 外网(github duapp) -> 生成网址 ->生成二维码
+			b) 本机虚拟服务器(localhost) - > 手机安装对应APP
+				条件： PC 和手机，要在同一个局域网段
+				同一个局域网段: 同一个路由
+移动端:
+	obj.on事件名=函数  大部分可用
+
+	onmousedown/onmouseup/onmousemove 没有的
+					↓
+	ontouchstart/ontouchend/ontouchmove
+		事件对象描述的是手指信息
+		ev.targetTouches   返回 所有手指信息
+
+	推荐：obj.addEventListener('事件',fn,false)
+--------------------------------------------------
+移动端的库 (zepto.js|touch.js)
+
+zepto.js  
+
+	官网：http://zeptojs.com/
+	移动版的jquery，小库，完成移动的功能
+
+	css3能代替的，都没有封装，
+
+	默认功能：
+	zepto	核心方法模块、css attr....
+	event	基本事件  on() & off()  
+	ajax	XMLHttpRequest and JSONP 交互
+	form	表单数据交互
+	ie		pc 机	支持ie10 
+
+需要下载的	模块	(组件)	先引入zepto 
+	fx 动画模块 
+	fx_methods		动画方法
+	selector	扩展选择器
+	....
+------------------------------------------
+
+百度 touchjs
+	好处 事件全（触摸事件+手势), 模拟器真机效果同步
+	官网：http://touch.code.baidu.com/
+	API:	http://cloudajs.org/docs/step4_API_Documentation#h2_7
+
+	事件添加
+		事件绑定
+		touch.on( 元素, 事件类型, 回调 );
+				oLi/'li'
+
+		事件代理
+		touch.on( 事件代理元素DOM或选择器, 事件类型, 代理子元素选择器, 回调 );
+					oUl/'ul'				..			'li'
+	事件类型:
+		缩放:	pinchXX
+		旋转: 	rotateXX
+		滑动:	swipeXX
+		敲、按： tap、doubletap、hold（长按)
+		....
+---------------------------------------
+iScroll
+	干嘛的：模拟系统滚动
+	应用场景：非框架情况下，做上拉加载，下拉刷新
+	官网：	http://iscrolljs.com/
+	中文：	http://www.cnblogs.com/leolai/articles/4204345.html
+	版本：
+		iscroll.js 基础版 两端
+		iscroll-lite.js 移动端
+		iscroll-probe.js 专有 做上拉加载，下拉刷新
+		iscroll-infinite.js 专有
+使用流程：快速上手/读API/例子/社区、圈子
+	1. new 实例化({配置})/全局对象.init()
+		var 实例 = new IScroll('滚动容器',{配置})
+	2. 
+		布局：
+			滚动容器>内容
+			#wrapper> scroller/content
+		配置: options
+			myScroll=new IScroll('滚动容器',{配置})
+
+			{  
+				属性:值
+			}
+		属性：
+			实例.属性;获取 实例.属性=值 设置
+		方法：
+			myScroll实例.方法()
+		事件:
+			myScroll.on('事件',fn)
+
+	3. 
+---------------------------------------
+swiper:
+
+=======================================
+
+作业：
+	画图表：小组人员信息
+
+
+swiper 4
+	干嘛的：轮播图，非框架情况下使用
+	官网：http://www.swiper.com.cn/
+	目标：轮播图、微场景、视差滚动、无限滚动
+
+使用：
+	实例 = new Swiper ('.swiper-container', {配置})
+	配置:
+		{
+			属性、变量:值
+		}
+	实例.属性
+	实例.方法
+	
+	事件:
+	实例.on('事件',fn)
+	配置：
+		{
+			事件名:fn
+		}
+
+animate.css:
+	animate.css	动画库 纯css实现
+	https://daneden.github.io/animate.css/
+
+		使用：给dom元素提交class
+		基本样式 animated 必须
+		可选 infinite  无限循环
+		运动形式:
+			bounce/bounceIn/bounceOut/bounceInLeft/bounceOutRight
+					入退场				方向
+微场景：
+	1)	使用swiper 官网提供方案  此插件不适用于loop模式
+		预先引入swiper基础css和js
+		引入css/js插件
+			animate.css/swiper.animate.js
+		读：http://www.swiper.com.cn/usage/animate/index.html
+			场景元素运动时机:默认 onSlideChangeEnd 可修改js
+
+	2)	css实现		默认切换开始时，给要切换到的silder添加swiper-slide-active
+		预先引入swiper基础css和js
+		a) transtion
+			设定入场前、入场后的位置
+		b) animation
+			入场前的动作keyframes里面完成
+		c) animate库	引入animate.css
+
+	3) 第三方开发的UI工具 (策划市场) 花钱 没法定制
+	   兔展、易企秀、   参考（定风格，画风，动画节奏）
+
+地理定位:
+
+百度|qq|高德|
+
+	http://api.map.baidu.com/api?v=2.0&ak=0933b0c4da0af91731e5dd9ffbc58511
+
+
+
+nodeJs:
+	干嘛的： 写后台管理程序
+	目标：数据服务，文件服务，web服务
+	类似：	php  .net   java(jsp) ....
+优势：
+	性能高，方便、入门难度低、大公司都在用（BAT）
+劣势：
+	服务器提供的相对较少
+	能用的上的学习资料少，对程序员的要求高了
+环境：nodejs + web服务器 + 数据库
+	php -> wamp	w:window a:aphche m:mysql P:php
+		-> php(后台管理程序) mysql(库) aphche(web服务器)
+	java -> jdk
+	nodejs:
+		安装：双击->一路下一步
+			官网：https://nodejs.org/en/ 
+			镜像：http://npm.taobao.org/
+			nodejs 环境 	npm 环境
+			测试环境： 命令行(运行->cmd)->node -v
+版本：
+	Vx(主).x(子).x（修正） 包(目录)->模块(文件)
+	主版本： 变化了，1/3的API发生巨变 , 使用方式变化了
+	子：	API没有删减，使用方式没变化,内部实现发生了变化
+	修正版：什么都没变，处理一下bug
+
+	V6.8.x   稳定
+	V6.9.x 非稳定版  
+	Vx.x.x-beta 测试
+	vx.x.x-rc  测试稳定
+
+编写：
+	IDE(有RUN环境,真实服务器)|编辑器|node命令行
+	
+运行：命令行
+	1  dos:		win+r->cmd回车->cd 目录-> node 文件名.js | node 文件名
+				IDE|编辑器环境下，运行dos命令行
+				webstrom->terminal(ALT+f12)		|   run 
+				vscode->终端
+	2  linux(git):  终端->cd 目录-> node 文件名.js | node 文件名
+					当前目录->右键->git bash-> node 文件名
+	3  node命令行:  多用在调试
+		dos-> node 回车-> 编写+运行
+
+DOM/BOM 不可用
+ECMA 可用
+
+需要nodejs提供:
+	数据服务，文件服务，web服务
+
+web服务
+	web服务器: apache , ngnix , tomcat   localhost|www.abc.com
+	数据库: mysql | sqlserver | mongoDB | orangcl
+		数据库: 数字|字符
+		磁盘（硬盘) 文件本身(图，视频,PDF)   文件服务器
+	后台管理程序:
+		nodejs,java........
+
+大后端:
+	用户 - > 地址栏(http[s]请求) -> web服务器（收到) - > nodejs处理请求(返回静态、动态)->请求数据库服务(返回结果)->nodejs(接收)->渲染页面->浏览器（接收页面，完成最终渲染)
+大前端:
+	前端 - > http[s]请求 -> web服务器（收到) - > nodejs处理请求(返回静态、动态)->请求数据库服务(返回结果)->nodejs(接收)->返回给前端(渲染)->浏览器（接收页面，完成最终渲染)
+
+nodejs手工搭建web服务器:  使用HTTP模块
+
+	1） 引入http模块	require('http')
+	2)	server/app = http.createServer(函数(req,res));//创建服务   返回http对象
+			req 请求  浏览器->服务器
+				req.url  地址   提取get数据
+				req.on('data|end') 提取post数据 所有的http[s]都会触发end事件
+  			res 响应  服务器->浏览器
+  				响应头设置:	res.writeHead(200,{'Content-Type':'text/html;charset=utf-8'});
+  				res.write(字符/数据<string><buffer>)
+
+	3) 	监听：
+		server.listen(端口，[地址]，[回调])    回调：监听成功，回调一次
+			端口: 1-65535	1024以下系统占用   80
+			地址: 虚拟localhost  真实域名xx.duapp.com
+静态页面托管:
+	fs.readFile(文件名,[编码],回调(err,data));
+		err 错误 null没有错误
+		data 数据,buffer流
+	staticWWW 函数
+静态数据请求:
+	href/src/url()/locaction.href/submit/ajax........
+动态数据请求:
+	前台: get/post/put/delete/ajax/jsonp.....
+	后台：http[s] 请求 ， 处理方式方式
+		GET:	req.url  抓取 get请求的数据  字符 切/url
+		POST:	req.on('data',(chunk)=>{CHUNK==每次收到的数据buffer})
+				req.on('end',()=>{	接收完毕 切/querystring })
+url模块	处理 url
+	url.parse(str,true)  str -> obj  返回 对象  true 处理query->obj
+
+	obj参数		http://localhost:8002/aaa?username=sdfsdf&content=234234#title4
+	  protocol: 'http:',	协议
+	  slashes: true,	双斜杠
+	  auth: null,   作者
+	  host: 'localhost:8002',  主机 www.baidu.com
+	  port: '8002',	端口
+	  hostname: 'localhost',  baidu
+	  hash: '#title',	哈希（锚)
+	  search: '?username=sdfsdf&content=234234',	数据
+	  query: 'username=sdfsdf&content=234234',	数据
+	  pathname: '/aaa',	文件路径
+	  path: '/aaa?username=sdfsdf&content=234234',	文件路径
+	  href: 'http://localhost:8002/aaa?username=sdfsdf&content=234234#title'
+
+	url.format(obj)  obj -> str   返回str
+
+模块化:
+	nodejs： commonJS
+	模块： http/fs/querystring/url		require('模块名')  系统模块
+	模块化：require module exports		seajs.js / require.js   CMD/AMD   es5
+
+	require 引入模块、输入
+		require('模块名')
+			不指定路径：	先找系统模块-> 在再找node_modules|bower_components (依赖模块)->not found
+			指定xx/模块名	 指定路径 -> not found
+				/xx  磁盘环境下，  当前的盘符c:>
+				     项目环境下,   当前项目目录环境   npm/xx/xx/a.js(/)  npm\
+				     向上，			当前IIS配置 FTP上传的根目录
+				/ 加载资源时候用
+	exports 导出，输出
+		exports.自定义属性=值(any) 输出带接口		require(模块文件名)=modA  modA是个模块实例{自定义属性}
+	module 模块
+		module.exports == exports
+		module.exports = {  带接口
+			自定义属性：值
+		}
+
+		module.exports=fn/class   不带接口			require('..')=modA  modA 是一个fn或者是类class本身
+
+	commonJS 是 nodejs 默认模块方式,不支持es的模块化管理，但支持所有es6+语法
+		commonJS 是个规范 nodejs / webpack 是一个实现
+		ECMA 是个规范  js / as 实现了
+NPM：
+	干嘛的：帮助你安装模块（包），自动安装依赖，管理包（增，删，更新，项目所有包)
+	类似：	bower		yarn(https://yarn.bootcss.com/)
+	全局：任何目录c/d/e，项目环境下都可以使用
+		工具类，脚手架
+	本地:	只能在当前目录使用
+
+	项目依赖dependencies： 只能在当前项目下使用，上线了，也需要这个依赖
+	开发依赖devDependencies：只能在当前项目下使用	，上线了，依赖不需要了
+
+	安装、卸载到全局
+	npm install 包名 -g			g==golbal			yarn add 包名  bower install 包名
+	npm uninstall 包名 -g			g==golbal
+
+	安装、卸载到本地
+	npm install 包名 
+	npm uninstall 包名 
+	查看已安装:		npm list  列出所有已装包
+					npm outdated 版本对比(安装过得包)
+					npm info 包名 查看当前包所有信息
+	管理模块(项目):	
+		package.json的name的名字需要和项目目录名一致，不要和依赖的包重名
+		npm init 				初始化npm管理文件(package.json)
+			{
+			  "name": "npm",	项目名称
+			  "version": "0.0.1",	版本
+			  "description": "test and play",	描述
+			  "main": "index.js", 入口文件
+			  "dependencies": {  项目依赖  上线也要用
+			    "jquery": "^3.2.1"
+			  },
+			  "devDependencies": { 开发依赖 上线就不用
+			    "animate.css": "^3.5.2"
+			  },
+			  "scripts": {	命令行
+			    "test": "命令行"
+			  },
+			  "repository": {	仓库信息
+			    "type": "git",
+			    "url": "git+https://github.com/alexwa9.github.io/2017-8-28.git"
+			  },
+			  "keywords": [  //关键词
+			    "test",'xx','oo'
+			  ],
+			  "author": "wan9",
+			  "license": "ISC",	认证
+			  "bugs": {
+			    "url": "https://github.com/alexwa9.github.io/2017-8-28/issues"
+			  },
+			  "homepage": "https://github.com/alexwa9.github.io/2017-8-28#readme"
+			}
+	安装到项目依赖
+		npm install 包名 --save  /  -S
+	安装到开发依赖
+		npm install 包名 --save-dev /  -D
+
+	安装package.json里面指定的所有包:
+		npm install
+	版本约束：
+		^x.x.x   约束主版本，后续找最新
+		~x.x.x   保持前两位不变，后续找最新
+		*		 装最新
+		x.x.x 	 定死了一个版本
+
+	选择源
+		npm install nrm -g     安装选择源的工具包
+
+		nrm ls 查看所有源
+		nrm test 测试所有源
+		nrm use 源名
+	模块下载	(卡顿)   超过5分钟
+		ctrl + c -> npm uninstall 包名 -> npm cache clean清除缓存 -> npm install 包名
+
+	发布模块：
+		注册账号 	npmjs.com
+		登录:
+			npm login
+				输入 user/password/email
+		创建包目录->npm init -y -> 创建入口index.js -> 编写，输出-> npm publish发布
+
+		发布：npm publish
+		删除：npm unpublish
+
+		发布操作长时间没有做，邮箱需要确认，收取激活邮件
+------------------------------------------------------------------------------
+express  库
+	干嘛的：nodejs库，不用基础做起，工作简单化
+	类似：koa
+express特点：
+	二次封装，非侵入式，增强形
+	send(any)  write(string|buffer)
+express搭建服务
+	express=require('express')
+	server=express()
+	server.listen(端口,地址,回调)
+静态页面托管
+	server.use() 响应 /
+	express.static('./wwww')
+	server.use(express.static('./wwww'));
+响应:
+	server|app == 服务
+	server.use(url|地址,(req,res,next)=>{})
+	server.get(url,(req,res,next)=>{})
+	server.post(url,(req,res,next)=>{})
+		  use 响应get和post请求 默认响应的是 /
+		  req / res 经过二次封装
+		  	res.send(any)	== res.write + end
+		  	req.query 获取get的数据
+		  	req.body 获取post的数据  依赖中间件  
+		  		中间件使用:body-parser  1. npm install xx  2. require   3. app.use(中间件())
+		  	req.method 获取前端提交方式
+		  next: 是个函数 调用下一个相同地址的响应,除了/
+中间件(middleware)：
+	body-parser
+	中间件:	npmjs.com   查看使用方式
+	body-parser			获取post数据，限定大小，约定返回数据类xx.urlencode({limit:xx})
+
+
+----------------------------------------------------------------
+
+用户和服务器交互通过什么?   http协议,http是无状态的
+	通过IP(公司环境)
+	通过浏览器保存一些信息，每次访问服务器带过去
+		如何保存信息给浏览器:
+			1. 前端种cookie/localstorage
+			2. 后端种: 前端请求后端，后端给前端种cookie(加了密)的同时，在服务器上生成seesion
+服务器给浏览器种只种cookie:  cookie-parser
+服务器给浏览器种cookie的同时在服务器上生成seesion:   cookie-session
+----------------------------------------------------------------
+
+大后端:
+	用户 - > 地址栏(http[s]请求) -> web服务器（收到) - > nodejs处理请求(返回静态、动态)->请求数据库服务(返回结果)->nodejs(接收)->渲染页面->浏览器（接收页面，完成最终渲染)
+大前端:
+	前端 - > http[s]请求 -> web服务器（收到) - > nodejs处理请求(返回静态、动态)->请求数据库服务(返回结果)->nodejs(接收)->返回给前端(渲染)->浏览器（接收页面，完成最终渲染)
+
+渲染页面(模板引擎):
+	前端：dom操作			虚拟dom操作	二次渲染，后期多次渲染， 优点：局部渲染
+		  jq/js/angualr		vue/react/.......   渲染页面(数据整合到静态页面)
+	后端：
+		  抓取前端静态页面 + 渲染引擎 + 数据  返回data ->  send(data)
+		  渲染引擎: jade / ejs / ....
+
+	arttemplate  underscore baiduTemplate mustach .......
+-------------------------------------------------------------
+jade: 库
+	侵入式，强依赖
+	jade.render('html'); 返回字符
+	jade.renderFile('jade模板文件'，{数据}，{pretty:true});	返回字符
+	jade模板语法
+		父子要缩进
+		属性：  标签(key=value,key2=value)
+		内容:	标签 内容
+-------------------------------------------------------------
+ejs：	模板渲染是异步的
+	非侵入式，温和，弱依赖
+
+	ejs.render(str)  返回  str
+	ejs.renderFile('ejs模板',{数据},回调(err,data))	data == str
+
+	ejs模板语法：
+		ejs 结构就是html
+		输出:	<%= 数据名|属性名|变量名 + 表达式 %>  
+		语句：	<% 语句 %>  需要被<%  %>  包裹
+		非转义输出:	<%- 数据名|变量名  + 表达式 %>
+
+		https://www.npmjs.com/package/ejs
+-------------------------------------------------------------
+管理多个模板引擎	consolidate
+	server.set('view.engine','html');	模板最终	输出类型设置
+	server.set('views','./views');		引擎模板目录设置
+
+	server.engine('html',consolidate.ejs);	输出与引擎匹配
+	server.engine('css',consolidate.jade);	输出与引擎匹配
+
+	渲染API：
+	res.render('模板文件名',{数据}) 整合页面和数据，完成渲染，发往浏览器
+-------------------------------------------------------------
+multer:  文件上传
+	bodyParser -> req.body -> fs.writeFile()-->
+	multer->文件名会随机->fs模块改名->path系统模块解析磁盘路径
+
+	文件上传：前端表单->后端接收到文件本身->保存到服务器上->给数据库记录文件一些信息->库返回给nodejs相关信息->nodejs返回给前端
+			前端: file enctype="multipart/form-data"
+			后端：body-parser 接受 urlencode编码数据 ,数据回来的是字符
+
+		配置
+		let multer  = require('multer');	引入
+		let objMulter = multer({ dest: './upload' });	实例化  返回 multer对象
+			dest: 指定 保存位置（存到服务器)
+		app.use(objMulter.any());  	any 允许上传任何文件
+
+		req.files	数组
+			fieldname: 表单name名
+			originalname: 上传的文件名
+			encoding： 编码方式
+			mimetype: 文件类型
+			buffer: 文件本身
+			size：尺寸
+			destination: 保存路径
+			filename： 保存后的文件名  不含后缀
+			path：	保存磁盘路径+保存后的文件名 不含后缀
+fs模块:  操作是一步的
+	fs.rename('当前文件','该后的文件名',(err)=>{});
+path 系统模块
+		path.parse('c:\\wamp\\xx.png');	磁盘路径(str -> obj)
+			{
+			   root: 'c:\\', 盘符
+			   dir: 'c:\\wamp', 目录
+			   base: 'xx.png',  文件名
+			   ext: '.png', 扩展名
+			   name: 'xx' 	文件，不含扩展名
+			} 
+		path.join('磁盘路径1','磁盘路径2')
+			__dirname 魔术变量  返回当前文件所在的磁盘路径
+		
+--------------------------------------------------------------
+数据库:(mysql , mongodb)
+
+mysql: 关系数据库(二维表(表头))
+	数据库：需要安装服务
+		服务： 
+			a) 安装wamp 开启 mysql服务	
+			b) 安装mysql 开启服务
+	库操作：
+		客户端：软件操作(UI工具)
+			wamp的客户端是phpmyadmin
+			navicat 收费
+			nodeJs(后台管理程序),依赖mysql库
+	链接库：
+		wamp\mysql
+		c:P..G..\mysql
+	库操作  编码方式 UUC
+		建|删 库(目录)
+		建:	CREATE DATABASE  `2017-12-6` DEFAULT CHARACTER SET armscii8 COLLATE armscii8_general_ci;
+		建|删|改 表(文件)
+			创建表头(字段头)
+			CREATE TABLE  `2017-12-6`.`user` (
+			`name` VARCHAR( 32 ) NOT NULL ,
+			`age` INT( 3 ) NOT NULL ,
+			`address` VARCHAR( 128 ) NOT NULL
+			) ENGINE = INNODB
+	表操作	增删改查
+		增：
+			INSERT INTO 表 (字段列表) VALUES(值列表) 
+			INSERT INTO user (name,age,address) VALUES('苏菲',38,'')
+		删:
+			DELETE FROM 表 WHERE 字段名=值
+			DELETE FROM user WHERE name='alex'
+		改:
+			UPDATE 表 SET 字段名=值 WHERE 字段名=值
+			UPDATE user set name='sufei' WHERE name='苏菲' 
+		查:
+			SELECT ? FROM 表
+			SELECT * FROM user  查所有
+			 
+
+项目：
+	1. 定义数据字典(数据库设计)
+		banner：	ID title sub_title src
+		news:	ID title des author author_icon post_time content
+		user:	ID username password follow fans icon
+	2. 素材准备(静态页面模板)
+	3. 搭建服务器
+	4. 处理 http请求，拿到数据，渲染页面
+
+
+	自动重启服务的 包
+		npm i supervisor -g  安装
+
+		supervisor ./app.js	 运行
+
+------------------------------------------------------------------
+
+路由(router):  告诉你去哪
+	前端：导向 路由就告诉你应该去哪
+	后端: 子服务	一个路由就是一个小的服务(server/app)
+
+	创建路由
+		router = express.Router();  返回路由对象
+		server.use('地址,接口',router); 响应的处理过程给了router(子服务)
+
+		处理过程：
+		router.get('/',fn)
+		router.get('/1',fn)
+		router.get('/2',fn)
+
+------------------------------------------------------------------
+mongoDb
+	干嘛的：数据库,nosql(非关系型)
+	场景：解决大规模数据集合多重数据种类
+	下载：https://www.mongodb.com/download-center
+	启动库：启动数据库服务(服务端)
+		C:\Program Files\MongoDB\Server\3.4\bin
+			mongod.exe 启动
+			port=27017	默认端口
+			mongodb://127.0.0.1:27017	协议+IP+端口
+	指定数据存储目录： 需要指定一次
+		mongod --dbpath c:\data\db
+	环境变量：为了在任意盘符下去启动库  mongod 
+		C:\Users\user\AppData\Roaming\npm;C:\Users\user\AppData\Local\atom\bin;C:\Program Files\MongoDB\Server\3.4\bin
+
+	开启客户端: mongo 回车
+		UI: 收费(下载+缴费)
+		命令行(shell):	cmd->mongo回车	git bash - > mongo回车     webstrom->dos/linux
+
+	和mysql对比
+	名词
+		mysql			mongoDb
+
+		database(库)	database(库)
+		table(表)		collection(集合)
+		row(一条数据)	document(文档)
+		column(字段)	field(区域)
+		...
+	存储方式:
+		mysql 二维表
+		MongoDB json
+	库操作:
+		查: show dbs 
+			db 查看当前库
+		建:	use 库名	没有建，有就切换 
+		删: db.dropDatabase()  删除当前库
+	集合(表)操作:
+		建：db.createCollection('表名',{配置})
+			配置：{size:文件大小,capped:true,max:条数|文档数} capped定量
+			db.表(集合).isCapped() 返回 true/false 是否是定量
+		查：show collections / db.getCollectionNames()
+		删：db.表|集合.drop()
+	文档(row)操作:
+		增：
+			db.集合.save({}) / db.集合.insert({})  添加一条
+			db.saveOne({})
+			db.insertOne({})
+
+			db.集合.save([{},{}]) / db.集合.insert([{},{}]) 多条
+			insert  不会替换相同ID	save会
+
+		删:
+			db.集合.deleteOne({}) db.集合.remove({},true)  一条
+			db.集合.remove({要删数据条件描述}) 多条
+			db.集合.remove({}) 清空表
+		改:
+			db.集合.udpate({要替换的数据条件描述},{替换后的},bl插入,bl全替换)
+			替换后的：
+				{$set:{数据},$inc:{age:1}}
+		查:
+			所有：db.集合.find(条件)
+			条数: db.集合.find().count()
+			去重：db.集合.distinct(key)
+
+			条件
+				{age:22}		age == 22
+				{age:{$gt:22}}	age > 22
+				{age:{$lt:22}}    age < 22
+				{age:{$gte:22}}	age>=22
+				{age:{$lte:22}}	age<=22
+				{age:{$lte:122,$gte:22}}	age<=122 && age>=22
+				{$or:[{age:22},{age:122}]}	22 or 122
+				{key:value,key2,value2}  value && value2
+				{name:/正则/}
+
+			db.集合.find({条件},{指定要显示列区域})
+				指定要显示列区域: 区域名username:1 显示着个区域，其他不显示
+				指定要显示列区域: 区域名username:0 不显示着个区域，其他显示
+				_id 是默认显示
+			限定：
+				db.集合.find().limit(number)  限定
+				db.集合.find().skip(number)	跳过
+				db.集合.findOne() / db.集合.find().limit(1)  查询第一条
+		排
+			升：db.集合.find().sort({key:1})
+			降：db.集合.find().sort({key:-1})
+
+
+		db.集合.find({条件},{指定显示区域}).skip(10).limit(10).sort({key:1})
+		db.insertOne({数据描述})			
+
+
+nodejs + mongodb
+	1.	require('mongodb'); 引入模块  第三方模块
+	2.	创建客户端	mongoCt = mongodb.MongoClient
+	3.	创建链接	mongoCt.connect('协议://地址:端口',回调(err,client))
+	3.5 链库 		client.db('库名') 
+	4.	链接集合（表)	user = db.collection('集合名');
+	5.	user.API()  表操作		返回 对象
+		one === 1  Many 多个
+
+		insertOne(对象数据,(err,res)=>{})  res = 对象  res.result 结果
+		insertMany(arr数据,(err,res)=>{}) res = 对象  res.result 结果
+		updateOne({条件},{更新后},(err,res)=>{})
+		updateMany({条件},{更新后},(err,res)=>{})
+
+		user.find({条件},{projection:{name:1}}).toArray((err,result)=>{reulst==arr})
+
+-----------------------------------------------------------------
+脚手架：
+	干嘛的：自动搭建项目环境的，无需手动
+		命令行： 脚手架名称 目录 回车
+	安装：需要安装到全局
+		npm install express -g   验证 express -h
+		提示错误:	npm install express-generator -g
+	创建项目:
+		express -e 目录 | express -f  创建到当前命令行所在的目录
+		cd 目录
+		npm install 		安装依赖包
+		npm start    -> node ./bin/www
+
+	问题：每次都需要重启服务，需要自动重启服务
+	安装： npm i supervisor -g   
+	通过supervisor 启动服务： supervisor server.js|./bin/www
+-----------------------------------------------------------------
+
+nodejs(express)+mongodb+脚手架    前端:jq+ajax
+
+-----------------------------------------------------------------
+
+跨域：
+	ajax 默认不可以跨域的，要跨就要"后台允许"
+
+	后台允许: true
+		ajax
+	后台公开API：
+		jsonp 接口:   前端 可以通过jsonp 访问 
+		后台对后台:	  同过 localhost的后台(PHP,nodeJs) 访问  douban后台
+					  通过前端的工具webpack(模拟后台)  访问  duban后台接口
+-----------------------------------------------------------------
+豆瓣:
+	hostname:'api.douban.com',//主机名
+    port: 443,//端口
+    path:'/v2/movie/top250?start=3&count=1',
+    method:'get'
+
+数据代理proxy:		request请求 抓取异步数据
+  options={
+    hostname:'api.douban.com',
+    port:443,
+    path:'/v2/movie/top250?count='+req.query.count,
+    method:'GET'
+  };
+
+  发送http[s]请求
+  http[s].request(配置项,回调(响应对象resHttp))	返回请求对象reqHttp
+  	resHttp 响应对象
+    resHttp.statusCode 状态码  200 OK
+    resHttp.headers 获取响应头信息
+    resHttp.setEncoding('utf-8') 设置编码方式
+    resHttp.on('data/end',fn)  ->send给前端
+  });
+
+  reqHttp 请求对象
+  reqHttp.on('error',(err)=>{console.log(err)});	监听请求失败信息
+  reqHttp.end();请求结束
+------------------------------------------------------------------------
+场景：
+	Web领域的实时推送技术，也被称作Realtime技术。这种技术要达到的目的是让用户不需要刷新浏览器就可以获得实时更新。它有着广泛的应用场景，比如在线聊天室、在线客服系统、评论系统、WebIM等。
+API:
+	cn:
+		https://www.w3cschool.cn/socket/socket-k49j2eia.html
+	en:
+		https://socket.io/
+聊天室思想:
+	客户端(未指定消息|指定的消息)->服务器(广播|私信给指定)->客户端
+环境：
+	const app = express(); 创建express应用
+	const server = require('http').Server(app);//创建web服务器,集成app应用
+	const io = require('socket.io')(server);//创建io,集成到server服务
+	server.listen(3000, () => {});
+	require('./mod/chat-server')(io);
+服务端(io)
+	检测客户端连接：io.on('connection', (socket) =>{}) 回调函数接收客户端socket
+		接受:socket.on('消息名称',(data)=>{}) data=接受到的消息
+		广播:	io.emit('消息名称', {数据}); 
+		
+		检测客户端下线:	socket.on('disconnect',(data)=>{})
+		接受私信:
+			socket.on('消息名称',(toUserName,data,callback)=>{}) 
+			toUserName==目标用户 callback==给发送端的回调
+		发私信:	接受消息的socket.emit('消息名称',{数据}) 
+			发私信	->		socket   == onlineUsers[toUserName]
+			注意,data数据 里面不可以包含socket对象,发往客户端,量太大
+客户端（socket)：
+	<script src="/socket.io/socket.io.js"></script>
+	连接服务器：socket = io('http://localhost:3000');  
+
+	发送未指定消息:	socket.emit('消息名称',{到服务器的数据}) 
+	发送指定消息:	socket.emit('消息名称',toUserName,{到服务器的数据},(由服务器返回的数据)=>{})
+	接受消息:	socket.on('消息名称',(data)=>{}) 
+
+
+需求:
+	当有人连接或断开连接时，将消息广播给连接的用户 √
+	添加对昵称的支持 √
+	显示谁在线  √
+	添加私人消息 √
+
+配合express脚手架
+	修改www
+	var app = require('../app');
+	var debug = require('debug')('socket-chart:server');
+	var http = require('http');
+	const server = http.Server(app);
+	const io = require('socket.io')(server);
+	require('../mod/chat-server')(io);
+-------------------------------------------------------------------------
+
+
+  VUE:
+	官网：https://cn.vuejs.org
+	API：https://cn.vuejs.org/v2/api/
+
+	小 -> 大
+	封装(函数)->多个封装(文件)==库||框架
+					↓
+				   插件
+
+				   模块(文件)  分类（目录)->包
+	框架：改变了编码思想   VUE: 数据驱动，一切都是数据,面向数据
+		面向  事件
+		面向  对象
+		面向  数据
+	库:  工具本身不改变编码的方式
+		jquery -> dom		事件驱动
+
+MVC：html页面里面会出现<%=后台属性%>  {$后台属性$} {{后台属性}} mustache
+	一个思想、是后端产物,是为了前后端分离
+	1. 后台 java(jsp+html)  php(php+html+js)  nodejs(nodejs+ejs)
+	2. 前台 (html+css+js)
+	3. 编辑 (拿着后台给他开发的后台管理页面xxx.com:8008/admin.php)
+	4. 设计
+
+前端MVC(分离js)：   数据、表现、业务分离
+	model		M  数据  ajax/jsonp/数据解析  可以复用
+		| xx.js
+		...
+	view	    V  视图表现层 展示数据、创建元素，变色，运动 可以复用
+		...
+	control		C  控制层(串业务,事件驱动)  一般不复用
+		...
+
+	function readBaidu(str,callback){..拿着需求str,求数据，调用回调带数据出去.}
+	function writeLi(data,callback){...拿着数据写页面}
+	window.onload=function(){
+		oBtn.onclick=function(){
+			readBaidu('xxx',function(res){
+				writeLi(res);
+				winObj.close()
+			})
+		}
+	}
+VUE: 是个M V VM框架
+	MVC:衍生出很多变体  MVP MVVM MV*
+	mv  vm~C
+	MVVM M  <-> VM <-> V
+
+基本使用：
+	new出来一个Vue的实例，传一堆配置参数，控制一片html
+
+	VM:		响应系统 - > vDOM做标记 ->一个循环周期结束后->操作DOM
+		new Vue   返回  VM
+		new Vue({
+			el:'选择器'  要控制器的那片html代码
+			data:{key:value}数据
+			methods:{fnName:fn} 方法
+		})
+	M:	初始化数据
+		data 选项   number/string/boolean/array/json/undefined/null
+	V:  数据绑定
+		{{数据名}}	模板 mustche  插值表达式
+		v-text="数据名"		vue特有的属性(指令)
+		v-html="strong"		非转义输出
+		v-for="(val,index) in 数据"		val值  index索引	变量数组、对象
+			key="bmw"  指定key 是个bmw字符 vue是认得 修改VDom的key值
+			:key="item.id"  指定key 是数据id（唯一性） 修改VDom的key值
+		v-bind:html属性="数据"	普通的html属性绑定数据
+			:html属性="数据"  简写   title/src/url/.....
+		事件：
+			v-on:事件名="方法"
+			   @:事件名="方法"	简写
+			   @:事件名="方法(参数)"
+			   @:事件名="方法($event,参数)"		methods:{方法:function(ev,参数){ev/event}}
+
+类属性|方法  和 实例属性|方法
+	Vue == 类
+	vm ==  new Vue({配置}) 返回  实例
+	在配置内部  的  this == vm 实例
+		Vue.类方法|类属性
+		vm.$实例方法()|$实例属性  == this.$实例方法()|$实例属性
+		vm==this
+数据检测：vue的数据是响应式，非响应式的情况如下
+	数组数据变化：  
+			问题:对数组使用了非变异 (non-mutating method) 方法（返回的了新数组）
+			解决： 对象合并
+
+			问题：利用索引直接设置一个项|修改数组的长度时
+			解决：Vue.set(数组对象, key, value) | vm|this.$set(数组对象, key, value)
+	对象的数据变化：
+			问题：data:{a:1}
+					a 数据是响应式的
+					vm.b='qq';  b 属性不是响应式的
+			解决：Vue.set(数组对象, key, value) | vm|this.$set(数组对象, key, value)
+模块表达式:
+	{{数据本身|data的属性|变量|表达式}}
+	v-指令名="数据|data的属性|变量|表达式"
+计算属性:  是一个函数,所依赖的元数据变化时，就会再次执行
+	computed:{
+		计算属性:函数:function(){return 返回值}		使用:	{{计算属性}}
+	}
+
+	与method的区别:	方法会每次调用，计算属性不会(只有在与之相关的元数据发生变化时，才调用)
+		计算属性的性能高: 适合做筛选
+		方法：适合在列表渲染使用，强制渲染执行
+	计算属性：计算属性也可以是个对象
+		读取了属性 -> get:fn
+		修改了属性 -> set:fn
+指令:  扩展了html语法功能,区别了普通的html属性
+	vue自带的指令:	v-text/v-html/v-bind/v-for/v-model/v-on   
+	
+			v-show="布尔" 			v-if="布尔"
+	区别:	操作css					操作dom
+	场景:	适合频繁切换		    适合不频繁切换
+	性能:	初始渲染消耗			频繁切换回有消耗
+
+vue-tools 
+	调试工具
+	https://github.com/vuejs/vue-devtools 下载安装
+
+
+class操作/style操作:
+	v-bind:class="数据|属性|变量|表达式"
+		  :class/style = " 数据 "		数据类型：字符/对象 / 数组
+		  :class="{类名:true,类名2:false}"  布尔值决定样式是否使用
+		  :style="[{css属性名:值},{css属性名小驼峰：值}]"
+双向绑定：
+	v-model:	创建双向数据绑定(M<->V) , 用在能生产数据的表单元素
+		input/radio/select/.....  绑定的是表单元素的  value值 
+单向绑定：
+	:value="model层属性"
+	:checked="......"		
+
+单向绑定模拟双向绑定:
+	:value="...."   model->view
+	v-on:input="fn($event.value)"  输入时把事件对象的value携带到方法，方法修改了model
+
+指令(directive):
+	v-text/v-html/v-bind/v-on/v-model/v-for/v-if/v-show/v-else/v-else-if/v-bulala
+自定义指令: 指令是个函数|对象,用来操作dom的, 里面的this 返回window
+	a)	Vue.directive('指令名不带v-',函数(el,binding))
+		el == 使用指令的DOM元素
+		binding 是个对象 含有传入的 参数(binding.value)
+	b)  定义在选项里面
+		directives:{
+			指令名不带v-	: 函数(el,binding){}
+		}
+
+	指令是个函数(简写)，可以是个对象
+
+	{
+		钩子函数(生命周期)
+		inserted:fn(el,binding)		绑定指令的元素插入到父节点时调用
+		bind:fn	指令第一次绑定到元素时调用
+		update:fn	指令所在的元素的model层的数据，view有更新请求时
+		componentUpdated:fn	更新完成时
+	}
+
+	简写方式: bind + update
+----------------------------------------------------------------------------------------
+
+事件：
+	模块绑定行间事件:		<xx v-on:事件名="方法名($event,参数)"
+							<xx @事件名="方法名($event,参数)"		
+	绑定自定事件:
+		定义：vm.$on( '自定义事件名'|['自定义事件名1','自定义事件名2'], 回调(参数) )
+		销毁：vm.$off( '自定义事件名'|['自定义事件名1','自定义事件名2'], 回调(参数) )
+		触发: vm.$emit(自定义事件名1,参数)
+	事件对象:
+		事件对象可以不传递，需要传递的场景:传参数同时使用事件对象时
+		show($event,参数)
+
+	冒泡：默认冒泡
+		$event   ev|event.cacelBubble=true ev.stopPropagation()
+		@click.stop 修饰符
+	默认行为:
+		event|ev.preventDefault();   @事件.prevent
+
+	连缀:	@事件.修饰符.修饰符	@事件.prevent.stop
+
+	修饰符:  keyCode/键名(enter/left/right/up/down/...)			
+修饰符：
+	事件，键盘 含有修饰符
+	事件名.修饰符  作用：修饰事件条件
+
+过滤器(filter)： 就是个函数
+	场景： 格式数据
+	currency / number / date   vue1.x
+	vue2.x 取消了自带过滤器,  需要用户自行封装
+	使用：	{{数据名 | 过滤器名(参数1,参数2)}}
+			v-xxx="数据名 | 过滤器名(参数1,参数2)"
+			:属性="数据| ... "
+	定义:
+			a) Vue.filter('过滤器名称',函数(要过滤的元数据,参数))
+			b) 选项
+				filters:{
+					过滤器名称:函数
+					过滤器名称2:函数(要过滤的元数据,参数)
+				}
+
+数据交互：
+	XMLHttpRequest|ActiveObject
+		- ajax函数
+	$.ajax()
+	fetch()  返回 是一个promise
+	promise
+
+	vue-resource   下载安装引入   vue1.x 推荐	支持jsonp
+		使用:	返回的是promise对象
+		this.$http.get('url地址?key=value&key=value').then(succFN,errorFn)
+		this.$http.get('url地址',{配置}).then(succFN,errorFn)
+		this.$http.post('url地址',{数据},{配置}).then(succFN,errorFn)
+		this.$http.jsonp('url地址',{配置}).then(succFN,errorFn)
+			params:{ //携带参数
+                wd:'bulala'
+              },
+            jsonp:'cb', //约束回调函数的key,
+            jsonpCallback:'show',//回调函数名
+
+			请求:
+				body: post需要携带的数据 
+					支持string  a=1&b=2
+ 					对象<需要设置emulateJSON：true>
+ 					UrlSearchParams 类型 new Xxx() -> x.set(key,value)
+				params: {key:value}  携带数据  get
+				headers: {}  携带请求头
+				method：'get' get/post/.....   string
+				timeout: number  超时
+				progress：fn   进度
+				credentials: false  是否携带跨源凭证
+				emulateJSON：true post请求是需要携带的请求头
+				jsonp:'回调函数键' 默认是callback
+			响应：
+				body      返回的数据  对象  (JSONP.parse)
+				bodyText  返回的数据  文本格式  toString
+	拦截器：希望所有的请求在发出之前或数据回来之后，做一些的处理，辅助工作,是个统一配置的过程
+		Vue.http.interceptors.push(function (request, next) {//拦截请求
+	      console.log('请求发出前，要做的拦截');//显示loading... 
+	      next(function (response) {
+	        console.log('响应回来之后，要做的拦截')//关闭loading...  数据统一处理
+	      }); 
+	    });
+	axios	下载安装引入	vue2.x只有推荐		支持jsonp ??
+
+		axios({
+			url: 地址
+			method: 提交方法   get/post/put........
+			params: get提交参数
+			data: post提交参数  参数==URLSearchParams  new URLSearchParams().set(key,value)
+			timeout:超时间
+			headers： 请求头
+		})
+
+数据交互：
+	vue-resource   下载安装引入   vue1.x 推荐	支持jsonp
+		使用:	返回的是promise对象
+		this.$http.get('url地址?key=value&key=value').then(succFN,errorFn)
+		this.$http.get('url地址',{配置}).then(succFN,errorFn)
+		this.$http.post('url地址',{数据},{配置}).then(succFN,errorFn)
+		this.$http.jsonp('url地址',{配置}).then(succFN,errorFn)
+
+			配置:
+				params: {key:value}  携带数据  get
+				headers: {}  携带请求头
+				method：'get' get/post/.....   string
+				timeout: number  超时
+				progress：fn   进度
+				credentials: false  是否携带跨源凭证
+				emulateJSON：true post请求是需要携带的请求头
+				jsonp:'回调函数键' 默认是callback
+			响应：
+				body      返回的数据  对象  (JSONP.parse)
+				bodyText  返回的数据  文本格式  toString
+	拦截器：希望所有的请求在发出之前或数据回来之后，做一些的处理，辅助工作,是个统一配置的过程
+		Vue.http.interceptors.push(function (request, next) {//拦截请求
+	      console.log('请求发出前，要做的拦截');//显示loading... 
+	      next(function (response) {
+	        console.log('响应回来之后，要做的拦截')//关闭loading...  数据统一处理
+	      }); 
+	    });
+
+	数据监听：监听到数据的变化,启动处理函数
+		1)	watch 选项|属性   √
+			watch:{data里面的属性名:处理函数|对象}
+			watch:{
+				元数据:函数(新值，老值)
+				元数据:{
+					handler:函数(新值，老值),
+					deep: true   深度检测   默认false
+				}
+			}
+------------------------------------------------------------
+	axios	下载安装引入	vue2.x推荐		支持jsonp ??
+		希望可以this.$http 去使用axios，需要 配置: Vue.prototype.$http=axios;
+
+		this.$http|axios({配置}).then(成功回调(res)).catch(失败回调(res))
+		this.$http|axios.get(url,{配置}).then(成功回调(res)).catch(失败回调(res))
+		this.$http|axios.post(url,pollfill).then(成功回调(res)).catch(失败回调(res))
+
+		post请求:
+			pollfill = new URLSearchParams() -> params.append('a', 111);
+			this.$http|axios.post(url,pollfill).then(成功回调(res)).catch(失败回调(res))
+
+			this.$http|axios({
+				url:'',
+				method:'post',
+				data:pollfill
+			})
+
+		配置:
+			url:'' 地址
+			method: '' 提交姿势
+			params：{} get提交的数据
+			data:{} post提交数据
+		res:
+			data:  数据
+------------------------------------------------------------
+实例|组件 生命周期
+	beforeCreate/created/beforeMount/mounted/beforeUpdate/updated/beforeDestroy/destroyed
+------------------------------------------------------------
+作业：
+	百度下拉（键盘遍历，回车搜索，参考baidu）
+	微博完善
+	许愿墙完善
+
+	预习：组件  cn.vuejs.org
+
+vue-dev-tools安装
+	https://github.com/vuejs/vue-devtools
+	1. 	Clone this repo  downloadzip 到桌面
+	2.	npm install  安装依赖
+	3.	npm run build	build目录项目就有各种浏览器的安装包
+	4.	打开 chrome -> 设置->更多工具->扩展应用->开发者模式->加载扩展程序->指向->build目录项目下的chrome
+-----------------------------------------------------------
+组件：
+	Vue根实例表示1个应用，一个应用有若干个组件拼装而成
+
+使用组件
+	<组件名></组件名>
+定义组件
+	定义:
+		a) 	  let 组件变量名= Vue.extend({
+		        template:'<div class="header">我是header组件</div>'
+		      });
+		b)	 let 组件变量名={};		√
+	注册(拼装)
+		a)	Vue.component('组件名',组件变量名);
+		b)	选项
+			components:{
+				组件名：组件变量名	√
+			}
+组件数据
+	data 要是个函数，且要有返回值 object
+
+模板：
+	组件内部: template: #id名
+	<script type="x-template" id='id名'
+	<tempate id='id名'...
+
+组件（单文件)
+	script + template + style
+------------------------------------------------------------
+
+组件数据流动/数据传递/通讯
+	
+	父->子  属性(props)		√
+		<子 :自定义属性="父数据"></..>
+		子组件:
+			选项
+			props:['自定义属性']   props:{自定义属性:{type/default/required/...}}
+		展示:	子模板	{{自定义属性}}
+	子->父  事件(自定义)
+		<子 @自定义事件="父方法"></..>
+		子:		this.$emit('自定义事件',子.数据名) 
+		父:		methods-> 父方法(接受数据){处理}
+
+	父子之间共享数据和方法
+		<子 ref="自定义子名称"></..>
+
+		父访问子:	this.$refs.自定义子名称.数据名/方法()
+		子访问父:	this.$parent.数据名/方法()
+
+	同级<->同级 订阅发布  new Vue()=bus  bus.$emit()/$on()
+		a)   A -> A父  ->  子B    A B 要有共同父
+		b)   订阅发布模式（pubsub）
+		c) 	web存储(cookie,localstroge/seession)
+		d) 	存库
+		e)  状态管理
+
+		let bus = new Vue();		返回  Vue对象  
+		
+		bus.$emit('自定义的事件名',数据)
+        bus.$on('自定义的事件名',function(接){处理})
+-----------------------------------------------------------------
+
+动态组件:
+	动态组件： 组件动态化(数据化)
+	<component is="'组件名'"></component>
+	<component :is="数据"></component>
+
+内容分发
+	template:	slot 组件槽位  <slot 属性：name=槽名
+	<组件名><标签 slot="槽名">内容</..</...
+
+-----------------------------------------------------------------
+vue动画
+
+	动画组件: transition|transition-group	谁做动画，就包着谁
+	
+	组件属性:
+		name =  "动画名"
+		enter-class = "类名"
+		enter-active-class = "类名"
+		leave-class = "类名"
+		leave-active-class = "类名"
+	样式：
+		.动画名-enter{..}  入场前(打哪来)
+		.动画名-enter-active{..} 入场后(来了停哪)
+		.动画名-leave{..} 离场前
+		.动画名-leave-active{..} 离开场后(到哪去)
+
+	transition组件事件:
+		@before-enter="方法(el)"   el==做动画的元素(原生)
+		@enter="方法"
+		@after-enter="方法"
+		@before-leave="方法"
+		@leave="方法"
+		@after-leave="方法"
+
+	1) css3
+		transition：无跳变
+			.动画名-enter{..} 打哪来   +   .动画名-leave-active{..} 到哪去
+		animation：有跳变
+			.动画名-enter-active{指定入场} 来了停哪 + .动画名-leave-active{指定离场}到哪去
+	2) css库 animate.css
+		同 animation 有跳变
+	3) js库 动画名  需要设定初始位置
+		下载 velocity.js   http://velocityjs.org/
+		使用:	Velocity(el,{css属性},{配置})
+
+		配置:
+			duration: 毫秒   事件
+			easing: 动画类别 ''
+			Queue
+			complete:fn()
+			progress:fn
+			loop: 1 次  true无限
+			delay: 毫秒 延时
+			display:'none/block' 动画结束时是否可见
+		注意：
+			leave(el,done){}
+	
+transition-group:
+	一组动画
+	transition-group 包着一组元素  ，每个元素要有key  其他的同transition
+
+-----------------------------------------------------------------
+
+
+SPA: single page application   单页面应用
+特点： 速度快，数据ajax请求，通过路由，页面不会整体重载
+实现:  路由 -> 加载(ajax)对应的内容  告诉你去哪?  根据url的不同，加载组件
+	 
+路由要求： 引入 vue-router.js
+
+路由使用流程：
+	0.	import VueRoter from 'vue-router' -> Vue.use(VueRouter) 安装
+	1. 使用路由 (去哪)
+		<router-link to="/home">首页</router-link>
+  		<router-view>展示区</router-view>
+  		router-link 组件属性  
+			tag='li' 指定编译后的标签
+			active-class='类名' 指定激活后的样式
+	2. 配置路由(建立组件和请求的对应关系)	数组
+		[{path:'/home',component:home},,{}]
+		path 路径
+		component: 指向的组件变量名
+	3. 创建路由(传递配置)
+		router = new VueRouter(配置)
+		配置:	{routes:数组}
+	4. 顶层|根组件，注册路由 （路由控制页面组件的加载）
+		选项
+			router(选项):router (router对象)
+子路由：children
+	routes=[
+		{},
+		{
+			path:xx
+			component:xx
+			children:[  子路由
+				{}
+				..
+			]
+		},
+		{}
+	]
+
+参数配置:
+	{path:'xx/:参数变量',component:xx}
+
+传递参数 and 数据
+router-link to='xx/参数?a=1b=2'
+router-link :to='{name:'xx',params:{},query:{}}'
+
+接收参数和数据
+	{{this.$route.params|query|path}}
+
+$xxx == 全局属性
+
+组件内部： this == 组件   this.方法|数据 访问组件自己的  this.$xxx 访问全局
+		   this.$router
+组件模板：	{{xxx}}  子个的数据  {{this.$router}} 全局数据
+			@事件="$router.xx()"
+
+组件内部实现路由跳转:
+	router.push(...)
+	this.$router.push({path:'...'})   添加一个路由 （记录到历史记录)
+	this.$router.replace({path:'...'})   替换一个路由 （不记录到历史记录)
+	this.$router.go(-1|1)|goBack()  回退/前进  history.go|goBack
+
+
+-----------------------------------------------------------------
+webpack  打包工具 转换工具 模块加载器
+vue-cli 脚手架  (搭建项目环境)  命令行工具
+es6模块化
+
+
+------------------------------------------------------
+
+
+webpack 4
+	官网: http://webpack.github.io/docs/
+	中文: https://doc.webpack-china.org/concepts/|https://www.webpackjs.com/
+	前身: browserify	缺点，只能转化js
+webpack作用?
+	干嘛的:	项目管理、打包、模块管理、加载资源(js/css/html/png../woff/data/vue...),转换器(loader)
+	前身：grunt/gulp/browserify->webpack
+
+webpack的历史
+	webpack1支持CMD和AMD，同时拥有丰富的plugin和loader，webpack逐渐得到广泛应用。
+	webpack2 支持ES Module，分析ESModule之间的依赖关系，webpack1必须将ES，Module转换成CommonJS模块，2支持tree sharking
+	webpack3 新的特性大都围绕ES Module提出，如Scope Hoisting和Magic Comment；
+
+环境支持： Node8 
+
+安装：
+	全局
+	npm i webpack webpack-cli
+	cli 命令行工具 打包会依赖cli
+
+	本地
+	npm i webpack webpack-cli --save-dev 开发依赖
+
+概念：
+	webpack是一种静态编译工具(预编译)
+	入口文件、出口、转换器、插件
+打包
+	webpack  --mode development  会自动找src/index.js 到 dist/main.js
+	要求设置开发模式|生产模式
+
+	webpack 入口地址 --mode development  指定入口
+
+	环境分离
+		development:
+			a.浏览器调试工具
+			b.注释、开发阶段的详细错误日志和提示
+			c.快速和优化的增量构建机制
+		production:
+			a.开启所有的优化代码
+			b.更小的main大小
+			c.去除掉只在开发阶段运行的代码
+			d.Scope hoisting(作用域提升)和Tree-shaking(打包的结构只包含实际用到的 exports)
+
+自动解决依赖:
+	
+	原理：Webpack 会分析入口文件，解析包含依赖关系的各个文件。这些文件（模块）都打包到 main.js 。Webpack 会给每个模块分配一个唯一的 id 并通过这个 id 索引和访问模块。在页面启动时，会先执行 main.js 中的代码，其它模块会在运行 require 的时候再执行。
+
+loader：
+	webpack默认只支持javascript文件(默认)
+	* 其他文件(CSS/LEASS/..)	需要用加载器(loader)
+
+	loader:	类似一种转化器， 它可以把一个东西，转成另一个
+		需要下载	style-loader(读取到的css文件插到页面)	css-loader(读取css文件)
+		下载: npm install style-loader css-loader -D
+		require('style-loader!css-loader!./xx.css')
+
+配置 webpack.config.js  是一个nodejs
+	作用: 配置一些webpack需要入口、出口、loader、Chunk代码块、Plugin扩展插件、Module模块
+
+	编写：
+		module.exports={
+			entry:'./src/index.js'	入口文件
+			output:{ 默认输出到dist
+				path:path.resolve(__dirname,'dist')//指定编译目录  不写默认指定到dist
+				filename:'js/boundle.js'//以编译目录为根的出口文件路径
+			},
+			module{
+				rules:[
+					{test:'/\.css$/',use:['style-loader','css-loader']}
+				]
+			},
+			mode:'development' | production 区别环境
+		}
+
+	
+
+	entry: 入口接收string | json
+		{app:'index1.js',app2:'index2.js'} 输出要求多输出
+	output: {
+		path:path.resolve(__dirname,'dist') //指定编译目录
+		publicPath:'dist', //指定虚拟目录 不写指向编译目录，html引入js时，必填
+		filename:'bundle.js' 单文件输出 | '[name].js' 多输出  html引入app和app2 配合
+	}
+
+	webpack	开发环境下编译(打包到bundle.js)
+	webpack -p	生产环境下编译(打包到bundle.js,并压缩)
+	webpack -w	监听文件改动,自动编译,不用每次运行,但不会自动刷新浏览器
+--------------------------------------------------------------------------------
+babel使用: ES6->ES5  tracuer  babel
+	npm install babel-loader babel-core babel-preset-es2015 -D
+	做个js文件模块，测试导出引入
+	导出模块:
+		export default {}
+
+	引入模块:
+		import 名字 from 模块名
+
+	配置babel预设:
+		module>rules> + {}
+		  {
+	        test:/\.js$/,
+	        exclude:/node_modules/, 排除
+	        use:[{
+	          loader:'babel-loader',
+	          options:{
+	            presets:['env']
+	          }
+	        }]
+	      }
+----------------------------------------------
+
+需要自动刷新： webServer 搭建前端开发服务器
+	cnpm install webpack-dev-server -g | -D
+	参数:
+		命令行
+		webpack-dev-server --port 8088 --open -mode development
+
+		写到webpack.config.js配置文件:
+
+		devServer: {//和module同级
+			port: 8088,
+			open:true
+		}
+
+		终端运行方式2: webpack-dev-server 
+
+	
+	把运行命令放到package.json文件:	devServer可以不要了
+		"scripts":{
+			"dev": "webpack-dev-server  --port 8088 --open"
+		}
+
+		终端: npm run dev
+	问题：代码错误没有报到正确位置
+	解决：devtool:'source-map'
+---------------------------------------------------
+省略引入文件名后缀
+	配置webpack.config.js
+	resolve: { 	与module同级
+		extensions: [ '.js', '.css', '.json', '.jsx'] 
+	}
+	require('./style') 可以省略后缀名
+---------------------------------------------------
+产出html
+	npm i html-webpack-plugin ---save-dev
+	const HtmlWebpackPlugin = require('html-webpack-plugin')
+	plugins:[
+	        new HtmlWebpackPlugin({
+	            template: './index.html',
+      			filename: './index.html',//默认到output目录
+	            hash:true,//防止缓存,会给文件后面加入hash
+	            minify:{
+	                removeAttributeQuotes:true//压缩 去掉引号
+	            }
+	        })
+	]
+
+	publicPath: '/', 指定虚拟目录为空，因为index进入到dist目录里了，不在外面了
+	filename: 'js/[name].js',
+---------------------------------------------------
+
+css抽离（代码分离）
+	yarn add extract-text-webpack-plugin@next --dev
+	npm i extract-text-webpack-plugin@next --save-dev | -D
+		@next 兼容webpack4 未来会不需要
+
+	const extractTextPlugin = require("extract-text-webpack-plugin")
+
+	loader配置：
+	use: ExtractTextWebapckPlugin.extract({
+          use: 'css-loader'
+        }) //不再需要style-loader
+
+	new ExtractTextWebapckPlugin('css/[name][hash:6].css')
+---------------------------------------------------
+
+图片打包
+yarn add url-loader file-loader --dev
+npm u url-loader file-loader --save-dev
+	url-loader 存base64  file-loader存文件
+	{
+        test:/\.(png|jpg|gif)/,
+        use:[{
+          loader: 'url-loader',
+          options: {
+            limit: 5000,
+            outputPath: 'images/', 5000意思存到images
+          }
+        }]
+      }
+
+css中引入 | js动态(模块化) 引入
+
+
+资源copy： 静态资源(js，数据图片，json) 生产环境
+ 	require('copy-webpack-plugin')
+ 	new CopyWebpackPlugin([
+      { from: path.resolve(__dirname,'static'), to: path.resolve(__dirname,'build/static') }
+    ])
+
+拆分公共模块：
+	分片打包？使用第三方类库？
+由于CommonChunkPlugin已被webpack4废弃，webpack4推荐使用SplitChunkPlugin来提取公共模块
+
+entry: {
+    'vendor/react': 'react',
+    'vendor/react-dom': 'react-dom',
+  }
+
+和plugin评级
+optimization: {
+    splitChunks: {
+      cacheGroups: {
+        jq: {// 自定义
+          test: /jquery/,
+          chunks: 'initial',//有三个可选值：initial(初始块)、async(按需加载块)、all(全部块)，默认为all;
+          name: 'vendor/jquery',//拆分出来块的名字(Chunk Names)，默认由块名和hash值自动生成；设置ture则使用默认值
+          priority: 10//表示缓存的优先级
+        },
+        cm: {
+          test: /common/,
+          chunks: 'initial',
+          name: 'vendor/common',
+          priority: 10
+        }
+      }
+    }
+  }
+
+http://www.php.cn/js-tutorial-390965.html
+
+--------------------------------------------------
+
+webpack.config -> webpack.config.dev|prod 
+
+
+	"dev": "webpack --mode development --config config/webpack.config.dev.js",
+    "build": "webpack --mode production --config config/webpack.config.prod.js",
+    "server": "webpack-dev-server --mode development --config config/webpack.config.dev.js"
+
+--------------------------------------------------------
+脚手架: vue-cli  搭建vue项目环境
+
+安装 npm instal vue-cli -g          vue --version
+
+创建项目环境: 
+	vue init webpack-simple 目录    webpack-simple|webpack  模板
+	cd 目录
+	npm install
+	npm run dev  运行
+	开发....
+	npm run build 打包
+--------------------------------------------------------
+模块化路由   npm install vue-router -D
+	0.	import VueRoter from 'vue-router'  -> Vue.use(VueRouter) 安装
+	1. 使用路由 (去哪)
+		<router-link to="/home">首页</router-link>
+  		<router-view>展示区</router-view>
+  		router-link 组件属性  
+			tag='li' 指定编译后的标签
+			active-class='类名' 指定激活后的样式
+	2. 配置路由(建立组件和请求的对应关系)	数组
+		[{path:'/home',component:home},,{}]
+		path 路径
+		component: 指向的组件变量名
+	3. 创建路由(传递配置)
+		router = new VueRouter(配置)
+		配置:	{routes:数组}
+	4. 顶层|根组件，注册路由 （路由控制页面组件的加载）
+		选项
+			router(选项):router (router对象)
+
+	路由守卫:
+		beforeRouteEnter(to,from,next){}	前置守卫,进入
+			to 目标路由
+			from 当前路由
+			next 是个函数  next() == next(true)  运行跳转
+						   next(false) 不让跳转  
+		beforeRouteLeave(to,from,next){}  后置守卫,离开
+
+	路由数据预载:
+		beforeRouteEnter(to,from,next){
+			1. 兜库 this.$http   axios可用
+			2. next( _this => _this.属性="拿到的数据")
+		}
+	
+------------------------------------
+vue-cli + vue-router + axios + vue-aniamte + vuex .....   全家桶
+
+
+新闻客户端
+	1. 环境搭建(vue-cli +  vue-router + axios + vuex == 全家桶)
+	2. 项目分析(组件安排)
+		dist
+			|-...
+		static
+			|-data:
+				|-数据.json
+				....
+		src
+			|-assets
+				|-js
+				|-css
+				|-image
+			|-component
+				|-	navbar.vue / footbar.vue
+				|-	home.vue / follow.vue / column.vue / user.vue
+				|-  detail.vue / login.vue / reg.vue
+				|-	silder.vue / error.vue / list.vue
+			|-filters
+				date.js
+				fillzero.js
+			|-loading
+				index.js
+				|-component
+					|-loading.vue
+			|-store
+				|-index.js
+				|-actions.js
+				|-mutations.js
+				|-getters.js
+				|-state.js
+				|-types.js
+			main.js
+			App.vue
+			router.config.js
+		package.json
+	3. 布局
+		a) 切图(需要设计稿)
+		b) UI库	(bootstrap/elelementUI pc端 / mintUI移动端 / 妹子UI/ant.design/weex)
+		c) html+css模板 移植 到 组件
+			01 全局资源 在主入口文件(index.html)引入
+			02 全局资源 主程序(main.js)
+			03 自执行脚本，跟着当前组件走
+
+	4. 路由搭建
+
+	5. 数据交互+全局过滤器+全局组件（loading）
+
+	6. 非状态管理（控制导航显示)
+		this.$root  返回的是根实例  new Vue (main.js)  
+		this.$root.$data.根数据名;
+		this.$root.$data.根数据名=值
+
+	7. 状态管理
+
+	9. 组件懒加载
+
+		原理: 利用webpack对代码进行分割是懒加载的前提，懒加载就是异步调用组件，需要时候才下载,
+			  告诉webpack把组件打包成块，告诉路由激活时触发一个函数，函数再加载组件,加载时会请求组件的块代码，块代码会插入当前组件的样式
+		webpack配置:
+			output:
+				chunkFilename:'chunks/[name]-[chunkhash:8].js',//build之后的代码更便于识别
+		路由配置: 
+			const home =()=>import(/* webpackChunkName: "group-home" */ "../components/home.vue");
+			import 导入 需要安装 babel-plugin-syntax-dynamic-import ,import会被提升，先执行?
+			配置 babelrc  "plugins": ["syntax-dynamic-import"]
+			webpackChunkName: "group-home" 给块命名 | 同名会拆到一个块，可减少请求次数
+		组件内部注册异步组件:
+			const navbar =()=>import(/* webpackChunkName: "group-home" */ "./components/navbar.vue");
+			components:{navbar}
+			navbar 不异步的话，代码会打到app.js,而不是home块或者navbar块
+	10. 高级异步组件
+		https://cn.vuejs.org/v2/guide/components.html#%E9%AB%98%E7%BA%A7%E5%BC%82%E6%AD%A5%E7%BB%84%E4%BB%B6
+	11. 前后端分离
+--------------------------------------------------------
+脚手架: vue-cli  搭建vue项目环境
+
+安装 npm instal vue-cli -g          vue --version
+
+创建项目环境: 
+	vue init webpack-simple 目录    webpack-simple|webpack  模板
+	cd 目录
+	npm install
+	npm run dev  运行
+	开发....
+	npm run build 打包
+--------------------------------------------------------
+模块化路由   npm install vue-router -D
+	0.	import VueRoter from 'vue-router'  -> Vue.use(VueRouter) 安装
+	1. 使用路由 (去哪)
+		<router-link to="/home">首页</router-link>
+  		<router-view>展示区</router-view>
+  		router-link 组件属性  
+			tag='li' 指定编译后的标签
+			active-class='类名' 指定激活后的样式
+	2. 配置路由(建立组件和请求的对应关系)	数组
+		[{path:'/home',component:home},,{}]
+		path 路径
+		component: 指向的组件变量名
+	3. 创建路由(传递配置)
+		router = new VueRouter(配置)
+		配置:	{routes:数组}
+	4. 顶层|根组件，注册路由 （路由控制页面组件的加载）
+		选项
+			router(选项):router (router对象)
+项目DEMO:
+	
+------------------------------------
+vue-cli + vue-router + axios + vue-aniamte + .....   全家桶
+
+
+新闻客户端
+	1. 环境搭建(vue-cli +  vue-router + axios + vuex == 全家桶)
+	2. 项目分析(组件安排)
+		dist
+			|-...
+		data:
+			|-数据.json
+			....
+		src
+			|-assets
+				|-js
+				|-css
+				|-image
+			|-component
+				|-	navbar.vue / footbar.vue
+				|-	home.vue / follow.vue / column.vue / user.vue
+				|-  detail.vue / login.vue / reg.vue
+				|-	silder.vue / error.vue
+			|-filters
+				date.js
+				fillzero.js
+			|-loading
+				index.js
+				|-component
+					|-loading.vue
+			|-store
+				|-index.js
+				|-actions.js
+				|-mutations.js
+				|-getters.js
+				|-state.js
+				|-types.js
+			main.js
+			App.vue
+			router.config.js
+		package.json
+		webpack.config.js
+	3. 布局
+		a) 切图(需要设计稿)
+		b) UI库	(bootstrap/elelementUI pc端 / mintUI移动端)
+		c) html+css模板 移植 到 组件
+
+	4. 路由搭建
+
+	5. 数据交互+全局过滤器+全局组件（loading）
+
+	6. 非状态管理（控制导航显示)
+		this.$root  返回的是根实例  new Vue (main.js)  
+		this.$root.$data.根数据名;
+		this.$root.$data.根数据名=值
+
+	7. 状态管理  store
+		什么时候用： 打算开发中大型应用
+		集中式数据管理, 一处修改，多处使用
+
+		思维流程:
+											store.js
+					this.$store.commit('increment')	-> mutations
+					this.$store.dispatch('jia')		-> actions			
+				     mapActions() ->actions								mapGetters()->getters
+				学生		代课老师		校长		 财务     版主任		学生
+			components - >  actions		->  mutations -> state  <- getters	<-	components
+				发送请求      处理			修改状态	 	
+							  业务逻辑		修改state			   读取state
+							  异步
+							  							state<-$store.state <-  学生
+	-----------------------------------------------------------------------------
+	安装 vuex 状态管理插件
+	引入 + use
+
+	------------------------------------------------------------------------------
+	mapActions/mapGetters  执行后， 返回来的是对象
+		对象:	{incremen:fn,decrement:fn,xx,xx}
+	------------------------------------------------------------------------------
+	this.$store.commit('increment',参数/负载/payload) -> mutations
+	this.$store.dispatch('increment',参数/负载/payload)  -> actions
+
+	const actions = {
+		increment:({store对象},参数)=>{}
+	}
+
+	<xx @click="请求类型(负载)"   actions: 请求类型:({},payload)=>{payload==负载}
+	......
+-----------------------------------------------------------------------------	
+
+数据传递，数据流动，流向控制  
+		0)   父->子 props属性       子->父  事件
+		a)   A -> A父  ->  子B    A B 要有共同父   父==中间人默认
+		b)   订阅发布模式  下载pubsub 库   创建空的Vue实例 实例.$emit 发布|$on 订阅
+		c) 	web存储(cookie,localstroge/seession)
+		d) 	存库
+		e)  状态管理
+		f)  非状态管理  把数据存到Vue的根组件上(data) 其他组件$root.$data 访问及修改
+
+		永久: 存库 , localstroge
+		临时：状态管理,订阅发布模式
+-----------------------------------------------------------------------------
+
+推荐 vue-xxxx 的组件  npm 下载  代替 
+
+vue-swipe:
+	npm i vue-swipe -D  安装
+	import './node_modules/vue-swipe/dist/vue-swipe.css'; 引入样式
+	import { Swipe, SwipeItem } from 'vue-swipe'; 引入组件
+
+	Vue.component('swipe', Swipe);    注册安装
+	Vue.component('swipe-item', SwipeItem);
+
+	注册到选项components 私有使用
+
+购物车(store):
+
+	
+解决前后端服务器共存
+		大后端：
+			 nodejs + express + router + ejs		后端处理路由，渲染页面
+			 html + css + js效果  http://localhost:3000   public
+		大前端：
+			Vue-cli + vue-router + axios/resource + vuex 	前端处理路由
+				this.$http(url:接口,params:{keyvalue})
+			nodeJs + express 
+				负责:写接口,处理后端到库，send（库数据) json() write+end()
+		前后端分离：
+			跨域：需要后台允许的， 设置头
+				a)  逐条设置  
+					res.setHeader('Access-Control-Allow-Origin', req.headers.origin)
+					问题：每一个路由都要设置
+				b)  统一设置(中间件cors)
+					app.use(cors({
+					  "origin": ['http://localhost:8080'],
+					  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+					  allowedHeaders:['Content-Type', 'Authorization']
+					}));
+
+
+ 跨源凭证
+		ajax跨源请求数据，默认不提供凭据(cookie,http认证，客户端SSL证明)
+		流程：假设
+			vue->用户中心->vue发送请求->nodejs响应判断无session,返回给vue->vue路由切换到登录页面->vue发送登录请求->nodejs响应，兜库，种cookie(需要凭证)，返回用户数据->vue 路由跳转，传递接受到的数据给 "用户中心组件"
+
+			切换到其他路由，再切回来（用户中心)->vue发送请求->nodejs响应判断有session,返回vue的是 已登录|兜库拿用户数据
+		使用携带跨源凭据|反向跨域
+			前端: 携带
+				a)	逐条允许 axios({})
+					withCredentials: true,//携带跨源凭证
+				b) axios.defaults.withCredentials=true 
+			后端：允许携带
+				a) 逐条允许
+					res.setHeader('Access-Control-Allow-Credentials', true);
+				b) 中间件统一配置(cors)
+					
+
+	前端原生：请求头里面带凭证，带cookie
+	var xhr = new XMLHttpRequest(); 
+	xhr.open("post", "xxx/xxx", true);
+	xhr.withCredentials = true;		放在 open 方法后面比较靠谱
+	xhr.onload = function(){}
+	xhr.send("a=1&b=2");
+
+	前端jqAjax:	请求头里面带凭证，带cookie
+		$.ajax({
+			type:'get',
+			url:"http://localhost:3000/logouts",
+			dataType:"json",
+			xhrFields: {
+				withCredentials: true
+			},
+			success:function(data){
+				console.log(data);
+			}
+		})
+		前端:vue-resource
+				this.$http.get(url,{credentials:true}) 追条
+
+			Vue.http.interceptors.push(function(request, next) {
+			  request.credentials = true  统一
+			  next();
+			});
+-------------------------------------------------------------
+
+css 3 loading 动画
+
+https://www.cnblogs.com/lhb25/p/loading-spinners-animated-with-css3.html
+
+vue + echarts
+  npm i echarts --save
+  import echarts from 'echarts'
+  使用eechartsAPI
+vue + 百度地图
+  http://lbsyun.baidu.com/
+    1 注册百度账号
+    2 申请成为百度开发者  注册   浏览器端
+    3 获取服务密钥（ak）
+    4 使用相关服务功能
+
+    vue的index.html cdn加入 库
+      <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=您的密钥">
+    组件里面使用：
+      注意：地图的id要有，元素要有高
+
+      API:http://lbsyun.baidu.com/cms/jsapi/reference/jsapi_reference.html
+      demo：http://lbsyun.baidu.com/jsdemo.htm#a1_2
+
+----------------------react----------------------
+干嘛的：前端框架，把用户界面抽象成一个个的组件，按需组合成页面
+官网：https://reactjs.org/
+	  http://www.css88.com/react/
+不同点：
+		angularJs 	vue 	react
+控制器	√			-		-
+过滤器	√			-		-
+指令	√			√		-	（编写表达式）
+
+共同点：
+	虚拟DOM(angularJs除外  angular有)，数据驱动
+
+JSX：js + html		类XML语法
+	oo.js/  oo.jsx  合法的
+语法要求：
+	标签要闭合
+	元素必须要有一个顶层元素
+	变量首字母大写代表组件，小写对应是DOM元素
+	html属性，小驼峰命名 tabindex -> tabIndex
+精髓：多组件组合，jsx+函数式编程（运算写成一系列的函数嵌套）
+
+思想:
+	组件拆分目标:为了复用
+	组件如何拆：单一原则
+	状态应该给谁: 
+		尽量给顶层组件(状态提升),->props->子组件
+		可以从 props(属性) 或者 state(状态) 得到，那么它可能不应该在 state(状态) 中
+		方法-》操作数据(数据|状态在哪，方法就应该在哪)
+	props取名：从组件本身的角度来命名, 而不是它被使用的上下文环境
+	纯函数:不会试图改变它们的输入，并且对于同样的输入,始终可以得到相同的结果,React 
+	组件都必须是纯函数，并禁止修改其自身 props
+		function(a,b){不会随机，不会修改a和b的值，输出可控}
+	setState: 是异步的,会将多个 setState() 调用合并为一次更新,所以不能同步依赖上一个setState的值，作为下一个setState的参数
+		解决：
+			1) this.setState(function(prevState,props){})
+			  函数接收前一个状态值作为第 1 个参数， 并将更新后的值作为第 2个参数
+		      
+		      更新会被合并,浅合并
+		    2) 函数节流(异步操作)
+		    3) ev.target......
+
+环境搭建：
+	a)webpack + webpack-dev-server
+		/ 指向 index所在位置，图片,数据 都指向 / 
+		js / css / jsx 相对定位
+	b) npm install create-react-app	-g   官方脚手架
+		create-react-app 目录名| .
+		npm start 开发模式
+		npm build 打包
+
+		更改默认的端口号:
+		1.	node_modules\react-scripts\scripts
+		const DEFAULT_PORT = parseInt(process.env.PORT, 10) || 3001;
+
+		2.	npm run eject
+		 修改script/start.js
+
+
+		本地资源导入(import) 不可以导入src之外的包
+
+		问题:jsx前景图片, ./ 和 / 都指向了 public目录
+		解决：1.模块化导入 src目录里 要在jsx里src的图片
+			  2.相对或者绝对导入public目录下的图片
+
+
+		去除eslint 警告：
+			npm run eject
+			找到项目下config/webpack.config.dev|prod
+			注释关于eslint的导入和rules规则
+
+		打包 + 预览：
+			npm build
+			serve -s build --port 端口 --open 
+			serve 服务器命令行工具（npm i serve -g)
+
+			public目录里面的资源会直接copy到build目录，src里面的资源会打包模块化
+
+		help: https://github.com/facebook/create-react-app
+
+		解决方案:
+			项目资源，尽量从src目录下引入，打包时会模块化
+			图片资源模块化引入，如何来自库只能放到public目录下
+			
+	c) yeomen 目录		需要安装
+	npm install
+	npm run dev
+
+------------------------------------------
+
+ES6 创建组件：	
+	import React from 'react';
+	class 组件名 extends React.Component{
+		constrctor(props){ //组件有状态 constrctor就出现
+			super(props) //类如果有继承 super就要出现
+				需要在组件构造器内处理传递过来的props时，props参数就出现
+			
+			this.state={ // 本地状态
+
+			}
+		}
+		render(){
+			return html|jsx
+		}
+		方法1(){} 自定义的方法
+		方法2(){}
+	}
+ES5 创建组件：	
+	var React = require('react');
+	let 组件名 = React.createClass({
+	  getInitialState:function(){  //组件状态
+	  	return {
+	  		数据:值
+	  	}
+	  }
+	  render:function(){
+	    return html|jsx
+	  }
+	});
+使用组件：
+	<HelloWorld/>
+	<HelloWorld></HelloWorld>
+
+渲染（描画）页面
+	import ReactDom from 'react-dom';
+	var RactDom = require('react-dom');
+
+	ReactDom.render(组件/dom,插入点)
+------------------------------------------
+
+组件属性(props)：
+	调用组件：<组件名 属性名=值 属性名2=值2 .. />	传递属性
+	组件内部: {this.props.属性名}   jsx表达式  使用属性
+			  this 代表的是组件本身  
+
+	值类型：字符||{表达式}
+	this.props.属性名==array 需要循环
+	arr值：this.props.属性名.map(function(){
+		return html
+	})
+	json {json} 报错， 对象无法直接通过{obj}展示->{obj.key}
+------------------------------------------
+
+组件之间数据传递(props传递)
+	父到子	props 传递 <Child 属性=数据/>
+	子到父  props 传递 <Child 属性=父方法/>
+			{this.props.属性.bind(this,xx)}
+	所有 React 组件都必须是纯函数，并禁止修改其自身 props 
+------------------------------------------
+组件的状态 (state|数据|封装状态|本地状态)
+	getInitialState:fn(){return {状态名:值,xx:oo}}   ES5
+------------------------------------------
+事件:驼峰命名
+	<元素 onClick={this.方法}
+	onClick={this.方法.bind(null,值)}
+	方法(ev)	ev 代理事件对象 ev.target 返回虚拟dom √
+------------------------------------------
+获取jsx元素  获取的是真实dom
+	给jsx元素 设置ref属性=名字
+	this.refs.名字
+何时用:	
+	处理focus、文本选择或者媒体播放
+	触发强制动画
+	集成第三方DOM库
+------------------------------------------------------------------------------------
+
+双向绑定：
+	react 默认是单项绑定  defaultValue 
+
+	value={this.state.数据名}  model->view
+	onChange={this.监听方法}   view->model(  setState )
+	监听方法: this.setState(...)
+
+处理多个输入元素
+	可以为每个元素添加一个 name 属性(通常和数据名一致)
+	处理函数根据 event.target.name 的值来选择要做什么
+
+	name="inputUserName" name="inputContent"
+	this.setState({[ev.target.name]:ev.target.value})
+------------------------------------------------------------------------------------
+
+react 处理 样式:
+	在index.html ： 引入  link/style  场景：应用的公共样式
+	在组件里面引入： import './css/xx.css'  是全局
+	模块化:	import 变量  from './css/xx.css' 模块   使用?
+		webpack配置 "style-loader!css-loader?modules"
+		<xx className={变量.类名}
+	jsx:
+		className="类名" className={返回字符}
+		style={{key:value,key:value}}
+		css3 动画
+------------------------------------------------------------------------------------
+生命周期流程:
+	实例化 ->  存在期  -> 销毁时
+	实例化:
+		es5: 
+			1.取得默认属性(getDefaultProps) 外部传入的props
+			2.初始状态(getInitailState)  state状态
+		    3.即将挂载 componentWillMount
+		    4.描画DOM  render
+		    5.挂载完毕 componentDidMount
+		es6:
+			1.取得默认属性(getDefaultProps) 外部传入的props
+			2.初始状态(getInitailState)  state状态
+				1 && 2 都在构造器里面完成 
+				constructor(props){
+					super(props) == getDefaultProps
+					this.state={} == getInitailState
+				}
+		    3.即将挂载 componentWillMount
+		    4.描画DOM  render
+		    5.挂载完毕 componentDidMount
+	存在期:
+		1.是否更新 shouldComponentUpdate  指视图
+		2.即将更新 componentWillUpdate
+		3.描画dom  render
+		4.描画结束 componentDidUpdate
+	销毁时:
+		即将卸载 componentWillUnmount
+
+
+实例化->存在(更新)->销毁时
+	getDefaultProps->getInitialState->componentWillMount->render->componentDidMount
+	->shouldComponentUpdate->componentWillUpdate->render->componentDidUpdate->
+	->componentWillUnmount
+
+------------------------------------------------------------------------------------
+
+数据交互：
+	resource / axios   一样用
+	jquery
+		$.ajax({
+			type:'get/post',
+			url:'...',
+			success:function(res){},
+			error:function(){}
+		})
+
+	fetch	原生就有
+	fetch(url).then(成功函数(res))
+	res.ok -> true/false 成功/失败
+	res.status - > 状态码
+	res.body 数据 数据流(stream)
+	res.text() 转换 文本(string) 
+		过程异步：	return res.text()
+		同步： res.text().then((data)=>{})	data:转换后的数据
+	res.json() 转  对象
+
+------------------------------------------------------------------------------------
+
+数据交互：
+	官方脚手架 静态数据读取时，参考根指向public  '/data' == public/data
+	fetch	原生就有
+	fetch(url+数据,{配置}).then(成功函数(res))
+	res.ok -> true/false 成功/失败
+	res.status - > 状态码
+	res.body 数据 数据流(stream)
+	res.text() 转换 文本(string) 
+		过程异步：	return res.text()
+		同步： res.text().then((data)=>{})	data:转换后的数据
+	res.json() 转  对象
+	配置:
+		method:'POST'
+		headers:{"Content-type":"application/x-www-form-urlencoded"},
+		body:'a=1&b=2'|{a:1,b:2}
+
+jsonp:  fetch不带jsonp请求  需要依赖第三库
+	npm install fetch-jsonp -D
+	import xxx from 'xxx'
+	用法:
+		fetchJsonp(url+数据,{配置}).then(success(res)).catch(error)
+		特点: 是个promise 返回promise 数据是个流
+		解析：res.json()  -> 流转换数据 是异步
+		配置:
+			timeout: 延时  5000
+			jsonpCallback: 回调函数key callback
+			jsonpCallbackFunction: null 
+------------------------------------------------------------------------------------
+无状态(没有state)组件（简写）创建：
+	const 组件名=(props)=>(jsx)
+	const 组件名=props=>jsx
+	const 组件名=(props)=>{
+		let xx=props.xx
+		return html
+	}
+
+无状态组件特点：
+	不能访问this对象(this.ref,this.state  ... )
+	只能访问props
+	无需实例化，渲染性能高
+	this.方法/钩子（生命周期)  也不需要
+------------------------------------------------------------------------------------
+
+Qqlist(Article|Comment)
+Article(ArticleList*(ArticleListItem*)  | Page * (PageItem *) )
+Comment( CommentUser | CommentList * (CommentListItem *) | Page * )
+
+------------------------------------------------------------------------------------
+
+无状态组件特点：组件不请求数据时都可以做成无状态组件
+	不能访问this对象(this.ref,this.state  ... )
+	只能访问props
+	无需实例化，渲染性能高
+	this.方法/钩子（生命周期)  也不需要
+------------------------------------------------------------------------------------
+react路由3.X：
+	干嘛的：根据不同的URL，展示不同的内容
+	安装：npm install react-router@3.2.1 -D
+	引入：import {
+			  Router,	路由对象
+			  Route,	一个路由配置
+			  hashHistory,	哈希模式
+			  IndexRoute,	默认路由
+			  Link,		路由调用
+			  Redirect	重定向
+			  browserHistory 历史记录
+			} from 'react-router';
+	配置路由: 路由对象Router，一定要包裹一个根路由
+		Router history={hashHistory}
+			Route path="/" ..
+				xx
+				xx
+					oo
+					oo
+				xx
+					oo
+				xx
+	调用：hash模式下不用加/  browser模式需要加/
+		Link to="path名"  转换成DOM a ,不可改
+		path名: string|| {{pathname:'news/003',query:{a:1,b:2}}}
+	展示区: 找组件自身要props
+		{this.props.children} 展示区
+		{this.props.params.aid} 参数
+		{this.props.location.query} 数据
+		{this.props.location.pathname} 路径
+	组件内部获取router对象	this.props.router
+		this.props.router.push('xxx')/replace('')/goBack/goForward/go(-1)
+		跳转：this.props.router/ hashHistory/window.history 都是操作历史记录
+	激活后路由样式：
+		activeClassName="外部css的类名"  
+		activeStyle={json}	json={bacgroundColor:xx}驼峰
+
+
+	browserHistory：需要配置webpack服务(package.json + --history-api-fallback)
+		Link调用路由时，需要/xx
+		<Link to="/home"
+		<Link to="/user/reg"
+
+	守卫
+		前置进入前，数据预载 ，路由配置内完成
+			<Route path="login" component={Login} onEnter={enterRoute}/>
+			const enterRoute=(to, redirect,next)=>{
+			  to //去向路由
+			  redirect 重定向函数 replaceState(url)
+			  next();//允许
+			  to.location.query.data=data;//模拟接收到的数据，并修改
+		离开，后置	组件内部完成
+			设置路由，离开钩子 , 组件DidMount设置
+			this.props.router.setRouteLeaveHook(
+		      this.props.route, 
+		      this.routerWillLeave
+		    )
+
+		    离开钩子
+		    routerWillLeave(nextLocation) 
+		    return false/true 允许或者不允许
+		    nextLocation 要去向的路由
+
+--------------------------------------------------------------------------
+react路由 4.x
+	资料：
+		API:https://reacttraining.com/react-router/web/guides/quick-start
+		CN：http://blog.csdn.net/sinat_17775997/article/details/77411324
+		redux：https://github.com/reacttraining/react-router/tree/master/packages/react-router-redux
+	区别：
+		V4
+			嵌套式路由（路由配置在组件内部），动态路由，包容性（多路由渲染）
+			舍去了路由钩子
+		V3
+			分离式（统一位置配置），静态路由，排他性（只有一个路由被渲染）
+	理念：
+		遵循Just Component的 API 设计理念 万物皆组件，路由规则位于布局和 UI 本身之间
+
+	安装引入 react-router-dom 
+
+	React Router被拆分成三个包：react-router,react-router-dom和react-router-native。react-router提供核心的路由组件与函数。其余两个则提供运行环境（即浏览器与react-native）所需的特定组件
+
+	BrowserRouter 使用 HTML5 提供的 history API 来保持 UI 和 URL 的同步
+	HashRouter 使用 URL 的 hash (例如：window.location.hash) 来保持 UI 和URL 的同步
+
+	结构：
+		BrowserRouter|HashRouter 路由对象
+			根组件(App)|其他组件
+				NavLink|Link  导航 
+				Route    匹配+展示
+				Redirect 跳转
+				404 <Redirect to="/error"/>
+				默认路由 <Route exact path={match.path} render={fuc}
+	Route 属性
+		path（string）: 路由匹配路径。（没有path属性的Route 总是会 匹配）；
+		exact（bool）：
+			为true时，要求全路径匹配(/home)。V4 的路由默认为“包含”的(/和/home都匹配)，这意味着多个 <Route> 可以同时进行匹配和渲染
+
+		component：在地址匹配的时候React的组件才会被渲染，route props也会随着一起被渲染
+		render：这种方式对于内联渲染和包装组件却不引起意料之外的重新挂载特别方便
+	Link：
+		to：string/object：要跳转的路径或地址；
+	NavLink：是<Link> 的一个特定版本
+		activeClassName（string）：设置选中样式，默认值为 active；
+		activeStyle（object）：当元素被选中时, 为此元素添加样式；
+	Switch：该组件用来渲染匹配地址的第一个<Route>或者<Redirect>，仅渲染一个路由，排他性路由,默认全匹配(场景：侧边栏和面包屑，引导选项卡等
+	Redirect:
+		<Redirect to='/home'/> 总是会被重定向
+	404:	<Route component={Error}/> 总是会匹配
+
+	参数数据：{history,location,match}==props
+		传递：
+			to={match.url+'/001'}
+			to={`${match.url}/002?a=1&b=2`}
+			to={{pathname:match.url+'/003',search:'?a=11&b=12',hash:'#a1'}}
+			<Route path={match.path+'/:aid'} component={Detail}
+				注意：
+					url - (浏览器 URL 中的实际路径) URL 匹配的部分。 用于构建嵌套的 <Link>
+					path - (路由编写的路径) 用于匹配路径模式。用于构建嵌套的 <Route>
+		接收：
+			接参数:{match.params.aid}
+			接数据:{location.search} 
+			接地址:{location.pathname}
+		注意：
+			无法从v4 中获取 URL 的查询字符串了。因为没有关于如何处理复杂查询字符串的标准。所以，作者让开发者去选择如何处理查询字符串。推荐query-string库
+	跳转：
+		history.push('/user?a=1&b=2')
+		history.push({pathname:'/user',search:'?a=11&b=22'})
+		history.replace({pathname:'/user',search:'?a=111&b=222'})
+		history.go(-1)
+	授权路由：自定义路由
+		前置守卫
+			<AuthRoute path="/user" component={User}/>	
+			AuthRoute==授权路由==react组件==自定义路由
+			条件：返回一个Route 组件
+				  Route的render函数内部判断加载目标||Redirect组件
+			实现：
+				AuthRoute = ({ component: Component, ...rest }) => (
+				  <Route {...rest} render={props =>
+				      Math.random()<0.5 ? 
+				        <Component {...props} />
+				       : <Redirect to="/login" />
+				    }
+				  />
+				)
+			目标组件	Component == User
+			延展剩余属性 rest
+			路由信息 ...props User组件需要用到的路由信息
+		数据预载：
+			AuthRoute 组件构造器存状态和预载数据
+			DidMount钩子里异步请求，获取状态和数据
+				fetch(url).then(result=>this.setState({}))
+			render钩子返回 Route
+				 <Route {...rest} render={props => Xxx?<Component data={预载数据}
+				 if(!this.state.hasAuthed) return null;初始渲染时，未发送认证请求，因此不渲染
+	Prompt:后置守卫,离开后守卫
+		import { Prompt } from 'react-router-dom'
+		<Prompt
+          when={this.state.isBlocking}		
+          message={location=>{return `未保存，是否去向${location.pathname}`}}
+        />
+        message: 后面可以跟简单的提示语，也可以跟函数，函数是有默认参数的。 
+        when: when的属性值为true时防止跳转；
+
+    注意加入状态管理时：影响了location的跳转，要用到withRouter(connect(x,x)(app))
+
+    问题：子路由使用父路由的展示区(插槽) 
+    	<Route path="/a" render={()=>
+    		<div>
+    			<Switch>
+    				<Route path="/a/b" component={b}
+    				<Route path="/a/c" component={c}
+    				<Route path="/a" component={a}
+    			</Switch>
+    		</div>
+    	>
+
+    首屏加载时，获取一次sessionID,用户所有信息记录到状态仓库，任何其他页面（比如添加商品，用户页）都需要去状态仓库取值校验，如果没有路由跳转到login
+    登录后，库返回用户信息(过期时间,收藏)，到状态仓库
+
+    修改商品数量时：更新状态仓库 && 更新数据库
+
+    特点：页面切换无需每次从库读取大量用户信息，读状态仓库即可，但更新数据时需要同步状态仓库和数据库（确保任何时刻刷新可以读取到最新库，状态仓库会清零),永久存储
+--------------------------------------------------------------------------
+1. 项目分析,组件安排
+
+|-node_modules
+|-src
+	|- components
+		|- App
+		|- NavBar / FootBar
+		|- Home / Follow / Column / User
+		|- Article / Login / Reg
+		|- Slider / Error / NewList
+	|- common(filters)
+		|- date.js / fillzero.js/...
+	|- data
+		|- 数据
+	|- assets
+		|- css
+		|- img
+		|- js
+	|- store
+		|- ..
+	Index.js / RouterConfig.js
+index.html
+package.json
+webpack.config.js
+------------------------------------------------
+2. 布局(切图,mint-ui,elementUI...ant.design),模板移植
+	样式：全局引入
+		src / import 
+------------------------------------------------
+3. 路由搭建
+ 	样式冲突（命名冲突（错开））
+ 	import 模块名 from '../css/xx.css'
+
+ 	模块名.类名
+------------------------------------------------
+4. 数据交互
+	fetch(url,{配置}).then().catch()
+
+	home->newlist  	dataName="home" listData={this.state.listData}
+	follow->newlist dataName="follow" listData={this.state.listData}
+	↓
+	newlist -》link pathname:'detail/'+item.id,
+                    query:{dataName:dataName}
+    ↓
+    detail this.props.router.location.query.dataName
+5.	全局方法（过滤事件，补零）
+	|-common
+		date.js
+		fillzero.js
+		...
+		index.js
+			import date/fillzero ..
+			export {
+				date,fillzero
+			}
+	  <Provider store={store}>
+	    <BrowserRouter>
+	      <App/>
+	    </BrowserRouter>
+	  </Provider>
+------------------------------------------------
+6. 非状态管理，控制navbar / footbar / loading 
+
+	this.props.router.location.pathname -> navbar / footbar
+
+6.5 全局loading
+   pubsub [App订阅,  home/follow/.. 发布]
+   问题：用户速度切换，this.setState报错
+   分析：fetch中断--无法中断
+   解决：
+   	1.	高光盒（lightBox）√  / 自个维护一个组件属性 this.自定义属性
+   	2. 	状态管理，数据回来不修改组件，修改状态
+
+------------------------------------------------
+7. 同级组件传值思路：
+	a)	子A->父->子B
+		父方法(){this.refs.子.方法}
+	b) pub/sub模式 消息通知(观察者模式)  npm install npm install pubsub-js -D
+		var pubsub = new PubSub(); 
+		订阅:	onUserAdd=pubsub.subscribe('消息名',回调函数(数据,'消息名'))
+		发布：  pubsub.publish('消息名',数据)
+		清除指定订阅：pubsub.unsubscribe(onUserAdd);
+		清除所有：pubsub.unsubscribeAll()
+
+		注意：发布方不存在了，相关的订阅注意清除
+
+	c) 状态管理(redux)
+------------------------------------------------------------------------------------
+
+
+1. 项目分析,组件安排
+
+|-node_modules
+|-src
+	|- components
+		|- App
+		|- NavBar / FootBar
+		|- Home / Follow / Column / User
+		|- Article / Login / Reg
+		|- Slider / Error / NewList
+	|- common(filters)
+		|- date.js / fillzero.js/...
+	|- data
+		|- 数据
+	|- assets
+		|- css
+		|- img
+		|- js
+	|- store
+		|- ..
+	Index.js / RouterConfig.js
+index.html
+package.json
+webpack.config.js
+------------------------------------------------
+2. 布局(切图,mint-ui,elementUI...ant.design),模板移植
+	样式：全局引入
+		src / import 
+------------------------------------------------
+3. 路由搭建 route4
+ 	样式冲突（命名冲突（错开））
+ 	import 模块名 from '../css/xx.css'
+
+ 	模块名.类名
+------------------------------------------------
+4. 数据交互
+	fetch(url,{配置}).then().catch()
+
+	home->newlist  	dataName="home" listData={this.state.listData}
+	follow->newlist dataName="follow" listData={this.state.listData}
+	↓
+	newlist -》link pathname:'detail/'+item.id,
+                    query:{dataName:dataName}
+    ↓
+    detail this.props.router.location.query.dataName
+5.	全局方法（过滤事件，补零）
+	|-common
+		date.js
+		fillzero.js
+		...
+		index.js
+			import date/fillzero ..
+			export {
+				date,fillzero
+			}
+
+------------------------------------------------
+6. 非状态管理，控制navbar / footbar / loading 
+
+	this.props.router.location.pathname -> navbar / footbar
+
+6.5 全局loading
+   pubsub [App订阅,  home/follow/.. 发布]
+   问题：用户速度切换，this.setState报错
+   分析：fetch中断--无法中断/isMounted属性(es5)/状态控制(组件卸载了，状态和事件都没了)
+   解决：高光盒（lightBox）√  / 自个维护一个组件属性 this.自定义属性
+
+------------------------------------------------
+7. 同级组件传值思路：
+	a)	子A->父->子B
+		父方法(){this.refs.子.方法}
+	b) pub/sub模式 消息通知(观察者模式)  npm install npm install pubsub-js -D
+		var pubsub = new PubSub(); 
+		订阅:	onUserAdd=pubsub.subscribe('消息名',回调函数(数据,'消息名'))
+		发布：  pubsub.publish('消息名',数据)
+		清除指定订阅：pubsub.unsubscribe(onUserAdd);
+		清除所有：pubsub.unsubscribeAll()
+
+		注意：发布方不存在了，相关的订阅注意清除
+
+	c) 状态管理(redux)
+----------------------------------------------------------
+7 状态管理
+	flux(思想) vue实现(vuex) react实现(react-redux)
+
+状态管理(redux)：可以同一个地方查询状态，改变状态，传播状态
+何时用：中大项目,组件状态需要共享，在任何地方都可以拿到，组件需要改变全			局状态，一个组件需要改变另外一个组件的状态
+思维：
+		在顶层组件创建store(状态),其他底层组件共享这个store(状态)
+数据流动：
+	component->action->reducer->state->component
+	component: 展示结果(含处理结果代码)
+	action: 动作转发,异步请求， 
+	reducer: 业务处理逻辑,返回(return)新state
+	state:	状态收集，更新内部state状态，更新订阅(store.subscribe)state的组件（component）
+
+	通过store.dispatch发送action 给 reducer
+	在组件内部 通过 store.getState() 抓state状态  特点 只抓一次
+			   store.subscribe() 订阅  数据更新，会触发
+			   getState放在subscribe内部
+操作流程：
+	1. {createStore} from 'redux'
+	2. 生成默认state defaultState={}
+	3.	创建reducer 
+		const reducer = (state=defaultState,action)=>{
+			let {type,payload}=action
+			swtich type
+				case XXXXX
+				更新copy后的state  Object.assign(空,老,新)
+			default:
+				return state
+		}
+	4. 创建store对象
+		store = createStore(reducer,defaultState)
+
+	5. store传递给组件
+		<组件名 store={store}/>
+
+	6. 更新，状态获取
+		组件内部:	this.props.store== store
+			this.props.store.dispatch({type:xxx,payload:ooo}) 发送action给reducer
+			this.props.store.subscribe(回调)  订阅 state  更新state时触发
+			this.props.store.getState() 获取状态，执行一次
+
+
+react-redux
+	基于redux思想,专门为react而生
+
+思想:  容器组件, UI组件
+	App: 拿到store,修改、获取store
+	store:外面
+index.js:
+	import {Provider,connect} from react-redux
+
+	<Provider store={store}>
+		<容器组件/>
+	</Provider>
+
+配合路由4版本是注意：
+	<Provider store={store}>
+		<BrowserRouter>
+			<容器组件/>
+	</Provider>
+
+	export default withRouter(connect(
+	  mapStateToProps,
+	  mapdispatchToProps
+	)(App));
+
+	connect重写了withRouter的shouldComponentUpdate方法，导致其不能够响应location的变化（仅仅响应mapStateToProps里面的变化）
+
+
+片段(fragments) :
+
+	为一个组件返回多个元素。 可以让你将子元素列表添加到一个分组中，并且不会在DOM中增加额外节点
+	<React.Fragment key="bmw"></..>
+高阶组件
+	是一个函数能够接受一个组件并返回一个新的组件。
+	组件是将props转化成UI，然而高阶组件将一个组价转化成另外一个组件
+	例如Redux的connect
+
+异步组件：create-react-app 环境 webpack自动分片打包
+	方式1 import ("./ChildB.js").then(
+        ChildB=>console.log(ChildB)
+      )
+    方式2 const Child = asyncComponent(()=>import("./Child"))
+
+    	export default function asyncComponent(importComponent) {
+		  class AsyncComponent extends Component {
+		    constructor(props) {
+		      super(props);
+
+		      this.state = {
+		        component: null
+		      };
+		    }
+
+		    async componentDidMount() {
+		      const { default: component } = await importComponent();
+
+		      this.setState({
+		        component: component
+		      });
+		    }
+
+		    render() {
+		      const C = this.state.component;
+		      return C ? <C {...this.props} /> : null;
+		    }
+		  }
+
+		  return AsyncComponent;
+		}
+	方式3 
+	  import Loadable from 'react-loadable';
+	  const Loading = () => <div>Loading...</div>;
+	  const Home = Loadable({
+	  	loader: () => import('./routes/Home'),
+	 	loading: Loading,
+	 	loading:()=>{return null}
+	  });
+
+	  路由 <Route path=.. component={Home}/>  路由懒加载
+
+
+	  
+-------------------------ANGULAR---------------------------------------------
+typescript
+	什么是 TypeScript:
+	    TypeScript 是 JavaScript 的一个超集，主要提供了类型系统和对 ES6 的支持，它由 Microsoft 开发，代码开源于 GitHub 上。
+	    官网：https://www.tslang.cn
+	特点：
+	    可以在编译阶段就发现大部分错误，这总比在运行时候出错好
+	    不显式的定义类型，也能够自动做出类型推论
+	    即使 TypeScript 编译报错，也可以生成 JavaScript 文件
+	    Google 开发的 Angular 就是使用 TypeScript 编写的
+	    TypeScript 拥抱了 ES6 规范，也支持部分 ES7 草案的规范
+	缺点：
+	    有一定的学习成本，需要理解接口（Interfaces）、泛型（Generics）、类（Classes）、枚举类型（Enums）等前端工程师可能不是很熟悉的东西
+	    短期可能会增加一些开发成本，多写一些类型的定义，长期维护的项目，TypeScript 能够减少其维护成本
+	安装：
+	    npm install -g typescript
+	编译一个 TypeScript 文件：
+	    tsc hello.ts   类型不匹配时，编辑报错，但可以生成js（编辑通过），如果不希望编译通过需要配饰tsconfig.json
+
+	类型：
+	    原始数据类型：尔值、数值、字符串、null、undefined、Symbol。
+
+
+	    数值、字符串
+	    布尔值 let isDone: boolean = false;
+	           NewBoolean: boolean = new Boolean(1);返回对象
+	           null undefined 同理
+	    空值  let unusable: void = undefined
+	          function alertName(): void{}
+	    注意：undefined 和 null 是所有类型的子类型，可以赋值给 number 类型的变量，而 void 类型的变量不能赋值给 number 类型的变量
+	    任意值：any 允许被赋值为任意类型，任何操作都返回任意值
+	        let myFavoriteNumber: any = 'seven';
+	        myFavoriteNumber = 7;
+	    类型推论
+	        没有明确的指定类型，依照值推断出一个类型。
+	    联合类型
+	        取值可以为多种类型中的一种,没列出的不可以
+	        let myFavoriteNumber: string | number;
+
+	 对象类型：依赖接口来描述,不给类型可以推论
+	    接口定义：后续接口会单说
+	    	interface Person {
+				name: string;
+				age: number;
+			}
+			let p:Person={name:'xx',age:11}
+	    注意：定义的变量比接口少了一些属性是不允许
+	    可选属性: age?: number;
+	    任意属性: [propName: string]: any; 任意值
+	    注意：必填属性和可选属性都必须是任意属性的子属性  
+	    	  例如：[propName: string]: string  其他属性要是string子属性
+	    只读属性: readonly id: number; 只能创建的时候被赋值
+
+	 数组的类型: 
+	    变量:类型[]: 
+	    	let arr: number[] = [1, 1, 2, 3, 5];
+	        let arr: any[] = [1, 1, 2, 3, 5];
+	    Array<elemType>:  泛型 后面会单说
+	    	let arr: Array<number> = [1, 1, 2, 3, 5];  
+
+	 函数的类型：
+	    一个函数有输入和输出，进行约束，需要把输入和输出都考虑到
+	    function sum(x: number, y: number): number {}
+	    注意：输入多余的（或者少于要求的）参数，是不被允许的
+	    函数表达式：let mySum = function (x: number, y: number): number {}
+	    	let mySum: (x: number, y: number) => number = function (x: number, y: number): number {}
+	    	变量:输入类型=>输出类型=function(参数){}
+	    可选参数:   function buildName(a: string, b?: string) {}
+	        注意：可选参数在后
+	    参数默认值:  lastName: string = 'Liu'
+	    接口中函数的定义:
+	        interface SearchFunc {
+	          (a: string, b: number): boolean;
+	        }
+	        let c: SearchFunc=function() {return true}
+	        c('qq',11)
+
+	 类型断言Assertion:
+	    绕过编译器的类型推断，手动指定一个值的类型
+	    <类型>值   (<string>something).length
+	    值 as 类型 (something as string).length
+	    注意：类型断言不是类型转换
+
+	 声明文件
+	    ts 使用第三方库时，我们需要引用它的声明文件
+	    ts 并不知道 $ 或 jQuery 是什么东西
+	    declare 关键字来定义它的类型,帮助 TypeScript 判断我们传入的参数类型对不对
+		    declare var jQuery: (string) => any;
+		    jQuery('#div1');
+	    类型声明放到一个单独的文件中，这就是声明文件jQuery.d.ts
+	    	declare var jQuery: (string) => any;
+	    用到的文件的开头用「三斜线指令」表示引用了声明文件
+	    /// <reference path="./jQuery.d.ts" />  
+
+	    安装第三方声明文件
+	    npm install @types/jquery --save-dev
+
+	    引入第三方方声明文件
+	    import * as jQuery from 'jquery';
+	    import * as $ from 'jquery';
+	 内置对象
+	    Boolean、Error、Date、RegExp,Math
+	    let b: Boolean = new Boolean(1);    大驼峰
+
+	    Document、HTMLElement、Event、NodeList
+	    let body: HTMLElement = document.body;
+	    let allDiv: NodeList = document.querySelectorAll('div');
+
+	类: 
+		类(Class)：定义了一件事物的抽象特点，包含它的属性和方法
+		对象（Object）：类的实例，通过 new 生成
+		面向对象（OOP）的三大特性：封装、继承、多态
+		封装（Encapsulation）：将对数据的操作细节隐藏起来，只暴露对外的接口。外界调用端不需要（也不可能）知道细节，就能通过对外提供的接口来访问该对象，同时也保证了外界无法任意更改对象内部的数据
+
+		继承（Inheritance）：子类继承父类，子类除了拥有父类的所有特性外，还有一些更具体的特性
+			es6:	使用 extends 关键字实现继承，子类中使用 super 关键字来调用父类的构造函数和方法
+		存取器（getter & setter）：用以改变属性的读取和赋值行为
+			es6:	使用 get 属性(){return this._属性} 和 set 属性(val){this._属性=val} 可以改变属性的赋值和读取行为
+		静态方法: static 方法名(){}		类名.方法()
+		静态属性: 定义在类内部 name = 'Jack'; ts实现了但转换到js暂不支持		调用：类名.方法()
+
+		访问修饰符（Modifiers	ts实现）：修饰符是一些关键字，用于限定成员或类型的性质。比如 public 表示公有属性或方法
+			 public：修饰的属性或方法是公有的，默认所有的属性和方法都是 public 的
+			 private 修饰的属性或方法是私有的，不能在声明它的类的外部访问
+			 protected 修饰的属性或方法是私有的+子类中允许访问
+		类的类型：
+			public name: string;
+			constructor(name: string)
+			sayHi(): void{}
+			p1: Person = new Person
+
+	接口:
+		可以用于对象的形状描述，函数的类型描述，类的行为进行抽象
+		思想：实现（implements）不同类之间可以有一些共有的特性，这时候就可以把特性提取成接口（interfaces），用 implements 关键字来实现
+		门是一个类，防盗门是门的子类。防盗门有一个报警器的功能，给防盗门添加一个报警方法。车类，也有报警器的功能，就可以考虑把报警器提取出来，作为一个接口，防盗门和车都去实现它
+
+		interface Action{ 定义接口
+			readonly id: number;//只读属性
+			name:string;
+			age?:number;可选
+			[propName: string]: any;//任意属性
+			eat?():string 可选方法的返回值
+		}
+
+		类实现接口：class 类 implements 接口{}
+		类实现多个接口：class 类 implements 接口1,接口2{}
+		接口继承接口：class 接口 extends 接口{} ***
+		接口继承类：class 接口 extends 类{} ***
+	泛型:
+		在定义函数、接口或类的时候，不预先指定具体的类型，而在使用的时候再指定类型的一种特性
+
+		 function 函数<T>(length: number, value: T): Array<T> {}
+		 函数名后添加了 <T>，指代任意输入的类型  value: T 接收任何输入类型  Array<T>输出数组泛形
+
+		 函数<string>(参数) 使用的时候再指定类型
+	模块，装饰器 ***
+======================================================================
+angular 环境搭建
+	https://angular.cn
+	安装angular的CLI需要NodeJs的环境基础，https://nodejs.org
+		Angular CLI 是一个命令行接口(Command Line Interface)，用于实现自动化开发工作流程
+		创建一个新的 Angular 应用程序
+		运行带有 LiveReload 支持的开发服务器，以便在开发过程中预览应用程序
+		添加功能到现有的 Angular 应用程序
+		运行应用程序的单元测试
+		运行应用程序的端到端 (E2E) 测试
+		构建应用程序
+	运行：npm install -g @angular/cli，进行angular的CLI安装
+		测试： ng version
+	angular项目的创建（注意：因为需要安装node_modules，所以会比较慢）
+		ng new 目录	-> cd 目录
+	运行：ng serve	运行地址为http://localhost:4200
+		ng serve --open --port 8001  
+	项目结构解读
+		├── e2e 	end to end端对端测试目录，主要是集成测试
+		├── src 	项目源码目录
+		│   ├── app 根组件
+		│   │   ├── app.component.css 样式
+		│   │   ├── app.component.html 模板
+		│   │   ├── app.component.spec.ts 单元测试定义
+		│   │   ├── app.component.ts 
+		│   │   └── app.module.ts 	根模块会告诉Angular如何组装该应用
+		│   ├── assets 	资源文件目录
+		│   ├── environments 	环境配置目录
+		│   ├── favicon.ico
+		│   ├── index.html  CLI会自动把所有js和css文件添加进去
+		│   ├── main.ts 	应用的主要入口点
+		│   ├── polyfills.ts 填充库 兼容检测文件
+		│   ├── styles.css 全局样式文件
+		│   ├── test.ts 单元测试入口文件
+		│   ├── tsconfig.app.json angular 的ts配置
+		│   ├── tsconfig.spec.json 测试配置文件
+		│   └── typings.d.ts 类型文件配置
+		├── tsconfig.json 编译器的配置文件
+		└── tslint.json Lint功能代码格式检测 配置 当运行ng lint时会用到
+		└── .angular-cli.json CLI的配置文件
+		└── .editorconfig 编辑器配置
+		└── .gitignore Git的配置文件
+		└── .karma.conf.js 给Karma的单元测试配置，运行ng test时会用到它。
+		└── protractor.conf.js 端到端测试配置文件，运行ng e2e的时。
+	app.module
+		模块:Angular 应用至少有一个模块（根模块），习惯上命名为AppModule,无论是根模块还是特性模块）都是一个带有@NgModule装饰器的类
+
+		每个 Angular 库的名字都带有@angular前缀
+		import { Component } from '@angular/core';	这是一个js模块系统
+
+		@NgModule装饰器 把一个类装饰成模块，内部参数叫做元数据(metadata)
+			imports:  导入其他模块，使用其他angular模块，必须导入
+			declarations：声明本模块包含的内容(所有组件|指令|管道要放到此处<强制>)
+			exports：外部可见的内容
+			providers：服务提供者(系统服务，自定义服务)
+			bootstrap：启动模块。只在根模块使用。在除了根模块以外的其他模块不能使用
+			...
+	app.component 
+		@Component装饰器 
+			将类标记为组件，提供额外的元数据，内部参数叫做元数据(metadata)
+			selector: 模板中使用时的 组件名 
+		    templateUrl: 组件模板地址
+		    styleUrls: 组件样式地址
+		    ...
+		模板：
+		以 HTML 形式存在，告诉 Angular 如何渲染组件，可以使用模板语法，指令，套用其他模板
+		https://angular.cn/generated/images/guide/architecture/component-tree.png
+
+		组件：
+		组件负责控制屏幕上的一小块区域，我们称之为视图，在类中定义组件的应用逻辑，为视图提供支持。 组件通过一些由属性和方法组成的 API 与视图交互。
+		组件充当了“控制器 (controller) ”和“视图模型 (view model) ”的角色
+
+		元数据(metadata)：
+		告诉 Angular如何处理一个普通类,出现在装饰器里面，装饰器把紧随其后的类标记成了组件类
+
+		装饰器（decorator | decoration）
+		装饰器是一个函数，它将元数据添加到类、类成员（属性、方法）和函数参数
+
+	cli 创建组件/指令/服务/管道
+		ng generate component 组件名
+		ng g c 组件名 
+		ng g c /xx/组件名 --
+		ng g d|s|p| xx
+	导入第三方库（bootstrap)
+		npm install bootstrap -D   
+		修改: .angular-cli.json 
+			style项: "../node_modules/xx/../bootstrap.css"
+			scripts项: jquery/popper/popper/bootstrap
+		注意: bootstrap4 目前没有js配对的模块安装，需要src方式在index引入
+			  npm i bootstrap@4.0.0-beta -D  单数版本有问题
+======================================================================
+架构 <阅读理解>
+	https://angular.cn/generated/images/guide/architecture/overview2.png
+	
+	angular编写流程:	
+		用 Angular 扩展语法编写 HTML 模板， 
+		用组件类管理这些模板，
+		用服务添加应用逻辑， 
+		用模块打包发布组件与服务
+		引导根模块来启动该应用
+		Angular浏览器中接管、展现应用的内容，根据我们提供的操作指令响应用户的交互
+======================================================================
+数据绑定:
+	
+	本地数据M：
+		变量定义数据 public msg1:string='bmw'; 
+		
+		构造函数定义数据 constructor(){this.msg1='qq';}	
+
+	数据展示V： {{hero.name}}	插值表达式
+			   src="{{http://via.placeholder.com/350x150}}" 插值表达式 == DOM属性绑定
+			   [src]="selectedHero" DOM属性绑定
+			   bind-src="selectedHero" DOM属性绑定
+
+			   [attr.HTML属性]="数据" [attr.colspan]="数据"
+			   	当元素没有DOM属性可绑的时候，就必须使用 attribute 绑定
+				 [innerHTML]="数据" 非转义输出，样式无效??
+	列表渲染
+			   *ngFor="let val of 数据; let i=index; trackBy:i"    {{val}}{{i}} 	
+			   *ngFor="let item of 数据; index as i;trackBy:i"    {{val}}{{i}}{{item.id}}	
+			   *ngFor="let item of 数据;trackBy:item?.id"    	{{val}}{{item.id}} 	
+		嵌套:	
+			*ngFor="let item of 数据;trackBy:item?.id" 
+				*ngFor="let item2 of 数据.key;trackBy:item2?.id" 
+	ts 类 描述组件数据模型V	***
+				public 属性:类名[]=[{},{}]
+				export class 类名{属性:类型值;..;..}
+
+				public 属性:类名[]=[new 类名(属性,xx,xx),{}]
+				export class 类名{constructor(属性:类型,xx,xx)}
+	条件渲染		   
+			   *ngIf="数据"
+
+	样式绑定：
+		[class]="数据"
+		[class.类名]="布尔值" 是否使用某个类
+		[style.css属性-子属性]="数据"	中杠 和 驼峰命名都可以
+		[style.css属性-子属性.单位]="数据"
+
+	事件绑定:
+		(事件名)="方法名()"
+		on-事件名="方法名()"
+		on-事件名="方法名($event,参数)"   方法名(ev,arg1)
+			ev.target.value 元素的当前内容  
+			<input #box (keyup)="onKey(box.value)">  模板变量（本地属性）传递 √ 无需了解$event结构
+		按键事件过滤：keyup.enter
+			<input #box (keyup.enter)="onEnter(box.value)">
+	模板(引用)变量 ( #var 本地属性)
+		引用模板中的某个DOM元素，组件或指令,一次引用，在当前模板中处处可用
+		<input #phone placeholder="phone number">  phone == dom 元素
+		<input ref-phone placeholder="phone number">  phone == dom 元素
+		ts里面拿到模板变量对象：@ViewChild('变量名') 属性名：ElementRef
+	双向数据绑定:
+		[(ngModel)]="数据"	根模块需要引入（imports） FormsModule 并添加到imports列表
+	单向数据绑定:
+		[value]="数据" (input)="xx($event)"
+
+======================================================================
+
+组件通讯：
+	父到子：输入属性	松耦合√
+		父模板 <子 [属性名]="父数据" 
+		子类 @Component 添加 inputs:['属性名'] 
+			或者 子类：@Input() 数据:string;
+		子模板：直接使用数据
+		注意：构造函数中是获取不到输入属性的值
+			  修改输入属性，不影响父数据，输入属性数据单项流动
+			  尽量通过 @Input 定义无状态的组件，大大提高组件复用
+
+		存取器（ts语法）子组件类进一步设置接收到的值 选讲
+			@Input() set msg4(msg4: string){this._msg4=msg4}
+					 get msg4():string{return this._msg4}
+	子到父：输出属性+EventEmitter
+		父模板：(toParent)="getChild($event)"	getChild(data) 接收
+		子类 
+			1. @Output() toParent = new EventEmitter()
+			2. @Component outputs: ['toParent']  类内 toParent = new EventEmitter();
+			传递：this.toParent.emit(子属性) 传递给父 
+		注意：子ngOnInit里面发送数据
+
+	平级： 子A 到父 -> 父-> 子B  父==中间人模式  同级传递 √
+
+	@ViewChild()	父类中获取子组件   紧耦合
+		父 			  
+			子组件：<child  #childInfo></..>
+			<标签>{{childInfo.子属性}}</..>
+			<标签 (click)="childInfo.子方法()"></..>
+			问题：模板变量（本地属性）只能在模板中使用
+			解决:类中使用需要@viewChild
+				父组件引入子组件&&引入ViewChild from core
+				@viewChild(模板变量名) 属性：子组件
+
+	ng-content 投影	***
+		父组件的HTML片段投影到子组件内部（vue的slot）
+		父：<子 class="类名">片段中可携带父属性|方法</..>
+		子：<ng-content select=".类名">
+		注意：类名样式在父组件中有效
+
+	通过服务来通讯	***
+	路由传递参数携带数据 ***
+	@ContentChild() ***
+	
+======================================================================
+指令
+	指令是一个 Angular 类，负责创建和重塑浏览器 DOM ，并互动
+		结构型指令： 添加、移除和替换元素来修改布局	如	*ngFor  *ngIf 	
+		属性型指令： 修改一个现有元素的外观或行为 [(ngModel)]
+		自定义指令： 自定义组件
+		组件 — 拥有模板的指令
+	结构型指令
+		*ngFor="let val of 数据"
+		*ngFor="let val of 数据; let i=index | index as i;trackBy:index"    {{val}}{{i}}
+		*ngIf="数据"
+	属性型指令 
+		 [ngClass]="{key:value}"
+		 [ngStyle]="{background-color:value}"
+		 <ng-template [ngIf]="bl"></ng-template> 
+		 	只声明逻辑，不具备含义，类似小程序的block
+		 	结构指令都是ng-template里面的属性指令 *ngIf -> [ngIf]
+		 	转换后的结构指令不可以用在ng-template之外的元素
+	自定义属性指令 
+		ng g d /directive/color -spec false
+		属性指令： @Directive() 
+			使用： <xx appRed></xx>
+			定义： app-red.directive.ts
+				   @Directive({
+				   	selector:'[appRed]'
+				   }) 
+				   export class appRedDirective {
+				   	constructor(el:ElementRef){//注入到指令构造函数访问 DOM 元素
+				   		el.nativeElement.style.background='red';
+				   	}
+				   }
+			根模块配置：declarations:[appRedDirective]
+			给属性指令传参： <xx appColor="red"></xx>
+				@Input() appColor:string;
+				ngOnInit -> this.el.nativeElement.style.background=this.appColor||'red';
+			事件监听装饰器 @HostListener('mouseenter') onmouseenter(){} 
+			样式绑定装饰器 @HostBinding('class.xxx') isOpen = false 
+				给使用指令的dom 元素绑定一个xxx样式，根据数据isOpen的状态来切换
+
+======================================================================
+管道（过滤器）
+	管道是一个带有“管道元数据(pipe metadata)”装饰器的类。
+	管道类实现了PipeTransform接口的transform方法，该方法接受一个输入值和一些可选参数，并返回转换后的值。
+	@Pipe装饰器允许我们定义管道的名字，这个名字会被用在模板表达式中
+
+	{{数据|管道名:'参数1':参数2}}
+	number:		{{3.1|number:'2.2-4'}}  
+				整数位.小数位-区间,位数不够补零,整数位超出无效，小数超出进位
+				默认:默认有千分位，保留3位小数，四舍五入
+	currency:	5.4 | currency  默认美元，保留两位
+				5.4 | currency:'CNY/JPY/USD/自定义':'symbol-narrow':'2.2-4' 
+	json: 		{{ {a:1,b:2} }} | json -> {"a":1,"b":2}
+	date:		{{日期对象数据|date}} | 'yyyy-mm-dd HH:mm a z':'+0900'  z==时区 0900指定了时区
+	slice：		<tr *ngFor="let movie of movies | slice:0:2"> 限定数量 起始索引0 限制的数量2
+	uppercase/lowercase
+	链式管道:	{{ birthday | date | uppercase}}
+	percent:	0.259 | percent  -> 26%
+
+	纯管道（数据转换）：其他
+	非纯管道（数据类型变更）：slice（切割了） json（obj-》str）
+	自定义管道: ng g p 管道名 -spec false
+	例子：cn-day.pipe.ts
+		@Pipe({name: '管道名'})
+		class 类 implements PipeTransform {
+			transform(数据,参数){
+				return 处理后的值
+			}
+		}
+	自定义管道必须在AppModule的declarations数组中声明，内置管道都已经预注册过了
+	例子（选做）:filter.pipe.ts(filter+indexOf)/sort.pipe.ts(sort) 
+	例子：购物车->总价通过方法实现 -> 会打印多次->引出生命周期(ngDoCheck)
+======================================================================
+生命周期:
+	属性生成期-》组件渲染期-》组件销毁
+				 变化检测
+		  (changes check checked)
+	组件渲染流程：
+		组件(content)->视图(view)
+		子结束了轮到父
+		父组件->子组件->子视图->父视图
+		
+	属性生成期
+		constructor - 在所有的钩子之前调用，
+			场景：依赖注入或执行简单的数据初始化
+			private ele: ElementRef		this.ipt = 'bmw';
+			获取不到输入属性
+		ngOnChanges - 组件输入属性变化时(不可变对象：基本类型)
+			注意： 输入属性是可变对象（Object）不会触发ngOnChanges，要是不可变对象（基本类型)
+			ngOnChanges(data:SimpleChanges) {获得一个 SimpleChanges 对象，包含绑定属性的新值和旧值}
+			获取的到输入属性,写给子组件
+
+		ngOnInit - 初始化组件时，只调用一次
+			场景：组件依赖输入属性的值时使用
+		ngDoCheck - 数据更新时
+			场景：用于检测和处理值的改变，事件也会触发，会频繁触发，代码要求高效
+
+	组件渲染期间
+		ngAfterContentInit - 组件初始化后调用一次 
+			可以修改组件属性,未到视图
+		ngAfterContentChecked - 组件更新时调用,多次 
+			检测ng-content 指令外部内容绑定或变化的
+			未到视图
+		ngAfterViewInit - 视图初始化后,调用一次	
+			场景：检测 @ViewChild 或 @ViewChildren 属性装饰器查询的视图元素 ***
+			注意：不可同步修改组件属性，可异步
+		ngAfterViewChecked - 视图更新时 调用，多次
+	组件销毁时
+		ngOnDestroy - 指令销毁前调用
+	总流程:
+		父changes->父init->父DoCheck->父ContentInit->父ContentChecked->(子走一套)->父viewInit->父ViewChecked
+======================================================================
+数据请求(httpClient)	
+	基于浏览器提供的XMLHttpRequest接口,可以和支持http[s]和websocket服务通讯
+	可测试性、强类型的请求和响应对象、发起请求与接收响应时的拦截器支持
+	更好的、基于可观察（Observable）对象的错误处理机制
+	1. 引入 import {HttpClientModule} from '@angular/common/http'
+	2.	@NgModule->imports-> 导入到模块  HttpClientModule
+	3.	组件内部 构造器里面注入HttpClient类 
+		private http: HttpClient
+		this.http.get('/assets/api/items.json') 返回observe对象（流）
+			可观察对象 (observable)
+			帮助我们管理异步数据，例如来自后台服务的数据，Angular 的事件系统和它的 http 客户端服务
+		订阅：observe对象.subscribe(data=>data == 数据,err=>err==失败对象)
+		注意：subscribe 是订阅，导致了数据请求发送，而不是get
+	4.	抓取成功响应体（HttpResponse）
+		this.http.get('...',{observe:'response'}) 订阅返回的data==HttpResponse
+	5.	php访问
+		this.http.get|post(url:string,postData:xx,{配置})
+		postData: new HttpParams().set('a','11').set('b','2'), //数据
+		配置:
+			observe: 'response'	抓取成功响应体
+			responseType: 'arraybuffer'|'blob'|'json'|'text' 返回类型设置
+			withCredentials: boolean 响应头
+			reportProgress: boolean, 是否报告进度
+			params:new HttpParams().set('a','1').set('b','2')//参数传递 
+			headers: new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded') 头信息
+	6. jsonp	import {HttpClientJsonpModule} from '@angular/common/http'
+		this.http.jsonp('url?key=val','cb').subscribe(data=>console.log(data));
+	7. HttpClient不知道响应体应该是什么类型
+	   解决：定义一个接口来描述数据类型
+	   interface xx{key:类型,key2:类型}
+======================================================================
+	观察者模式:	又叫发布订阅模式（Publish/Subscribe）
+		角色：Subject (主题|出版方|公众号|被观察者) 和 Observer (观察者|订阅者|微信用户|观察者) 
+	RxJS 是基于观察者模式和迭代器模式以函数式编程思维来实现的
+		Observable(发布|被观察者)： 调 next 方法向 Observer 发布
+		Observer(订阅|观察者)： subscribe() 方法订阅
+	Observable:
+		就是一个函数，它接受一个 Observer 作为参数然后返回另一个函数
+		Observer 对象: 包含 next、error、complete 方法
+		返回unsubscribe 函数，用于取消订阅
+	import 'rxjs/Rx';
+	import { Observable } from 'rxjs/Observable';
+
+	Promise
+		返回单个值
+		不可取消的
+	Observable
+		随着时间的推移发出多个值
+		可以取消的 
+		支持 map、filter、reduce 等操作符
+		延迟执行，当订阅的时候才会开始执行
+======================================================================
+路由:
+	让用户从一个视图导航到另一个视图
+	1. 	index.html 	<base href="/">
+	2.	app.module.ts 中 导入 import { RouterModule, Routes } from '@angular/router';
+		Routes 路由配置 是个数组 RouterModule: 路由模块
+	3.	路由配置
+		const routes:Routes=[
+		  {path:'home',component:HomeComponent},
+		  {
+		    children:[ 子路由
+		      {path:'detail/:id',component:DetailComponent},
+		    ]
+		  }
+		  {path:'',redirectTo:'/home',pathMatch:'full'},//路由  跳转
+		  	为字符串默认为前缀匹配 "prefix"; "full" 为完全匹配。
+		  {path:'**',component:ErrorComponent}
+		];
+	4. 注册路由
+		@NgModule->imports->RouterModule.forRoot(routes,{enableTracing:false})//注册路由
+			enableTracing 是否监听路由
+	5. 调用路由
+		<a class="nav-link" routerLink="/home" routerLinkActive="active">首页</a>
+		
+		<router-outlet>展示区2</router-outlet>
+	6. 传参
+		routerLink="./detail/001"
+		[routerLink]="['./detail','001']" [queryParams]="{a:1,b:2}"
+		接参数： 导入当前路由服务 ActivatedRoute ，注入到构造函数
+			参数快照：constructor(private route:ActivatedRoute)
+				  this.route.snapshot.params  保存的id是初始值，组件不好复用
+			参数订阅(observe检测)： 可导向路由自身
+				this.route.params.subscribe((params:Params)=>{console.log(params)}); 接参数
+				this.route.queryParams.subscribe((params:Params)=>{console.log(params)}); 接数据
+	7. 路由跳转
+		导入Router，注入到构造函数 constructor(private router:Router)
+		this.router.navigate(['news/detail', 参数],{queryParams:{a:1,b:2}}); navigate == 根级路由跳转
+		回退到上一级路由？？window.history.go(-1);
+		子路由显示默认页news：
+			this.router.navigate(['/news/detail','001'])
+	x.	路由模块剥离
+		创建路由模块 app-routing.module.ts 
+		ng g m ./app-routing -spec false
+		转移：RouterModule, Routes路由配置部分->app-routing
+			  根模块保留组件的导入和声明，imports-> AppRoutingModule 引入路由配置模块
+			  路由模块exports:[RouterModule] 
+	8.	辅助路由(多视图) 允许定义多个插座	
+		辅助插座：<router-outlet name="view2"> 
+		配置插座：{path:'chat',component:ChatComponent,outlet:'view2'} 
+		导航：<a [routerLink]="[{outlets:{primary:'home',插座名:'chat'}}]" 
+			  指定主插座显示home路径对应组件，辅助插座显示chat路径对应组件
+	9.	路由守卫(钩子) 满足条件才可进入或离开	
+		CanActivate 	处理进入 异步promise fetch
+			创建守卫类：ng g cl ./guard/user -spec false
+			引入 CanActivate 类，钩子canActivate(){return 布尔  | return fetch(return 布尔)}
+			路由配置：
+			{path:'',component:'',canActivate:[守卫类,守卫类2]} 可以多个守卫
+			NgModule->providers:[守卫类]  类需要实例化、依赖注入实现
+			constructor(private router:Router) 需要 @Injectable()
+				this.router.navigate(['/login']);
+		Resolve
+			进入之前获取数据 A路由导向B路由之前，由守卫类负责拦截并加载数据后再返回给B组件
+			守卫类：export 守卫类 implements Resolve<要返回的数据类型>
+					钩子resolve(){return 数据|return fetch(数据)}|return Observable<object>
+			路由配置：{path:'',component:'',resolve:{自定参数:守卫类}} 可以多个守卫
+					  NgModule->providers:[守卫类]  实例化、实现
+			B组件接收数据：ActivatedRoute.data.subscribe((data:{自定参数})=>{data.自定参数})
+
+		CanDeactivate  处理离开
+			守卫类：export 守卫类 implements CanDeactivate<要守卫的组件类>
+					钩子canDeactivate(component:要守卫的组件类){return 布尔 确定是否允许离开}
+			路由配置：{path:'',component:'',canDeactivate:[守卫类,守卫类2]} 可以多个守卫
+					  NgModule->providers:[守卫类]  实例化、依赖注入实现
+		路由监听
+			app.component 的构造器内 订阅路由事件
+			this.router.events.subscribe(ev=>{判断路由事件})
+			判断路由事件: ev instanceof NavigationEnd -> router.url
+			注意：Router需要注入,NavigationEnd需要引入
+	路由懒加载：用loadChildren动态加载一个 独立Module 
+
+		app.module->app-routing-module->子.module->子-routing.module
+		app.module:   HttpClientModule需要导入
+			imports->AppRoutingModule
+		app-routing-module:
+			RouterModule.forRoot(routes,{enableTracing:false})
+			路由匹配时，加载一个模块，无需引入模块和组件
+			{path:'子',loadChildren: 'app/user/user.module#UserModule'},
+		子.module： 
+			declarations->子Component
+			providers->子服务
+			imports->子RoutingModule
+		子-routing.module:
+			imports->RouterModule.forChild(routes)
+			exports->RouterModule
+			routes:	外面已匹配path这里无需写
+			{path:'',component:子Component | children:[path:'xx',loadChildren:'嵌套']} 
+======================================================================
+动画 
+	根模块：imports 动画模块 BrowserAnimationsModule
+	组件import { trigger, state, style, transition, animate } from '@angular/animations';
+	@Component-》animations：[]->trigger('动画名',[state(...),transition(..)])
+	state('数据状态1',style({opacity:0,left:'0'})) 
+		一个‘动画名’可以有多个state
+	transition('数据状态1 => 数据状态2', animate('500ms 1.5s ease-in')) 
+		指定状态1 到状态2 的动画时间延时和类型
+		一个animations可以有多个trigger，一个trigger可以有多个state
+	动画调用：<div [@动画名]="数据状态"></div> 
+		数据状态 对应 数据状态1|2
+	动画事件：(@动画名.start|done)="方法($event)"
+	动画元数据:  AnimationEntryMetadata 动画设置外迁ts
+		创建ts：export const ani:AnimationEntryMetadata=Trigger(..)
+		组件：引入ts +  animations:[ani]
+	路由动画：路由监听 + AnimationEntryMetadata + 包裹router-outlet
+		路由监听： 修改数据状态 this.routerState = !this.routerState;
+		动画元数据： 配置动画  query group ***
+		调用：<div [@动画名]="数据状态"><router-outlet>
+======================================================================
+服务 与 依赖注入 	
+	服务：给组件使用的公共部分代码，组件为数据绑定提供属性和方法，把其它琐事都委托给服务，多个组件用到同一个逻辑时，就是一个服务，应用逻辑拆分到服务，并通过依赖注入来在组件中使用这些服务
+	依赖注入(Dependency injection)：
+		给组件注入所需服务，Angular 通过查看构造函数的参数类型得知组件需要哪些服务，渗透在整个 Angular 框架中，被到处使用，注入器 (injector) 是本机制的核心
+	1.	定义服务	ng g service 服务名 | ng g s 目录/服务名
+		Injectable 标识当前服务的构造器可以注入其他服务，没有就不能服务中使用服务
+	2.	注册服务  根组件使用就注册到根，其他组件使用就注册到组件内
+		providers: [服务名] 提供器
+		提供器的作用域：
+			NgModule中注册服务：被整个应用访问，所有组件可注入 √
+			组件中注册：该组件及其子组件中可注入
+	3.	注入服务（到组件) 注入器
+		constructor(变量名: 服务类) {this变量名.方法()}
+	例子：DataServer服务 jsonp服务引入  
+		模板调用服务数据	{{注入到构造器的服务变量.属性}}
+	例子：StoreServer存储服务 + 父组件修改 子组件显示
+		模板调用服务数据	{{注入到构造器的服务变量.属性}}
+	建议：带入 async 管道 参考 竞拍MOV *** 2017-12-30
+======================================================================
+项目 newApp
+	组件拆分：
+		资源copy到assets，图片指向/assets 
+		base.css -> style.css 全局样式
+		index.css - > app.component.css 组件样式
+		font.js 全局 app.components.ts 非模块化全局引入
+
+		jquery类型文件安装：npm i @types/jquery
+
+		swipe 无类型文件 解决：angular2-useful-swiper 
+			1. npm install --save swiper@3.4.2
+			2. npm install --save angular2-useful-swiper
+			3. "styles": [ 全局配置swiper
+							"styles.css",
+							"../node_modules/swiper/dist/css/swiper.css"        
+					],
+					"scripts": [
+							"../node_modules/swiper/dist/js/swiper.js"                
+					],
+			4. app.module.ts 导入模块
+			import { SwiperModule } from 'angular2-useful-swiper';
+			imports：[SwiperModule]
+			5. 组件内部使用swiper组件，配置config参数
+		index -> (Header/Footer/Home/NewList/Swiper)
+			默认 全局样式style-》影响子组件
+				子组件样式不会影响全局样式
+		follow 组件 需要单独样式 .follow{margin-top:0.9rem;} 
+			<div class="follow"><app-new-list></..></..>
+	路由搭建： ng g m app-routing -spec false
+		路由配置:
+		const routes:Routes=[
+		  {path:'home',component:HomeComponent},
+		  {path:'detail',component:DetailComponent,children:[
+		    {path:':id',component:DetailComponent}
+		  ]}
+		  {path:'',redirectTo:'/home',pathMatch:'full'},//路由  跳转
+		  {path:'**',component:ErrorComponent}
+		]
+
+		@NgModule({
+		  imports: [//注册路由
+		    RouterModule.forRoot(routes,{enableTracing:false})
+		  ],
+		  exports:[RouterModule], //导出RouterModule
+		  providers:[]
+		})
+		app.module.ts: 引入路由配置模块
+		imports: [AppRoutingModule]
+
+		调用路由：routerLink="/home"  routerLinkActive="home1"
+				  <router-outlet></router-outlet>
+				  回退：window.history.go(-1) ??
+		user组件守卫：随机判断
+			创建守卫类：ng g cl ./guard/login -spec false
+			引入 CanActivate 类，钩子canActivate(){return 布尔 确定是否允许进入}
+			路由配置：
+			{path:'',component:'',canActivate:[守卫类,守卫类2]} 可以多个守卫
+			NgModule->providers:[守卫类]  
+	数据交互:
+		引入 import {HttpClientModule} from '@angular/common/http'
+		@NgModule->imports-> 导入到模块  HttpClientModule
+		
+		组件内部 构造器里面注入HttpClient类 
+		this.http.get('/assets/api/items.json') 返回observe对象（流）
+		订阅：observe对象.subscribe(data=>data == 数据,err=>err==失败对象)
+
+		home组件读取数据 
+			输入属性传值给newlist组件,newlist里面通过ngOnChanges钩子获取
+			[list]="list" dataname="home"
+		newlist组件跳转
+			<a [routerLink]="['/detail',item.id]" [queryParams]="{dataname:dataname}">
+		detail组件接路由数据： 导入当前路由服务 ActivatedRoute ，注入到构造函数
+				this.route.params.subscribe((params:Params)=>{console.log(params)}); 接参数
+				this.route.queryParams.subscribe((params:Params)=>{console.log(params)}); 接数据
+				路由配置时:id作为子路由出现时，接收不到参数
+				解决：利用queryParams传递id
+		detail组件接到路由数据后求取数据httpClient
+			[innerHTML]="数据" html非转义展示 样式无效??
+		时间过滤:
+			date:		{{日期对象数据|date:'参数'}} | 'yyyy-MM-dd HH:mm:ss a z':'+0900'
+		关注页面数据交互:
+			模板 [list]="list" dataname="follow"
+
+		交互转移到服务: 
+			思想：服务读取数据，存到服务内部，组件注入服务到构造器，模板取服务对象渲染
+			创建 dataService服务: ng g s /service/data -spec false
+			注入主模块: providers: [DataService]
+			dataService服务:
+				home/follow/.. 服务属性
+				get(url){return this.http.get(url);返回流}
+				getHome/getFollow(){
+					let url = '/assets/data/index.data';
+					this.get(url).subscribe(
+						data => this.home = data
+					)
+				}
+			组件调用:
+				constructor(private data:DataService) { }
+				ngOnInit() {this.data.getHome();}
+			模板调用: [list]="data.home" 服务对象.服务属性
+		状态写成服务
+			storeService
+				bNav/bFoot/bLoading 服务属性
+				showNav(){}
+				...
+			路由监听
+				app.component 的构造器内 订阅路由事件
+				this.router.events.subscribe(ev=>{判断路由事件})
+				判断路由事件: ev instanceof NavigationEnd -> router.url/urlAfterRedirects
+				注意：Router需要注入,NavigationEnd需要引入
+							ev.url路由地址 会检测不到 /  ev.urlAfterRedirects 检测跳转后地址
+		全局loading：
+			ng g c /service/loading
+			app组件使用: <app-loading *ngIf="store.bLoading">
+			dataService服务，内部修改store服务的bloading状态
+			注意：dataService应该在组件构造器里面调用
+					  ngOnInit会报错:ExpressionChangedAfterItHasBeenCheckedError: Expression has changed after it was checked. Previous value: 'false'. Current value: 'true'
+			更好的方案：
+				监听httpClient对象状态？
+				依赖第三方loading插件?
+				考虑NavigationEnd是否会等待异步数据回来后触发
+======================================================================
+	http请求配置统一路径,完成代理，可跨域？ ***
+	前端：proxy.conf.json  地址转发
+		{
+			"/api":{
+				"target":"http://localhost:3000"
+			}
+		}
+		package.json
+			script->start->"ng serve --proxy-config proxy.conf.json"
+	前端请求时：'api/接口名称'
+	后端响应: 'api/接口名称'
+======================================================================
+构建：
+	1. 编译
+		ts->js
+	2. 合并
+	ng build->dist
+
+多环境:	测试|开发|生产|源码
+	angular-cli.json -> environment -> 环境文件定义
+		environment 环境测试
+			dev 开发环境
+			prod 生产环境
+	环境切换
+		package.json->scripts->start-> 添加: --env=prod   
+
+部署: 与服务端整合
+	ng build -env=prod -> dist ->copy 到 node服务器的www
+	问题：刷新会出错  如：localhost:8000/product/1 浏览器不知道访问的顺序，hash模式就可以
+	解决：客户端修改app.module->添加一个providers，hash地址策略
+		providers:[
+			{provide:LocationStrategy,userClass:HashLocationStrategy}
+		]
+------------------------
+填补：
+	jxjs
+	样式模块化：
+		默认 全局样式style-》影响子组件
+			 子组件样式不会影响全局样式
+		组件内部@Component 修饰设置
+			encapsulation:ViewEncapsulation.None 继承父，影响父组件样式（无 Shadow DOM）
+			encapsulation:ViewEncapsulation.Emulated - 继承父，不影响父
+			encapsulation:ViewEncapsulation.Native - 不继承父，不影响父 Shadow DOM 特性，
+
+------------------------------------------------------------------------
+
+混合开发：
+	
+	web app
+		技术： html5 + css + js(库，框架) 编写移动端
+		优点：开发周期短，跨平台
+		缺点：性能一般，默认无法调取设备信息(麦克风，摄像头，通讯录)
+		场景：手机淘宝，京东，网易
+	native app
+		java -> android			object-c	-> ios
+		优点：性能高，默认就可以调取设备信息
+		缺点：开发周期长（迭代慢），团队规模大
+		场景：大型游戏，应用
+	hybird app 
+		h5 -> 搭建页面
+		通过第三方的native库，访问设备信息
+			a) cordova   H5(VUE)+cordova  (adobe产品)
+			b) wx_jssdk  H5 + wx_jssdk    (限定) 微信   |  微信公众号
+			c) mui + hbuilder
+			d) reactNative react + reactNative
+			e) angular + ionic
+			f) vue + weex
+--------------------------------------------------------------------------------
+
+phoneGap:
+	干嘛的： 第三方的打包工具| 搭建开发环境 | 内部提供 cordova库
+	官网：https://phonegap.com/
+
+	安装：
+		pc: phonegap desktop   |  搭建项目环境
+		移动端: phonegap developer | 测试查看的  | 保证手机和电脑要在同一个网段(连了同一个wifi，同一路由)
+
+	开发:	
+		无框架：使用
+			
+		vue:   使用
+		API:	http://www.phonegapcn.com/docs/zh/cn/index.html  | https://phonegap.com/
+			Battery Status  电池信息
+			Camera	照相机
+			Contacts 通讯录
+			Device Info 设备信息
+			Device Motion (accelerometer) 重力感应
+			Device Orientation (compass) 罗盘(指南针)
+			Dialogs (notification) 模态框
+			File 文件操作(增删改查)
+			File Transfer 上传
+			Geolocation  地理定位
+			Globalization 全球化
+			InAppBrowser 在app内部开启新窗口
+			Media Capture 采集
+			Network Information  网络状态
+			Splash Screen 欢迎屏幕
+			Status Bar 状态栏
+			Whitelist 白名单
+			Vibration 震动
+
+	打包
+		1)	命令行-> 文件 -> 上传到 appstore|应用商城
+			npn i cordova -g
+			cordova build
+		2)  在线打包 phonegap官网在线打包(app就在phonegap网)
+			https://build.phonegap.com/ -> new app
+
+			private 私有包，禁用
+			open-source
+				项目传到github仓库->复制地址-> pull -> ready to build
+			phonegap项目上传github
+				1) 登录->new repository->phonegap目录，拖拽(upload file)
+				2) git clone 仓库地址 -> git add (添加到缓存区)-> git commit -m xx (git仓库)
+					git push (丢到远端)
+
+VUE + cordova 配置
+  方案1：
+    phonegap
+      vue
+        webpack.config.js 
+          配置  path: path.resolve(__dirname, '../cordova/www/dist')
+                publicPath: '../test/www/dist/'
+      cordova
+        www
+          dist  (vue 打包后的目录)
+          index.html  配置 <script src="./dist/build.js"></script>
+    vue：
+      直接使用cordova API
+      npm run build 打包至 www/dist -> 手机实时查看
+      pc机 在phonegap上查看, vue 服务器用不上了
+
+    问题：
+    	vue白屏：未解决
+    	iphone 端 phonegap已经无法安装了
+  方案2：
+    http://kartsims.github.io/vue-cordova/
+
+cordova打包->app：
+  https://segmentfault.com/a/1190000010598615
+
+----------------------------------------------------------------
+
+微信公众号：
+  为什么要公众号:
+    被关注:
+      可以实时推送一些信息
+      希望利用微信推广个人(订阅号)，企业(企业号)
+      使用微信一些基本功能(摇一摇周边,投票，微信小店,微信支付)
+      希望调取设备信息
+  开发方式
+    a) 申请，设置 (商务，业务人员)
+	    公众平台->注册(公众号:订阅号，企业号)
+	       注册：基本信息  2 选择类型  3 信息登记  4 公众号信息
+	       登录: user/pass -> 微信扫一下(注册时填入微信号)
+
+    b) 定制， wx_jssdk
+
+      开发：放到用户域名 uncle9.duapp.com ,通过过微信公众号|微信浏览器跳转,才可以使用wx_jssdk
+
+      申请：百度云空间 账号| 部署web应用
+        https://cloud.baidu.com -> 注册 -> 实名认证 -> (24小时)  -> 生成百度账号 && 有了域名
+        bluelieder123/pass....
+      配置空间:
+        应用引擎BAE->部署列表->添加部署->填写xxx->更多操作->自动发布选中(里面有svn/git地址)
+
+      测试空间 && 上传 && 更新
+        创建svn目录->copy网站到了里面->checkout(填写svn地址|密码==百度云空间密码)->开发->commit 上传
+        密码不对：保存其他svn地址的密码,需要清空密码
+          C:\Users\你的用户名\AppData\Roaming\Subversion\auth
+            清空当前目录所有
+
+
+
+b) 定制， wx_jssdk
+
+  服务器端配置:   xxx.duapp.com
+    提供文件：
+      wx_sample.php 	后台验证
+      MP_verify..txt 	验证文本
+      hello world 示例代码
+
+  微信端配置:  登录公众号管理平台
+    通过公众号|微信浏览器  跳转  服务器
+
+  1. wx_sample.php  下载一个  
+  2. MP_verify..txt
+    公众号设置->功能设置->JS接口安全域名->填入  后台域名(不含http) | uncle9.duapp.com ->下载MP文件
+    开发->基本配置->修改配置->
+      URL:  xx.duapp.com/xx/wx_sample.php 
+      Token:  xxxx        Token 对应 wx_sample.php 里面token
+      随机生成key:  一旦生成，请快速提交
+  3. 示例代码  下载  微信端
+    开发->开发者工具->开发者文档(API)->微信网页开发->微信js-sdk说明文档->拉到最后
+
+    copy pnp目录 到svn 地址下
+
+    修改sample.php 开发秘钥(微信端->基本配置->开发者ID|密码)
+
+  调试:
+    {errMsg:'config,fail'}  
+      1. 测试号
+        开发者工具->开始开发-接口测试号申请->获取测试id/秘钥
+        设置:url:	http://xx.duapp.com/xx/wx_sample.php
+        token: wx_sample.php里面的token
+      2. wx_sample.php文件
+
+
+vue + jssdk
+	sample.php 
+		转移 根index.php
+		在jssdk后面引入  <script src="./dist/build.js"></script>
+		修改路径：require_once "./php/jssdk.php"
+		添加: div#app
+		wx.config 部分保留
+	webpack.config.js
+		path: path.resolve(__dirname, '../appidf17qocgbjb/dist'),
+    	publicPath: '../appidf17qocgbjb/dist/',
+    main.js
+    	import './mo/wx.js';  wx.js 自定义的公共模块
+    wx.js == 自定义全局模块模块
+    	wx.ready
+    		wx.onMenuShareTimeline
+    		wx.onMenuShareAppMessage
+    app.vue
+    	methods里面，使用wx全局对象的api
+------------------------------------------------------------------
+
+微信小程序：
+	帮助：微信公众平台->首页->开发文档
+	注册小程序帐号:
+		公众平台->注册->小程序
+	后去拿到开发秘钥:
+		公众平台->微信小程序接入指南->注册小程序帐号->获取AppID
+		获取AppID:公众号->设置-开发设置->wxf34e69dfcc966870
+	工具安装:
+		微信公众平台->首页->开发文档->工具->下载-》1.0.1版本 
+	简易教程:
+		创建项目
+	框架：
+		为了方便开发者减少配置项，描述页面的四个文件必须具有相同的路径与文件名。
+		逻辑层:
+			注册页面或者主页面 app({配置})|pages({配置})
+			配置:
+				data:{}  数据
+				钩子函数:(){}
+				自定义函数:(){  this  指向 当前模块 }
+				自定义属性:值
+
+			this.data.数据  获取当前模块数据
+			app.全局属性.数据名  获取app数据
+
+			this.setData({数据名:值})  修改当前模块数据
+			app.setData({数据名:值})  修改APP模块数据
+			app.setData({数据名:值},callback)  修改APP模块数据
+
+			事件：
+				bindXxx   Xxx=事件名 
+				catchXxx
+				bind事件不会冒泡，catch事件冒泡。
+			路由方式: 页面栈
+				重定向(redirect|reLaunch)|返回|转发 导致当前页面出栈(onUnLoad)
+				子路由，跳转会导致中间栈出栈 | 转发 不会
+			注意:
+				navigateTo, redirectTo 只能打开非 tabBar 页面。
+				switchTab 只能打开 tabBar 页面。
+				reLaunch 可以打开任意页面。
+				页面底部的 tabBar 由页面决定，即只要是定义为 tabBar 的页面，底部都有 tabBar。
+				调用页面路由带的参数可以在目标页面的onLoad中获取。
+		视图层:
+			WXML:	组件，非标签
+			WXCSS:	CSS
+				尺寸：  rpx  
+					1rpx = 0.5px = 1 物理像素
+
+API:
+	聚合
+	https://www.juhe.cn
+	https://www.juhe.cn/docs/api/id/42
+	AppKey：baf18d858bfc7b9ab200acc4a47bad7d
+
+
+	豆瓣挂了
+					
+--------------------------------------------------------------------------------------
+angularJs:
+
+	版本：
+		1.x 上课		angularJs
+
+		针对 pc端  
+			场景:	后台管理页面，的渲染工作
+
+		移动端：配合ionic navtive.js
+
+		官网：https://angularjs.org | https://docs.angularjs.org/api
+		API：http://www.angularjs.net.cn/
+
+		2.x				angular   全新版本  ts(typescript) js的超集
+			学习曲线：陡峭89,需要时长
+
+			2.x 对应的路由 router 3.x
+
+			4.x			angular
+全局概念:
+	模板(Template)	带有Angular扩展标记的HTML
+	指令(Directive)	用于通过自定义属性和元素扩展HTML的行为
+	模型(Model)	用于显示给用户并且与用户互动的数据
+	作用域(Scope)	用来存储模型(Model)的语境(context)。模型放在这个语境中才能被控制器、指令和表达式等访问到
+	表达式(Expression)	模板中可以通过它来访问作用域（Scope）中的变量和函数
+	编译器(Compiler)	用来编译模板(Template)，并且对其中包含的指令(Directive)和表达式(Expression)进行实例化
+	过滤器(Filter)	负责格式化表达式(Expression)的值，以便呈现给用户
+	视图(View)	用户看到的内容（即DOM）
+	数据绑定(Data Binding)	自动同步模型(Model)中的数据和视图(View)表现
+	控制器(Controller)	视图(View)背后的业务逻辑
+	依赖注入(Dependency Injection)	负责创建和自动装载对象或函数
+	注入器(Injector)	用来实现依赖注入(Injection)的容器
+	模块(Module)	用来配置注入器
+	服务(Service)	独立于视图(View)的、可复用的业务逻辑	
+
+方法：
+	angular.bind(this指向,函数名,参数1,参数n);  返回新函数	修改this指向
+	angular.copy(克隆谁1,克隆谁2,克隆到哪);	数据深拷贝，
+	angular.equals(数据1,数据2，数据n)  返回boolean ,对比数据是否相等
+	angular.forEach(数据,function(value,index){})	对数据遍历
+	angular.isArray/isData/(数据)  判断数据类型  返回true/false
+--------------------------------------------------------------------------
+
+数据：
+	放置数据:	M
+		表单元素： 天生放数据
+		双向绑定: ng-model
+		$scope.数据 = 值 
+	展示数据:	V
+		{{数据名.属性}}	模板标记|mustach|插值表达式
+		ng-bind="数据名"
+		ng-repeat="(index,value) in arr"   {{value}}/{{index}}
+			注意： track by $index  为了给数组添加相同元素，指定不同的
+			$index  是索引  不是key ~~ index
+
+指令:	directive
+	ng-指令名
+	ng-app  开启angularjs应用模式  一个页面只能出现一次
+	ng-model/ng-bind/
+
+	ng-init="初始化数据"
+	ng-show="true/false数据"
+	ng-hide="true/false"
+	ng-click="方法名"   ng-mouseover/ng-mouseout/ng-change....
+	ng-value="数据"  表单值
+	ng-class="{样式类名1:true,样式类名2:false}"
+	ng-style="{css属性名:值,xx:oo}"
+	ng-include="'外联html模板'"
+
+双向绑定，依赖注入（服务）
+	依赖注入:  show(5,12)  function show(a,b){a==12 b==5}
+			   function show($a,$b){}  $b $a 位置可以随意
+模块：
+	创建模块:	模块对象=angular.module('模块名',['依赖模块1',2,3],配置函数);
+		注意： 模块名 用给整个页面的 ng-app="模块名"
+控制器:
+	定义：
+	模块对象.controller('控制器名',function($scope){
+		//控制器的配置函数
+		$scope.数据名=值	作用域 数据初始化在这里
+		任何作用域中的模型改变都会实时在视图中反映出来，同时任何用户与视图的交互则会映射到作用域的模型中。这样，作用域中的数据模型就成了唯一的数据源
+	})
+
+	使用：<xx ng-controller="控制器名"></xx>
+
+	a) 控制器 ，默认会继承  
+	b) 控制器传递数据 子->父
+		子：$scope.$emit('自定义事件名',数据);
+		父：$scope.$on('自定数据名',function(event,data){event=事件对象,data=数据})
+	c) 父->子
+		$scope.$broadcast('自定义数据名',数据); 广播
+		接受：$scope.$on(....)
+
+过滤器:
+	自带过滤器:
+		使用:	
+			a)	{{数据 | 过滤器名: 参数1 : 参数2 }}  在模板使用
+				第一个参数 string / arr / fn
+			b)  控制器使用 	服务
+
+		data:'yyyy-MM-dd hh:mm:ss EEEE a'
+		filter:'关键字'
+		limitTo:start:len
+		number:数字  转换千分位
+		orderBy  排序 默认升	orderBy:关键字:true|false		
+			orderBy: 空字符或者数字 : true降false升   字母首字母  
+			orderBy: 'price': false
+		uppercase
+		lowercase
+
+	自定义：
+		写法：
+			模块.filter('过滤器名称',定义函数(){
+		      return function(数据,参数1,参数2){//过滤器名称需要调用的函数
+		        return 修改后的数据
+		      }
+		    })
+			{{数据 | 过滤器名称:'参数1':'参数2'}}
+
+		capitalize  Angular Is God
+		getCnDay	星期三|星期3
+		truncate   13833****23
+
+自定义指令: (组件)
+
+	定义：
+		模块.directive('指令名小驼峰',定义函数(){
+			return function(scope,element,attr){
+				angular可以操作dom地方
+				scope == $scope
+				element == 使用指令所在的dom元素，是个JQlite对象 ~~ angular.element
+				attr == 使用指令所在的dom元素,所有dom属性的集合
+			}
+
+			return {
+				link: function(scope,element,attr){...}
+				template:'字符模板',		推荐，有根元素
+				templateUrl:'模板id,模板文件名'  推荐，有根元素
+				transclude: true  是否插入内容到模板
+					模板配合： <ng-transclude></...> | <xx ng-translude></..>
+				replace:true //替换指令所在的dom
+				restrict:'ECMA' 规定了指令的调用方式
+					E: element A: attribute C: css M: comment注释(配合替换replace)
+				controller:function($scope){}
+				scope:{} //隔离指令作用域，给每个指令（组件）生成一个存储容器
+			}
+
+		})
+	使用：
+	<div ng-指令名></..>
+	<ng-指令名></..>
+	..
+	..
+
+脏检查：
+	原因：没有使用绑定到$scope上的方法，修改了$scope的数据，视图不会更新
+	解决：需要数据同步
+		原生方式修改  -> $scope.$apply(); 
+		$scope.$apply(function(){原生方式修改数据})
+
+服务: 通用业务逻辑，注入到控制器的
+	自带服务：
+		timer = $timeout(fn,delay)
+		timer = $interval(fn,delay)
+		$interval.cancel(timer);	清除
+		$timeout.cancel(timer);
+
+		$filter 过滤器
+			$filter('过滤器名orderBy')(数据,参数,排序)
+		$sce  负责拒绝一些不安全的行为
+			$sce.trustAsHtml('数据里面放的是html'); 允许数据非转义输出
+			ng-bind-html="数据"	输出html
+
+			$sce.trustAsResourceUrl(str)  允许url地址请求数据源
+			$sce.trustAsUrl(str)  允许url地址请求
+			$sce.trustAsCss(css代码)  允许css代码数据
+			$sce.trustAsJs(js代码)  ...
+
+		$cacheFactory 缓存
+			得到一个缓存实例，用id来区分，比如我想取id为’store’的缓存
+			var store = $cacheFactory('store');
+
+			store.put('bLoading',{}})	添加键值对
+			store.get('bLoading') 获取键
+			store.remove('bLoading') 删除key
+			store.removeAll() 清除缓存服务里面所有的键
+			store.destroy()	删除该缓存实例
+		$http  发送http请求的通用业务服务		数据交互
+			$http({配置参数}).then(succFn,errorFn)
+			配置参数：
+				url: 地址
+				method:get/post
+				params:{key:value}  get请求携带数据
+				data:'a:1&b=2' post请求携带的数据
+				headers:{key:value} post需要带请求头
+				cache:true 请求一次,后续F12 network 无法触发的 ，then会执行
+			$http.jsonp(url,{配置参数}).then(succFn,errorFn)
+				注意：url 需要 安全许可 url  $sce.trustAsResourceUrl(url)
+
+	自定义服务:
+	服务是凌驾于控制器、指令、路由之上的，服务可以被控制器、指令、路由来使用。服务是一个单例对象，控制器、指令等任何对象对服务数据的更改，都会影响到其它的地方。
+通用的业务逻辑封装在服务里面,对数据的处理全部都应交给服务，而不是放在控制器中处理。控制器只是起一个承上启下的作用。
+
+	factory是普通function，而service是一个构造器(constructor)，这样Angular在调用service时会用new关键字，而调用factory时只是调用普通的function，provider可以接受全局config配置
+		a) 工厂模式
+			app.factory('服务名',定义函数(){ 
+				return {
+					属性:值
+				}
+			})
+		b) 构造模式
+			app.service('服务名',定义函数(){ 
+				this.属性=值
+			})
+		c) 提供商模式(包装者模式)
+			app.provider('服务名',定义函数(){
+				this.$get=function(){
+					return {
+						属性:值
+					}
+				}
+			})
+
+数据监听:
+	$scope.$watch('数据名',fn,true)  true 深度监听
+
+--------------------------------------------------------
+防压缩：
+	
+配置函数: 一种angularjs的自定义（指令，过滤器，服务。。)的书写风格
+	
+	控制器:
+		a)定义在模块
+			app.controller('控制器名',function($scope){})
+
+		b)	定义在配置函数
+			app.module('模块名',[依赖模块],配置函数)
+			app.module('..',[],function(提供商){
+				提供商.register('控制器名',function($scope){})
+			})
+			提供商 == $controllerProvider
+		c) 防压缩写法
+
+	过滤器:
+		a)定义在模块
+			app.filter('过滤器名',function(){
+				return function(数据){
+					return 处理结果
+				}
+			})
+
+		b)	定义在配置函数
+			app.module('..',[],function($filterProvider){
+				$filterProvider.register('过滤器名',function(){
+					return function(数据){
+						return 处理结果
+					}
+				}
+			})
+		c) 防压缩写法
+			app.module('..',[],['filterProvider',function($filterProvider){
+				$filterProvider.register('过滤器名',function(){
+					return function(数据){
+						return 处理结果
+					}
+				}
+			}])
+	指令：
+		a)定义在模块
+			app.directive('指令名',function(){
+				return {
+					link:function(scope,element,attr){}
+				}
+			})
+
+		b)	定义在配置函数
+			app.module('..',[],function($compileProvider){
+				$compileProvider.directive('指令名',function(){
+					return {
+						link:function(scope,element,attr){}
+					}
+				}
+			})
+	服务:
+		a)定义在模块
+			app.factory|service|provider('$服务器',function(){
+				...
+			})
+
+		b)	定义在配置函数
+			app.module('..',[],function($provide){
+				$provide.factory|service|provider('#服务器',function(){
+					...
+				}
+			})
+	注意:
+		配置函数里面注入的是提供商(provider)
+		$controllerProvider/$filterProvider/$compileProvider/$provide
+
+		控制器里面注入的是服务(service)
+		$scope/$timeout/$http/$interval/$sce/$cacheFactory/$自定义服务名
+路由:
+	官网路由 不能 嵌套，没有子路由
+	引入第三方： ui-router  是个模块
+	angularjs一个文件就是一个模块，在模块里面定义指令(组件),过滤器，服务...
+
+使用流程：
+	1. 引入 ui-router.js   src  提供了一服务和提供商
+		$urlRouterProvider	路由跳转
+		$stateProvider 路由状态
+	2. 依赖到主模块	app.angular.module('主模块',['ui-router'])
+	3. 配置路由模块  (可选)
+		app.config(配置函数)
+		配置函数:
+			注入提供商
+			$stateProvider.state('路由名',{配置}); 路由状态
+
+				配置： url:地址 template|templateUrl:模板
+					   controller:控制器 parent: 父路由名
+
+			$urlRouterProvider	路由跳转
+
+			注入提服务,后期后用在控制器里面
+			$stateParams.key == 取到父路由传递过来的参数
+
+		调用路由：
+			指定路由名: ui-sref="路由名"
+			指定视图(插座)： ui-view
+			指定激活的路由样式: ui-sref-active="类名"
+
+			业务逻辑（控制器，服务）
+				$state.go('路由名') 跳转
+				$window.history.go(-1|1)
+
+-----------------------------------------------------------------------------------
+跨域
+
+nodejs后台设置（响应时）
+ 	1.	res.setHeader('Access-Control-Allow-Origin', req.headers.origin); 允许跨越
+ 	2.	cors 中间件
+
+需求:服务器跨域给前端写cookie
+
+跨源凭据：
+	ajax跨源请求不提供凭据(cookie、HTTP认证及客户端SSL证明等)
+	前端：设置ajax的请求带凭据	
+		withCredentials=true		
+	后端：接受后http必须做出对应的响应：
+		Access-Control-Allow-Credentials: true
+nodejs：
+	router.get('/cookies', function(req, res){
+		res.setHeader('Access-Control-Allow-Origin', req.headers.origin); //允许跨越
+		res.setHeader('Access-Control-Allow-Credentials', true);//告诉客户端可以在HTTP请求中带上Cookie(凭证数据),客户端可以不带
+	}
+
+前端原生：请求头里面带凭证，带cookie
+	var xhr = new XMLHttpRequest(); 
+	xhr.open("post", "xxx/xxx", true);
+	xhr.withCredentials = true;		放在 open 方法后面比较靠谱
+	xhr.onload = function(){}
+	xhr.send("a=1&b=2");
+
+前端jqAjax:	请求头里面带凭证，带cookie
+	$.ajax({
+		type:'get',
+		url:"http://localhost:3000/logouts",
+		dataType:"json",
+		xhrFields: {
+			withCredentials: true
+		},
+		success:function(data){
+			console.log(data);
+		}
+	})
+
+	前端:axios 请求头里面带凭证，带cookie
+		axios.defaults.withCredentials=true  统一
+
+		axios({credentials:true})	逐条
+
+	前端:vue-resource
+			this.$http.get(url,{credentials:true}) 追条
+
+		Vue.http.interceptors.push(function(request, next) {
+		  request.credentials = true  统一
+		  next();
+		});
+
+
+前端:fetch  请求头里面带凭证，带cookie				
+	fetch('http:localhost:3000/cookies', {
+		credentials: 'include', //凭证
+		method:'get',
+		headers:{
+			'Accept':'application/json,text/plain,*/*',
+			'Content-type':'application/x-www-form-urlencoded;charset=utf-8'
+		},
+		body:数据
+	}).then(function(res) {
+	    // ...
+	})
+
+
+react 脚手架
+	npm install create-react-app -g
+
+	create-react-app 项目目录    自动创建《项目目录》，安装依赖
+
+	cd 项目目录
+
+	npm run start / npm start
+
+	问题：
+		localhost:3000  默认端口
+		修改: node_module/react-scripts/scripts/start.js
+------------------------------------------------------------------------
+
+
+百度云文档:	https://cloud.baidu.com/doc/BAE/index.html
+
+部署百度云:
+	创建nodejs应用
+		BAE 部署 node + git + 自动发布
+			git clone 仓库地址 + bluelieder@qq.com 14434513
+		copy node程序 到仓库
+			"start": "node ./bin/www.js"	注意：要有js后缀
+			node_modules目录也需要上传, package里面无需有包依赖(可选)
+			bin/www 文件端口：  18080
+			nodejs 里面有es6 语法(可能会出问题)
+			"fatal: The remote end hung up unexpectedly " 原因是推送的文件太大。
+				.git目录下面修改生成的config文件增加如下：
+		       [http]  
+			   postBuffer = 524288000
+	创建mysql扩展应用
+		扩展服务->添加->mysql
+		创建表（写表头)	+ 导入(之前本地表)
+			空 选中代表可以为空
+		node 访问 mysql
+			扩展服务里面找mysql信息(user/pass/port/database/host)
+			一定要在路由响应时,捕获ECONNRESET异常（db.on('error'）
+	创建mongodb扩展应用
+		扩展服务->添加->mongodb
+		rockmongd 创建 user 集合
+		node 访问 mongodb
+			扩展服务里面找mysql信息(user/pass/port/database/host)
+			参考：https://cloud.baidu.com/doc/BAE/ExtensionService.html#Node.js.E8.BF.9E.E6.8E.A5MongoDB
+
+	
+
+
+百度云BAE专业：
+	系统默认开放HTTP的80为访问端口，8080为监听端口；HTTPS的443为访问端口，8443为监听端口，不可修改和删除。
+	用户自定义的端口只支持TCP协议，且最多支持添加100个。
+
+	小程序端口必须是443
+
+	app.conf是BAE提供的部署配置文件
+
+	Node.js应用中必须监听18080端口，该端口不可更改。
+
+	BAE专业版的SVN、Git身份验证采用AK/SK，不是百度登录的用户名和密码。
+
+
+	BAE中开启--harmony从而在node.js中使用ES6语法
+		package.json: "start": "node xxx.js"修改为"start": "node --harmony xxx.js"

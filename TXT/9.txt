@@ -1,0 +1,133 @@
+VUE:
+	小 -> 大
+	封装(函数)->多个封装(文件)==库||框架
+					↓
+				   插件
+			   模块(文件)  分类（目录)->包
+	框架：改变了编码思想   VUE: 数据驱动，一切都是数据,面向数据
+		面向  事件
+		面向  对象
+		面向  数据
+库:  工具本身不改变编码的方式
+		jquery -> dom		事件驱动
+
+MVC：html页面里面会出现<%=后台属性%>  {$后台属性$} {{后台属性}} mustache
+	一个思想、是后端产物,是为了前后端分离
+	1. 后台 java(jsp+html)  php(php+html+js)  nodejs(html+ejs)
+	2. 前台 (html+css+js)
+	3. 编辑 (拿着后台给他开发的后台管理页面xxx.com:8008/admin.php)
+	4. 设计
+
+前端MVC(分离js)：   数据、表现、业务分离
+	model		M  数据  ajax/jsonp/数据解析  可以复用
+		| xx.js
+		...
+	view	    V  视图表现层 展示数据、创建元素，变色，运动 可以复用
+		...
+	control		C  控制层(串业务,事件驱动)  一般不复用
+		...
+
+	function readBaidu(str,callback){..拿着需求str,求数据，调用回调带数据出去.}
+	function writeLi(data){...拿着数据写页面}
+	window.onload=function(){
+		oBtn.onclick=function(){
+			readBaidu('xxx',function(res){
+				writeLi(res);
+				winObj.close()
+			})
+		}
+	}
+
+VUE: 是个M V VM框架
+	MVC:衍生出很多变体  MVP MVVM MV*
+	mv  vm~C
+	MVVM M  <-> VM <-> V
+基本使用：
+	new出来一个Vue的实例，传一堆配置参数，控制一片html
+
+	VM:		响应系统 - > vDOM做标记 ->一个循环周期结束后->操作DOM
+		new Vue   返回  VM
+		new Vue({
+			el:'选择器'  要控制器的那片html代码
+			data:{key:value}数据
+			methods:{fnName:fn} 方法
+		})
+	M:	初始化数据|元数据
+		data 选项   number/string/boolean/array/json/undefined/null
+	V:  数据绑定
+		{{数据名}}	模板 mustche  插值表达式
+		v-text="数据名"		vue特有的属性(指令)
+		v-html="strong"		非转义输出
+		v-for="(val,index) in 数据"		val值  index索引	变量数组、对象
+			key="bmw"  指定key 是个bmw字符 vue是认得 修改VDom的key值
+			:key="item.id"  指定key 是数据id（唯一性） 修改VDom的key值
+		v-bind:html属性="数据"	普通的html属性绑定数据
+			:html属性="数据"  简写   title/src/url/.....
+		事件：
+			v-on:事件名="方法"
+			   @:事件名="方法"	简写
+			   @:事件名="方法(参数)"
+			   @:事件名="方法($event,参数)"		methods:{方法:function(ev,参数){ev/event}}
+
+数据检测：vue的数据是响应式，非响应式的情况如下
+	数组数据变化：  
+			问题:对数组使用了非变异 (non-mutating method) 方法（返回的了新数组）
+			解决： 对象合并
+
+			问题：利用索引直接设置一个项|修改数组的长度时
+			解决：Vue.set(数组对象, key, value) | vm|this.$set(数组对象, key, value)
+	对象的数据变化：
+			问题：data:{a:1}
+					a 数据是响应式的
+					vm.b='qq';  b 属性不是响应式的
+			解决：Vue.set(数组对象, key, value) | vm|this.$set(数组对象, key, value)
+------------------------------------------------------------------------
+
+模块表达式:
+	{{数据本身|data的属性|变量|表达式}}
+	v-指令名="数据|data的属性|变量|表达式"
+------------------------------------------------------------------------
+计算属性:  是一个函数,所依赖的元数据变化时，就会再次执行
+	computed:{
+		计算属性:函数:function(){return 返回值}		使用:	{{计算属性}}
+	}
+
+	与method的区别:	方法会每次调用，计算属性不会(只有在与之相关的元数据发生变化时，才调用)
+		计算属性的性能高: 适合做筛选
+		方法：适合在列表渲染使用，强制渲染执行
+	计算属性：计算属性也可以是个对象
+		读取了属性 -> get:fn
+		修改了属性 -> set:fn
+------------------------------------------------------------------------
+指令:  扩展了html语法功能,区别了普通的html属性
+	vue自带的指令:	v-text/v-html/v-bind/v-for/v-model/v-on   
+	
+			v-show="布尔" 			v-if="布尔"
+	区别:	操作css					操作dom
+	场景:	适合频繁切换		    适合不频繁切换
+	性能:	初始渲染消耗			频繁切换回有消耗
+------------------------------------------------------------------------
+vue-tools 
+	调试工具
+	https://github.com/vuejs/vue-devtools 下载安装
+------------------------------------------------------------------------
+
+class操作/style操作:
+	v-bind:class="数据|属性|变量|表达式"
+		  :class/style = " 数据 "		数据类型：字符/对象 / 数组
+		  :class="{类名:true,类名2:false}"  布尔值决定样式是否使用
+		  :style="[{css属性名:值},{css属性名小驼峰：值}]"
+双向绑定：
+	v-model:	创建双向数据绑定(M<->V) , 用在能生产数据的表单元素
+		input/radio/select/.....  绑定的是表单元素的  value值 
+单向绑定：
+	:value="model层属性"
+	:checked="......"		
+
+单向绑定模拟双向绑定:
+	:value="...."   model->view
+	v-on:input="fn($event.value)"  输入时把事件对象的value携带到方法，方法修改了model
+------------------------------------------------------------------------
+作业：
+	留言板: 增删改查 +  bootstrap
+	隔行换色:  计算属性

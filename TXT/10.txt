@@ -1,0 +1,124 @@
+自定义指令: 指令是个函数|对象,用来操作dom的, 里面的this 返回window
+	a)	Vue.directive('指令名不带v-',函数(el,binding))  全局定义
+		el == 使用指令的DOM元素
+		binding 是个对象 含有传入的 参数(binding.value)
+	b)  定义在选项里面  局部
+		directives:{
+			指令名不带v-	: 函数(el,binding){}
+		}
+
+	指令是个函数(简写)，可以是个对象
+
+	{
+		钩子函数(生命周期)
+		inserted:fn(el,binding)		绑定指令的元素插入到父节点时调用
+		bind:fn	指令第一次绑定到元素时调用
+		update:fn	指令所在的元素的model层的数据，view有更新请求时
+		componentUpdated:fn	更新完成时
+	}
+
+	简写方式: bind + update
+----------------------------------------------------------------------
+
+事件：
+	模板绑定行间事件:		<xx v-on:事件名="方法名($event,参数)"
+							<xx @事件名="方法名($event,参数)"		
+	给"VM实例"绑定自定事件:
+		定义：vm.$on( '自定义事件名'|['自定义事件名1','自定义事件名2'], 回调(参数) )
+		销毁：vm.$off( '自定义事件名'|['自定义事件名1','自定义事件名2'], 回调(参数) )
+		触发: vm.$emit(自定义事件名1,参数)
+	事件对象:
+		事件对象可以不传递，需要传递的场景:传参数同时使用事件对象时
+		show($event,参数)
+
+	冒泡：默认冒泡
+		$event   ev|event.cacelBubble=true ev.stopPropagation()
+		@click.stop 修饰符
+	默认行为:
+		event|ev.preventDefault();   @事件.prevent
+
+	连缀:	@事件.修饰符.修饰符	@事件.prevent.stop
+
+	修饰符:  keyCode/键名(enter/left/right/up/down/...)			
+修饰符：
+	事件，键盘 含有修饰符
+	事件名.修饰符  作用：修饰事件条件
+
+
+过滤器(filter)： 就是个函数
+	场景： 格式数据
+	currency / number / date   vue1.x
+	vue2.x 取消了自带过滤器,  需要用户自行封装
+	使用：	{{数据名 | 过滤器名(参数1,参数2)}}
+			v-xxx="数据名 | 过滤器名(参数1,参数2)"
+			:属性="数据| ... "
+	定义:
+			a) Vue.filter('过滤器名称',函数(要过滤的元数据,参数))
+			b) 选项
+				filters:{
+					过滤器名称:函数
+					过滤器名称2:函数(要过滤的元数据,参数)
+				}
+--------------------------------------------------------------------------------
+数据交互：
+	vue-resource   下载安装引入   vue1.x 推荐	支持jsonp
+		使用:	返回的是promise对象
+		this.$http.get('url地址?key=value&key=value').then(succFN,errorFn)
+		this.$http.get('url地址',{配置}).then(succFN,errorFn)
+		this.$http.post('url地址',{数据},{配置}).then(succFN,errorFn)
+		this.$http.jsonp('url地址',{配置}).then(succFN,errorFn)
+
+			配置:
+				params: {key:value}  携带数据  get
+				headers: {}  携带请求头
+				method：'get' get/post/.....   string
+				timeout: number  超时
+				progress：fn   进度
+				credentials: false  是否携带跨源凭证
+				emulateJSON：true post请求是需要携带的请求头
+				jsonp:'回调函数键' 默认是callback
+			响应：
+				body      返回的数据  对象  (JSONP.parse)
+				bodyText  返回的数据  文本格式  toString
+------------------------------------
+数据监听：监听到数据的变化,启动处理函数
+		1)	watch 选项|属性   √
+			watch:{data里面的属性名:处理函数|对象}
+			watch:{
+				元数据:函数(新值，老值)
+				元数据:{
+					handler:函数(新值，老值),
+					deep: true   深度检测   默认false
+				}
+			}
+------------------------------------------------------------
+	axios	下载安装引入	vue2.x推荐		支持jsonp ??
+		
+		希望可以this.$http 去使用axios，需要 配置: Vue.prototype.$http=axios;
+
+		this.$http|axios({配置}).then(成功回调(res)).catch(失败回调(res))
+		this.$http|axios.get(url,{配置}).then(成功回调(res)).catch(失败回调(res))
+		this.$http|axios.post(url,pollfill).then(成功回调(res)).catch(失败回调(res))
+
+		post请求:
+			pollfill = new URLSearchParams() -> params.append('a', 111);
+			this.$http|axios.post(url,pollfill).then(成功回调(res)).catch(失败回调(res))
+
+			this.$http|axios({
+				url:'',
+				method:'post',
+				data:pollfill
+			})
+
+		配置:
+			url:'' 地址
+			method: '' 提交姿势
+			params：{} get提交的数据
+			data:{} post提交数据
+		res:
+			data:  数据
+----------------------------------------------------------------------
+作业：
+	购物车完善
+	百度下拉完善
+	微博

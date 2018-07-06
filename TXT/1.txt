@@ -1,0 +1,118 @@
+三阶段大纲：
+1. touchWeb
+	兼容手机设备的js
+2. nodejs 
+	目的：后台管理+mysql/mongodb  为全站搭建后台
+3. vue
+4. vue项目
+5. react
+6. react项目
+7. angular
+8. 混合开发(phoneGap,js_sdk,公众号,小程序)
+	目的：调取设备
+	模拟面试
+----------------------------------------------------
+本地存储
+多媒体
+绘图（canvas）
+echarts
+原生移动端js
+zepto、touchJs
+iscroll、swiper
+第三方地图库
+
+----------------------------------------------------
+
+本地存储
+	1. cookie 存东西
+		特点： 小(~4k),服务器环境(每次都会随着请求，发往服务器)，过期时间，完全兼容
+		document.cookie=值
+	2. localStorage 、 sessionStorage
+		特点： 大(~5M),不会发往服务器,没有过期时间
+	共同点：
+		不安全、不能跨域、不能跨浏览器
+
+-------------------------------------------------------
+
+localStorage:	window的属性  返回 一个localStorage对象  
+
+	属性：
+		localStorage.key=value 种、写
+		localStorage.key;  获取，读
+		delete localStorage.key 删除
+		for in  localStorage 枚举 批量删除
+	方法： √
+		localStorage.setItem(key,value) 种、写
+		localStorage.getItem(key) 读
+		localStorage.removeItem(key) 删除一个
+		localStorage.clear() 批量删除
+	事件：
+		window.onstorage 检测key 发生了变化  当前页面无法检测到
+			ev.key 返回 变化的key
+			ev.newValue	变化后的值
+			ev.oldValue 前
+	写到localStorage里面的都是字符
+		json	->	str 序列化
+		str 	->	json 反序列化，实体化
+sessionStorage 生命周期 会话结束时
+	属性：同上
+	方法：同上
+
+------------------------------------------------------------
+
+多媒体：
+	视频
+		PC：
+			50% H5 、 50%	flash/player播放  actionscriptCC OOP 类java   as cc挂了 
+		touch：
+			video
+video:
+	dom属性：
+		src:'视频源'
+		autoplay="autoplay"	-> autoplay 自动播放
+		controls 是否出现控制句柄  true/false controls="controls"
+		poster 预览图
+		loop 循环
+		....
+		w3c.org/video
+	js属性：
+		autoplay:"autoplay"
+		v.currentTime 磁头位置，播放时间 读写
+		v.volume 音量 0 - 1
+		v.muted 是否静音  true/false
+		v.playbackRate 返回 播放速率 默认 1  0-8
+		v.duration 总时间（长度)
+		v.autoplay   true/false
+		v.controls   true/false
+		v.loop       true/false
+		......
+	方法：
+		v.play() 播放
+		v.pause() 暂停
+		v.webkitRequestFullScreen();
+		...
+	事件：
+		v.ontimeupdate=fn  播放时
+		v.onended=fn 播放完毕时
+
+audio:
+	背景音乐:
+		1. autoplay
+		2. controls + css display
+		3. new Audio() 
+
+source：
+	提供多视频源
+
+需求：自定义控制器句柄(DOM模拟)
+
+
+
+作业：
+	项目，购物车，cookie->localStorage
+	视频插件:
+		new Video() ×
+
+	工具：
+		编辑器:vscode/sublime/atom
+		IDE: hbuild/webstorm/DW

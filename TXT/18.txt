@@ -1,0 +1,116 @@
+react路由 4.x
+	资料：
+		API:https://reacttraining.com/react-router/web/guides/quick-start
+		CN：http://blog.csdn.net/sinat_17775997/article/details/77411324
+		redux：https://github.com/reacttraining/react-router/tree/master/packages/react-router-redux
+	区别：
+		V4
+			嵌套式路由（路由配置在组件内部），动态路由，包容性（多路由渲染）
+			舍去了路由钩子
+		V3
+			分离式（统一位置配置），静态路由，排他性（只有一个路由被渲染）
+	理念：
+		遵循Just Component的 API 设计理念 万物皆组件，路由规则位于布局和 UI 本身之间
+
+	安装引入 react-router-dom 
+
+	React Router被拆分成三个包：react-router,react-router-dom和react-router-native。react-router提供核心的路由组件与函数。其余两个则提供运行环境（即浏览器与react-native）所需的特定组件
+
+	BrowserRouter 使用 HTML5 提供的 history API 来保持 UI 和 URL 的同步
+	HashRouter 使用 URL 的 hash (例如：window.location.hash) 来保持 UI 和URL 的同步
+
+	结构：
+		BrowserRouter|HashRouter 路由对象
+			根组件(App)|其他组件
+				NavLink|Link  导航 
+				Route    匹配+展示
+				Redirect 跳转
+				404 <Redirect to="/error"/>
+				默认路由 <Route exact path={match.path} render={fuc}
+	Route 属性
+		path（string）: 路由匹配路径。（没有path属性的Route 总是会 匹配）；
+		exact（bool）：
+			为true时，要求全路径匹配(/home)。V4 的路由默认为“包含”的(/和/home都匹配)，这意味着多个 <Route> 可以同时进行匹配和渲染
+
+		component：在地址匹配的时候React的组件才会被渲染，route props也会随着一起被渲染
+		render：这种方式对于内联渲染和包装组件却不引起意料之外的重新挂载特别方便
+	Link：
+		to：string/object：要跳转的路径或地址；
+	NavLink：是<Link> 的一个特定版本
+		activeClassName（string）：设置选中样式，默认值为 active；
+		activeStyle（object）：当元素被选中时, 为此元素添加样式；
+	Switch：该组件用来渲染匹配地址的第一个<Route>或者<Redirect>，仅渲染一个路由，排他性路由,默认全匹配(场景：侧边栏和面包屑，引导选项卡等
+	Redirect:
+		<Redirect from="/" to='/home'/> 总是会被重定向
+	404:	<Route component={Error}/> 总是会匹配
+
+	参数数据：{history,location,match}==props
+		传递：
+			to={match.url+'/001'}
+			to={`${match.url}/002?a=1&b=2`}
+			to={{pathname:match.url+'/003',search:'?a=11&b=12',hash:'#a1'}}
+			<Route path={match.path+'/:aid'} component={Detail}
+				注意：
+					url - (浏览器 URL 中的实际路径) URL 匹配的部分。 用于构建嵌套的 <Link>
+					path - (路由编写的路径) 用于匹配路径模式。用于构建嵌套的 <Route>
+		接收：
+			接参数:{match.params.aid}
+			接数据:{location.search} 
+			接地址:{location.pathname}
+		注意：
+			无法从v4 中获取 URL 的查询字符串了。因为没有关于如何处理复杂查询字符串的标准。所以，作者让开发者去选择如何处理查询字符串。推荐query-string库
+	跳转：
+		history.push('/user?a=1&b=2')
+		history.push({pathname:'/user',search:'?a=11&b=22'})
+		history.replace({pathname:'/user',search:'?a=111&b=222'})
+		history.go(-1)
+	授权路由：自定义路由
+		前置守卫
+			<AuthRoute path="/user" component={User}/>	
+			AuthRoute==授权路由==react组件==自定义路由
+			条件：返回一个Route 组件 
+				  Route的render函数内部判断加载目标||Redirect组件
+			实现：
+				AuthRoute = ({ component: Component, ...rest }) => (
+				  <Route {...rest} render={props =>
+				      Math.random()<0.5 ? 
+				        <Component {...props} />
+				       : <Redirect to="/login" />
+				    }
+				  />
+				)
+			目标组件	Component == User
+			延展剩余属性 rest
+			路由信息 ...props User组件需要用到的路由信息
+		数据预载：
+			AuthRoute 组件构造器存状态和预载数据
+			DidMount钩子里异步请求，获取状态和数据
+				fetch(url).then(result=>this.setState({}))
+			render钩子返回 Route
+				 <Route {...rest} render={props => Xxx?<Component data={预载数据}
+				 if(!this.state.hasAuthed) return null;初始渲染时，未发送认证请求，因此不渲染
+	Prompt:后置守卫,离开后守卫
+		import { Prompt } from 'react-router-dom'
+		<Prompt
+          when={this.state.isBlocking}		
+          message={location=>{return `未保存，是否去向${location.pathname}`}}
+        />
+        message: 后面可以跟简单的提示语(string)，也可以跟函数，函数是有默认参数的(location)。 
+        when: when的属性值为true时防止跳转；
+
+    注意加入状态管理时：影响了location的跳转，要用到withRouter(connect(x,x)(app))
+
+    问题：子路由使用父路由的展示区(插槽) 
+    	<Route path="/a" render={()=>
+    		<div>
+    			<Switch>
+    				<Route path="/a/b" component={b}
+    				<Route path="/a/c" component={c}
+    				<Route path="/a" component={a}
+    			</Switch>
+    		</div>
+    	>
+
+
+
+    	祝  《九叔》  周六拍   《沪牌》 一拍就中 ， 红包拿来

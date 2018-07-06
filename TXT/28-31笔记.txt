@@ -1,0 +1,643 @@
+﻿nodeJs:
+	干嘛的： 写后台管理程序
+	目标：数据服务，文件服务，web服务
+	类似：	php  .net   java(jsp) ....
+优势：
+	性能高，方便、入门难度低、大公司都在用（BAT）
+劣势：
+	服务器提供的相对较少
+	能用的上的学习资料少，对程序员的要求高了
+环境：nodejs + web服务器 + 数据库
+	php -> wamp	w:window a:aphche m:mysql P:php
+		-> php(后台管理程序) mysql(库) aphche(web服务器)
+	java -> jdk
+	nodejs:
+		安装：双击->一路下一步
+			官网：https://nodejs.org/en/ 
+			镜像：http://npm.taobao.org/
+			nodejs 环境 	npm 环境
+			测试环境： 命令行(运行->cmd)->node -v
+版本：
+	Vx(主).x(子).x（修正） 包(目录)->模块(文件)
+	主版本： 变化了，1/3的API发生巨变 , 使用方式变化了
+	子：	API没有删减，使用方式没变化,内部实现发生了变化
+	修正版：什么都没变，处理一下bug
+
+	V6.8.x   稳定
+	V6.9.x 非稳定版  
+	Vx.x.x-beta 测试
+	vx.x.x-rc  测试稳定
+
+编写：
+	IDE(有RUN环境,真实服务器)|编辑器|node命令行
+	
+运行：命令行
+	1  dos:		win+r->cmd回车->cd 目录-> node 文件名.js | node 文件名
+				IDE|编辑器环境下，运行dos命令行
+				webstrom->terminal(ALT+f12)		|   run 
+				vscode->终端
+	2  linux(git):  终端->cd 目录-> node 文件名.js | node 文件名
+					当前目录->右键->git bash-> node 文件名
+	3  node命令行:  多用在调试
+		dos-> node 回车-> 编写+运行
+
+DOM/BOM 不可用
+ECMA 可用
+
+需要nodejs提供:
+	数据服务，文件服务，web服务
+
+web服务
+	web服务器: apache , ngnix , tomcat   localhost|www.abc.com
+	数据库: mysql | sqlserver | mongoDB | orangcl
+		数据库: 数字|字符
+		磁盘（硬盘) 文件本身(图，视频,PDF)   文件服务器
+	后台管理程序:
+		nodejs,java........
+
+大后端:
+	用户 - > 地址栏(http[s]请求) -> web服务器（收到) - > nodejs处理请求(返回静态、动态)->请求数据库服务(返回结果)->nodejs(接收)->渲染页面->浏览器（接收页面，完成最终渲染)
+大前端:
+	前端 - > http[s]请求 -> web服务器（收到) - > nodejs处理请求(返回静态、动态)->请求数据库服务(返回结果)->nodejs(接收)->返回给前端(渲染)->浏览器（接收页面，完成最终渲染)
+
+nodejs手工搭建web服务器:  使用HTTP模块
+
+	1） 引入http模块	require('http')
+	2)	server/app = http.createServer(函数(req,res));//创建服务   返回http对象
+			req 请求  浏览器->服务器
+				req.url  地址   提取get数据
+				req.on('data|end') 提取post数据 所有的http[s]都会触发end事件
+  			res 响应  服务器->浏览器
+  				响应头设置:	res.writeHead(200,{'Content-Type':'text/html;charset=utf-8'});
+  				res.write(字符/数据<string><buffer>)
+
+	3) 	监听：
+		server.listen(端口，[地址]，[回调])    回调：监听成功，回调一次
+			端口: 1-65535	1024以下系统占用   80
+			地址: 虚拟localhost  真实域名xx.duapp.com
+静态页面托管:
+	fs.readFile(文件名,[编码],回调(err,data));
+		err 错误 null没有错误
+		data 数据,buffer流
+	staticWWW 函数
+静态数据请求:
+	href/src/url()/locaction.href/submit/ajax........
+动态数据请求:
+	前台: get/post/put/delete/ajax/jsonp.....
+	后台：http[s] 请求 ， 处理方式方式
+		GET:	req.url  抓取 get请求的数据  字符 切/url
+		POST:	req.on('data',(chunk)=>{CHUNK==每次收到的数据buffer})
+				req.on('end',()=>{	接收完毕 切/querystring })
+url模块	处理 url
+	url.parse(str,true)  str -> obj  返回 对象  true 处理query->obj
+
+	obj参数		http://localhost:8002/aaa?username=sdfsdf&content=234234#title4
+	  protocol: 'http:',	协议
+	  slashes: true,	双斜杠
+	  auth: null,   作者
+	  host: 'localhost:8002',  主机 www.baidu.com
+	  port: '8002',	端口
+	  hostname: 'localhost',  baidu
+	  hash: '#title',	哈希（锚)
+	  search: '?username=sdfsdf&content=234234',	数据
+	  query: 'username=sdfsdf&content=234234',	数据
+	  pathname: '/aaa',	文件路径
+	  path: '/aaa?username=sdfsdf&content=234234',	文件路径
+	  href: 'http://localhost:8002/aaa?username=sdfsdf&content=234234#title'
+
+	url.format(obj)  obj -> str   返回str
+querystring
+	querystring.parse(str)  -> obj
+	querystring.stringify(obj) -> str
+
+------------------------------------------------------------------------
+模块化:
+	nodejs： commonJS
+	模块： http/fs/querystring/url		require('模块名')  系统模块
+	模块化：require module exports		seajs.js / require.js   CMD/AMD   es5
+
+	require 引入模块、输入
+		require('模块名')
+			不指定路径：	先找系统模块-> 在再找node_modules|bower_components (依赖模块)->not found
+			指定xx/模块名	 指定路径 -> not found
+				/xx  磁盘环境下，  当前的盘符c:>
+				     项目环境下,   当前项目目录环境   npm/xx/xx/a.js(/)  npm\
+				     向上，			当前IIS配置 FTP上传的根目录
+				/ 加载资源时候用
+	exports 导出，输出
+		exports.自定义属性=值(any) 输出带接口/输出多次		require(模块文件名)=modA  modA是个模块实例{自定义属性}
+	module 模块
+		module.exports == exports
+		module.exports = {  带接口   输出一次
+			自定义属性：值
+		}
+
+		module.exports=fn/class   不带接口			require('..')=modA  modA 是一个fn或者是类class本身
+
+	commonJS 是 nodejs 默认模块方式,不支持es的模块化管理，但支持所有es6+语法
+		commonJS 是个规范 nodejs / webpack 是一个实现
+		ECMA 是个规范  js / as 实现了
+
+--------------------------------------------------------
+NPM：
+	干嘛的：帮助你安装模块（包），自动安装依赖，管理包（增，删，更新，项目所有包)
+	类似：	bower		yarn(https://yarn.bootcss.com/)
+	全局：任何目录c/d/e，项目环境下都可以使用
+		工具类，脚手架
+	本地:	只能在当前目录使用
+
+	项目依赖dependencies： 只能在当前项目下使用，上线了，也需要这个依赖  --save-dev   -D
+	开发依赖devDependencies：只能在当前项目下使用	，上线了，依赖不需要了 --save  -S
+
+	安装、卸载到全局
+	npm install 包名 -g			g==golbal			yarn add 包名  bower install 包名
+	npm uninstall 包名 -g			g==golbal 		yarn remove 包名  bower uninstall 包名
+
+	安装、卸载到本地
+	npm install 包名 
+	npm uninstall 包名 
+	查看已安装:		npm list  列出所有已装包
+					npm outdated 版本对比(安装过得包)
+					npm info 包名 查看当前包所有信息
+	管理模块(项目):	
+		package.json的name的名字需要和项目目录名一致，不要和依赖的包重名
+		npm init 				初始化npm管理文件(package.json)
+			{
+			  "name": "npm",	项目名称
+			  "version": "0.0.1",	版本
+			  "description": "test and play",	描述
+			  "main": "index.js", 入口文件
+			  "dependencies": {  项目依赖  上线也要用
+			    "jquery": "^3.2.1"
+			  },
+			  "devDependencies": { 开发依赖 上线就不用
+			    "animate.css": "^3.5.2"
+			  },
+			  "scripts": {	命令行
+			    "test": "命令行"
+			  },
+			  "repository": {	仓库信息
+			    "type": "git",
+			    "url": "git+https://github.com/alexwa9.github.io/2017-8-28.git"
+			  },
+			  "keywords": [  //关键词
+			    "test",'xx','oo'
+			  ],
+			  "author": "wan9",
+			  "license": "ISC",	认证
+			  "bugs": {
+			    "url": "https://github.com/alexwa9.github.io/2017-8-28/issues"
+			  },
+			  "homepage": "https://github.com/alexwa9.github.io/2017-8-28#readme"
+			}
+	安装到项目依赖
+		npm install 包名 --save  /  -S
+	安装到开发依赖
+		npm install 包名 --save-dev /  -D
+
+	安装package.json里面指定的所有包:
+		npm install
+	版本约束：
+		^x.x.x   约束主版本，后续找最新
+		~x.x.x   保持前两位不变，后续找最新
+		*		 装最新
+		x.x.x 	 定死了一个版本
+
+	选择源
+		npm install nrm -g     安装选择源的工具包
+
+		nrm ls 查看所有源
+		nrm test 测试所有源
+		nrm use 源名
+	模块下载	(卡顿)   超过5分钟
+		ctrl + c -> npm uninstall 包名 -> npm cache clean清除缓存 -> npm install 包名
+
+	发布模块：
+		注册账号 	npmjs.com
+		登录:
+			npm login
+				输入 user/password/email
+		创建包目录->npm init -y -> 创建入口index.js -> 编写，输出-> npm publish发布
+
+		发布：npm publish
+		删除：npm unpublish
+
+		发布操作长时间没有做，邮箱需要确认，收取激活邮件
+
+--------------------------------------------------------------------------------------------
+
+
+express  库
+	干嘛的：nodejs库，不用基础做起，工作简单化
+	类似：koa
+express特点：
+	二次封装，非侵入式，增强形
+	send(any)  write(string|buffer)
+express搭建服务
+	express=require('express')
+	server=express()
+	server.listen(端口,地址,回调)
+静态页面托管
+	server.use() 响应 /
+	express.static('./wwww')
+	server.use(express.static('./wwww'));
+响应:
+	server|app == 服务
+	server.use(url|地址,(req,res,next)=>{})
+	server.get(url,(req,res,next)=>{})
+	server.post(url,(req,res,next)=>{})
+		  use 响应get和post请求 默认响应的是 /
+		  req / res 经过二次封装
+		  	res.send(any)	== res.write + end
+		  	req.query 获取get的数据
+		  	req.body 获取post的数据  依赖中间件  
+		  		中间件使用:body-parser  1. npm install xx  2. require   3. app.use(中间件())
+		  	req.method 获取前端提交方式
+		  next: 是个函数 调用下一个相同地址的响应,除了/
+中间件(middleware)：
+	body-parser
+	中间件:	npmjs.com   查看使用方式
+	body-parser			获取post数据，限定大小，约定返回数据类xx.urlencode({limit:xx})
+
+
+--------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------
+
+
+大后端:
+	用户 - > 地址栏(http[s]请求) -> web服务器（收到) - > nodejs处理请求(返回静态、动态)->请求数据库服务(返回结果)->nodejs(接收)->渲染页面->浏览器（接收页面，完成最终渲染)
+大前端:
+	前端 - > http[s]请求 -> web服务器（收到) - > nodejs处理请求(返回静态、动态)->请求数据库服务(返回结果)->nodejs(接收)->返回给前端(渲染)->浏览器（接收页面，完成最终渲染)
+
+渲染页面(模板引擎):
+	前端：dom操作			虚拟dom操作	二次渲染，后期多次渲染， 优点：局部渲染
+		  jq/js/angularJs	vue/react/angular.......   渲染页面(数据整合到静态页面)
+	后端：
+		  抓取前端静态页面 + 渲染引擎 + 数据  返回data ->  send(data)
+		  渲染引擎: jade/pug / ejs / ....
+
+	arttemplate  underscore baiduTemplate mustach .......
+
+-------------------------------------------------------------------------------------------
+
+中间件:	cookie-parser  cookie-session
+
+用户和服务器交互通过什么?   http协议,http是无状态的
+	通过IP(公司环境)
+	通过浏览器保存一些信息，每次访问服务器带过去
+		如何保存信息给浏览器:
+			1. 前端种cookie/localstorage
+			2. 后端种: 前端请求后端，后端给前端种cookie(加了密)的同时，在服务器上生成seesion
+服务器给浏览器种只种cookie:  cookie-parser
+服务器给浏览器种cookie的同时在服务器上生成seesion:   cookie-session
+
+-------------------------------------------------------------
+jade: 库
+	侵入式，强依赖
+	jade.render('html'); 返回字符
+	jade.renderFile('jade模板文件'，{数据}，{pretty:true});	返回字符
+	jade模板语法
+		父子要缩进
+		属性：  标签(key=value,key2=value)
+		内容:	标签 内容
+-------------------------------------------------------------
+ejs：	模板渲染是异步的
+	非侵入式，温和，弱依赖
+
+	ejs.render(str)  返回  str
+	ejs.renderFile('ejs模板',{数据},回调(err,data))	data == str
+
+	ejs模板语法：
+		ejs 结构就是html
+		输出:	<%= 数据名|属性名|变量名 + 表达式 %>  
+		语句：	<% 语句 %>  需要被<%  %>  包裹
+		非转义输出:	<%- 数据名|变量名  + 表达式 %>
+
+		https://www.npmjs.com/package/ejs
+-------------------------------------------------------------
+multer:  文件上传
+	bodyParser -> req.body -> fs.writeFile()-->
+	multer->文件名会随机->fs模块改名->path系统模块解析磁盘路径
+
+	文件上传：前端表单->后端接收到文件本身->保存到服务器上->给数据库记录文件一些信息->库返回给nodejs相关信息->nodejs返回给前端
+			前端: file enctype="multipart/form-data"
+			后端：body-parser 接受 urlencode编码数据 ,数据回来的是字符
+
+		配置
+		let multer  = require('multer');	引入
+		let objMulter = multer({ dest: './upload' });	实例化  返回 multer对象
+			dest: 指定 保存位置（存到服务器)
+		app.use(objMulter.any());  	any 允许上传任何文件
+
+		req.files	数组
+			fieldname: 表单name名
+			originalname: 上传的文件名
+			encoding： 编码方式
+			mimetype: 文件类型
+			buffer: 文件本身
+			size：尺寸
+			destination: 保存路径
+			filename： 保存后的文件名  不含后缀
+			path：	保存磁盘路径+保存后的文件名 不含后缀
+fs模块:  操作是一步的
+	fs.rename('当前文件','该后的文件名',(err)=>{});
+path 系统模块
+		path.parse('c:\\wamp\\xx.png');	磁盘路径(str -> obj)
+			{
+			   root: 'c:\\', 盘符
+			   dir: 'c:\\wamp', 目录
+			   base: 'xx.png',  文件名
+			   ext: '.png', 扩展名
+			   name: 'xx' 	文件，不含扩展名
+			} 
+		path.format(obj) -> str
+
+		path.join('磁盘路径1','磁盘路径2')
+			__dirname 魔术变量  返回当前文件所在的磁盘路径
+
+
+		path.resolve('片段1','片段2',''片段1'')
+			解析路径片段  返回绝对路径 ,  自右向左找 /xx  
+-------------------------------------------------------------
+
+管理多个模板引擎	consolidate
+	server.set('view.engine','html');	模板最终	输出类型设置
+	server.set('views','./views');		引擎模板目录设置
+
+	server.engine('html',consolidate.ejs);	输出与引擎匹配
+	server.engine('css',consolidate.jade);	输出与引擎匹配
+
+	渲染API：
+	res.render('模板文件名',{数据}) 整合页面和数据，完成渲染，发往浏览器
+
+
+-------------------------------------------------------------------------------------
+大后端:
+	用户 - > 地址栏(http[s]请求) -> web服务器（收到) - > nodejs处理请求(返回静态、动态)->请求数据库服务(返回结果)->nodejs(接收)->渲染页面->浏览器（接收页面，完成最终渲染)
+大前端:
+	前端 - > http[s]请求 -> web服务器（收到) - > nodejs处理请求(返回静态、动态)->请求数据库服务(返回结果)->nodejs(接收)->返回给前端(渲染)->浏览器（接收页面，完成最终渲染)
+
+数据库:(mysql , mongodb)
+
+mysql: 关系数据库(二维表(表头))
+	数据库：需要安装服务
+		服务： 
+			a) 安装wamp 开启 mysql服务	
+			b) 安装mysql 开启服务
+	库操作：
+		客户端：软件操作(UI工具)/命令行操作
+			wamp的客户端是phpmyadmin
+			navicat 收费
+			nodeJs(后台管理程序),依赖mysql库
+		服务端:
+			mysql
+	链接库：
+		wamp\mysql
+		c:P..G..\mysql
+	库操作  编码方式 UUC
+		建|删 库(目录)
+		建:	CREATE DATABASE  `2017-12-6` DEFAULT CHARACTER SET armscii8 COLLATE armscii8_general_ci;
+		建|删|改 表(文件)
+			创建表头(字段头)
+			CREATE TABLE  `2017-12-6`.`user` (
+			`name` VARCHAR( 32 ) NOT NULL ,
+			`age` INT( 3 ) NOT NULL ,
+			`address` VARCHAR( 128 ) NOT NULL
+			) ENGINE = INNODB
+	表操作	增删改查
+		增：
+			INSERT INTO 表 (字段列表) VALUES(值列表) 
+			INSERT INTO user (name,age,address) VALUES('苏菲',38,'')
+		删:
+			DELETE FROM 表 WHERE 字段名=值
+			DELETE FROM user WHERE name='alex'
+		改:
+			UPDATE 表 SET 字段名=值 WHERE 字段名=值
+			UPDATE user set name='sufei' WHERE name='苏菲' 
+		查:
+			SELECT ? FROM 表
+			SELECT * FROM user  查所有
+
+项目：
+	1. 定义数据字典(数据库设计)
+		banner：	ID title sub_title src
+		news:	ID title des author author_icon post_time content
+		user:	ID username password follow fans icon
+	2. 素材准备(静态页面模板)
+	3. 搭建服务器
+	4. 处理 http请求，拿到数据，渲染页面
+
+
+路由(router):  告诉你去哪
+	前端：导向 路由就告诉你应该去哪
+	后端: 子服务	一个路由就是一个小的服务(server/app)
+
+	创建路由
+		router = express.Router();  返回路由对象
+		server.use('地址,接口',router); 响应的处理过程给了router(子服务)
+
+		处理过程：
+		router.get('/',fn)
+		router.get('/1',fn)
+		router.get('/2',fn)
+
+-------------------------------------------------------------------------------------
+大后端:
+	用户 - > 地址栏(http[s]请求) -> web服务器（收到) - > nodejs处理请求(返回静态、动态)->请求数据库服务(返回结果)->nodejs(接收)->渲染页面->浏览器（接收页面，完成最终渲染)
+大前端:
+	前端 - > http[s]请求 -> web服务器（收到) - > nodejs处理请求(返回静态、动态)->请求数据库服务(返回结果)->nodejs(接收)->返回给前端(渲染)->浏览器（接收页面，完成最终渲染)
+
+数据库:(mysql , mongodb)
+
+mysql: 关系数据库(二维表(表头))
+	数据库：需要安装服务
+		服务： 
+			a) 安装wamp 开启 mysql服务	
+			b) 安装mysql 开启服务
+	库操作：
+		客户端：软件操作(UI工具)/命令行操作
+			wamp的客户端是phpmyadmin
+			navicat 收费
+			nodeJs(后台管理程序),依赖mysql库
+		服务端:
+			mysql
+	链接库：
+		wamp\mysql
+		c:P..G..\mysql
+	库操作  编码方式 UUC
+		建|删 库(目录)
+		建:	CREATE DATABASE  `2017-12-6` DEFAULT CHARACTER SET armscii8 COLLATE armscii8_general_ci;
+		建|删|改 表(文件)
+			创建表头(字段头)
+			CREATE TABLE  `2017-12-6`.`user` (
+			`name` VARCHAR( 32 ) NOT NULL ,
+			`age` INT( 3 ) NOT NULL ,
+			`address` VARCHAR( 128 ) NOT NULL
+			) ENGINE = INNODB
+	表操作	增删改查
+		增：
+			INSERT INTO 表 (字段列表) VALUES(值列表) 
+			INSERT INTO user (name,age,address) VALUES('苏菲',38,'')
+		删:
+			DELETE FROM 表 WHERE 字段名=值
+			DELETE FROM user WHERE name='alex'
+		改:
+			UPDATE 表 SET 字段名=值 WHERE 字段名=值
+			UPDATE user set name='sufei' WHERE name='苏菲' 
+		查:
+			SELECT ? FROM 表
+			SELECT * FROM user  查所有
+
+项目：
+	1. 定义数据字典(数据库设计)
+		banner：	ID title sub_title src
+		news:	ID title des author author_icon post_time content
+		user:	ID username password follow fans icon
+	2. 素材准备(静态页面模板)
+	3. 搭建服务器
+	4. 处理 http请求，拿到数据，渲染页面
+
+
+路由(router):  告诉你去哪
+	前端：导向 路由就告诉你应该去哪
+	后端: 子服务	一个路由就是一个小的服务(server/app)
+
+	创建路由
+		router = express.Router();  返回路由对象
+		server.use('地址,接口',router); 响应的处理过程给了router(子服务)
+
+		处理过程：
+		router.get('/',fn)
+		router.get('/1',fn)
+		router.get('/2',fn)
+--------------------------------------------------------------------------------
+
+
+mongoDb
+	干嘛的：数据库,nosql(非关系型)
+	场景：解决大规模数据集合多重数据种类
+	下载：https://www.mongodb.com/download-center
+	启动库：启动数据库服务(服务端)
+		C:\Program Files\MongoDB\Server\3.4\bin
+			mongod.exe 启动
+			port=27017	默认端口
+			mongodb://127.0.0.1:27017	协议+IP+端口
+	指定数据存储目录： 需要指定一次
+		mongod --dbpath c:\data\db
+	环境变量：为了在任意盘符下去启动库  mongod 
+		C:\Users\user\AppData\Roaming\npm;C:\Users\user\AppData\Local\atom\bin;C:\Program Files\MongoDB\Server\3.4\bin
+
+	开启客户端: mongo 回车
+		UI: 收费(下载+缴费)
+		命令行(shell):	cmd->mongo回车	git bash - > mongo回车     webstrom->dos/linux
+
+	和mysql对比
+	名词
+		mysql			mongoDb
+
+		database(库)	database(库)
+		table(表)		collection(集合)
+		row(一条数据)	document(文档)
+		column(字段)	field(区域)
+		...
+	存储方式:
+		mysql 二维表
+		MongoDB json
+
+
+	库操作:
+		查: show dbs 
+			db 查看当前库
+		建:	use 库名	没有建，有就切换 
+		删: db.dropDatabase()  删除当前库
+	集合(表)操作:
+		建：db.createCollection('表名',{配置})
+			配置：{size:文件大小,capped:true,max:条数|文档数} capped定量
+			db.表(集合).isCapped() 返回 true/false 是否是定量
+		查：show collections / db.getCollectionNames()
+		删：db.表|集合.drop()
+	文档(row)操作:
+		增：
+			db.集合.save({}) / db.集合.insert({})  添加一条
+			db.saveOne({})
+			db.insertOne({})
+
+			db.集合.save([{},{}]) / db.集合.insert([{},{}]) 多条
+			insert  不会替换相同ID	save会
+
+		删:
+			db.集合.deleteOne({}) db.集合.remove({},true)  一条
+			db.集合.remove({要删数据条件描述}) 多条
+			db.集合.remove({}) 清空表
+		改:
+			db.集合.udpate({要替换的数据条件描述},{替换后的},bl插入,bl全替换)
+			替换后的：
+				{$set:{数据},$inc:{age:1}}
+		查:
+			所有：db.集合.find(条件)
+			条数: db.集合.find().count()
+			去重：db.集合.distinct(key)
+
+			条件
+				{age:22}		age == 22
+				{age:{$gt:22}}	age > 22
+				{age:{$lt:22}}    age < 22
+				{age:{$gte:22}}	age>=22
+				{age:{$lte:22}}	age<=22
+				{age:{$lte:122,$gte:22}}	age<=122 && age>=22
+				{$or:[{age:22},{age:122}]}	22 or 122
+				{key:value,key2:value2}  value && value2
+				{name:/正则/}
+
+			db.集合.find({条件},{指定要显示列区域})
+				指定要显示列区域: 区域名username:1 显示着个区域，其他不显示
+				指定要显示列区域: 区域名username:0 不显示着个区域，其他显示
+				_id 是默认显示
+			限定：
+				db.集合.find().limit(number)  限定
+				db.集合.find().skip(number)	跳过
+				db.集合.findOne() / db.集合.find().limit(1)  查询第一条
+		排
+			升：db.集合.find().sort({key:1})
+			降：db.集合.find().sort({key:-1})
+
+
+		db.集合.find({条件},{指定显示区域}).skip(10).limit(10).sort({key:1})
+		db.insertOne({数据描述})	
+------------------------------------------------------------------
+
+
+nodejs + mongodb
+	1.	require('mongodb'); 引入模块  第三方模块
+	2.	创建客户端	mongoCt = mongodb.MongoClient
+	3.	创建链接	mongoCt.connect('协议://地址:端口',回调(err,client))
+	3.5 链库 		client.db('库名') 
+	4.	链接集合（表)	user = db.collection('集合名');
+	5.	user.API()  表操作		返回 对象
+		one === 1  Many 多个
+
+		insertOne(对象数据,(err,res)=>{})  res = 对象  res.result 结果
+		insertMany(arr数据,(err,res)=>{}) res = 对象  res.result 结果
+		updateOne({条件},{更新后},(err,res)=>{})
+		updateMany({条件},{更新后},(err,res)=>{})
+
+		user.find({条件},{projection:{name:1}}).toArray((err,result)=>{reulst==arr})
+
+-----------------------------------------------------------------
+脚手架：
+	干嘛的：自动搭建项目环境的，无需手动
+		命令行： 脚手架名称 目录 回车
+	安装：需要安装到全局
+		npm install express -g   验证 express -h
+		提示错误:	npm install express-generator -g
+	创建项目:
+		express -e 目录 | express -f  创建到当前命令行所在的目录
+		cd 目录
+		npm install 		安装依赖包
+		npm start    -> node ./bin/www
+
+	问题：每次都需要重启服务，需要自动重启服务
+	安装： npm i supervisor -g   
+	通过supervisor 启动服务： supervisor server.js|./bin/www
+
+-----------------------------------------------------------------

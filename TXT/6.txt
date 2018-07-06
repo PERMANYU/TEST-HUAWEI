@@ -1,0 +1,260 @@
+﻿nodeJs:
+	干嘛的： 写后台管理程序
+	目标：数据服务，文件服务，web服务
+	类似：	php  .net   java(jsp) ....
+优势：
+	性能高，方便、入门难度低、大公司都在用（BAT）
+劣势：
+	服务器提供的相对较少
+	能用的上的学习资料少，对程序员的要求高了
+环境：nodejs + web服务器 + 数据库
+	php -> wamp	w:window a:aphche m:mysql P:php
+		-> php(后台管理程序) mysql(库) aphche(web服务器)
+	java -> jdk
+	nodejs:
+		安装：双击->一路下一步
+			官网：https://nodejs.org/en/ 
+			镜像：http://npm.taobao.org/
+			nodejs 环境 	npm 环境
+			测试环境： 命令行(运行->cmd)->node -v
+版本：
+	Vx(主).x(子).x（修正） 包(目录)->模块(文件)
+	主版本： 变化了，1/3的API发生巨变 , 使用方式变化了
+	子：	API没有删减，使用方式没变化,内部实现发生了变化
+	修正版：什么都没变，处理一下bug
+
+	V6.8.x   稳定
+	V6.9.x 非稳定版  
+	Vx.x.x-beta 测试
+	vx.x.x-rc  测试稳定
+
+编写：
+	IDE(有RUN环境,真实服务器)|编辑器|node命令行
+	
+运行：命令行
+	1  dos:		win+r->cmd回车->cd 目录-> node 文件名.js | node 文件名
+				IDE|编辑器环境下，运行dos命令行
+				webstrom->terminal(ALT+f12)		|   run 
+				vscode->终端
+	2  linux(git):  终端->cd 目录-> node 文件名.js | node 文件名
+					当前目录->右键->git bash-> node 文件名
+	3  node命令行:  多用在调试
+		dos-> node 回车-> 编写+运行
+
+DOM/BOM 不可用
+ECMA 可用
+
+需要nodejs提供:
+	数据服务，文件服务，web服务
+
+web服务
+	web服务器: apache , ngnix , tomcat   localhost|www.abc.com
+	数据库: mysql | sqlserver | mongoDB | orangcl
+		数据库: 数字|字符
+		磁盘（硬盘) 文件本身(图，视频,PDF)   文件服务器
+	后台管理程序:
+		nodejs,java........
+
+大后端:
+	用户 - > 地址栏(http[s]请求) -> web服务器（收到) - > nodejs处理请求(返回静态、动态)->请求数据库服务(返回结果)->nodejs(接收)->渲染页面->浏览器（接收页面，完成最终渲染)
+大前端:
+	前端 - > http[s]请求 -> web服务器（收到) - > nodejs处理请求(返回静态、动态)->请求数据库服务(返回结果)->nodejs(接收)->返回给前端(渲染)->浏览器（接收页面，完成最终渲染)
+
+nodejs手工搭建web服务器:  使用HTTP模块
+
+	1） 引入http模块	require('http')
+	2)	server/app = http.createServer(函数(req,res));//创建服务   返回http对象
+			req 请求  浏览器->服务器
+				req.url  地址   提取get数据
+				req.on('data|end') 提取post数据 所有的http[s]都会触发end事件
+  			res 响应  服务器->浏览器
+  				响应头设置:	res.writeHead(200,{'Content-Type':'text/html;charset=utf-8'});
+  				res.write(字符/数据<string><buffer>)
+
+	3) 	监听：
+		server.listen(端口，[地址]，[回调])    回调：监听成功，回调一次
+			端口: 1-65535	1024以下系统占用   80
+			地址: 虚拟localhost  真实域名xx.duapp.com
+静态页面托管:
+	fs.readFile(文件名,[编码],回调(err,data));
+		err 错误 null没有错误
+		data 数据,buffer流
+	staticWWW 函数
+静态数据请求:
+	href/src/url()/locaction.href/submit/ajax........
+动态数据请求:
+	前台: get/post/put/delete/ajax/jsonp.....
+	后台：http[s] 请求 ， 处理方式方式
+		GET:	req.url  抓取 get请求的数据  字符 切/url
+		POST:	req.on('data',(chunk)=>{CHUNK==每次收到的数据buffer})
+				req.on('end',()=>{	接收完毕 切/querystring })
+url模块	处理 url
+	url.parse(str,true)  str -> obj  返回 对象  true 处理query->obj
+
+	obj参数		http://localhost:8002/aaa?username=sdfsdf&content=234234#title4
+	  protocol: 'http:',	协议
+	  slashes: true,	双斜杠
+	  auth: null,   作者
+	  host: 'localhost:8002',  主机 www.baidu.com
+	  port: '8002',	端口
+	  hostname: 'localhost',  baidu
+	  hash: '#title',	哈希（锚)
+	  search: '?username=sdfsdf&content=234234',	数据
+	  query: 'username=sdfsdf&content=234234',	数据
+	  pathname: '/aaa',	文件路径
+	  path: '/aaa?username=sdfsdf&content=234234',	文件路径
+	  href: 'http://localhost:8002/aaa?username=sdfsdf&content=234234#title'
+
+	url.format(obj)  obj -> str   返回str
+querystring
+	querystring.parse(str)  -> obj
+	querystring.stringify(obj) -> str
+
+------------------------------------------------------------------------
+模块化:
+	nodejs： commonJS
+	模块： http/fs/querystring/url		require('模块名')  系统模块
+	模块化：require module exports		seajs.js / require.js   CMD/AMD   es5
+
+	require 引入模块、输入
+		require('模块名')
+			不指定路径：	先找系统模块-> 在再找node_modules|bower_components (依赖模块)->not found
+			指定xx/模块名	 指定路径 -> not found
+				/xx  磁盘环境下，  当前的盘符c:>
+				     项目环境下,   当前项目目录环境   npm/xx/xx/a.js(/)  npm\
+				     向上，			当前IIS配置 FTP上传的根目录
+				/ 加载资源时候用
+	exports 导出，输出
+		exports.自定义属性=值(any) 输出带接口/输出多次		require(模块文件名)=modA  modA是个模块实例{自定义属性}
+	module 模块
+		module.exports == exports
+		module.exports = {  带接口   输出一次
+			自定义属性：值
+		}
+
+		module.exports=fn/class   不带接口			require('..')=modA  modA 是一个fn或者是类class本身
+
+	commonJS 是 nodejs 默认模块方式,不支持es的模块化管理，但支持所有es6+语法
+		commonJS 是个规范 nodejs / webpack 是一个实现
+		ECMA 是个规范  js / as 实现了
+
+--------------------------------------------------------
+NPM：
+	干嘛的：帮助你安装模块（包），自动安装依赖，管理包（增，删，更新，项目所有包)
+	类似：	bower		yarn(https://yarn.bootcss.com/)
+	全局：任何目录c/d/e，项目环境下都可以使用
+		工具类，脚手架
+	本地:	只能在当前目录使用
+
+	项目依赖dependencies： 只能在当前项目下使用，上线了，也需要这个依赖  --save-dev   -S
+	开发依赖devDependencies：只能在当前项目下使用	，上线了，依赖不需要了 --save  -D
+
+	安装、卸载到全局
+	npm install 包名 -g			g==golbal			yarn add 包名  bower install 包名
+	npm uninstall 包名 -g			g==golbal 		yarn remove 包名  bower uninstall 包名
+
+	安装、卸载到本地
+	npm install 包名 
+	npm uninstall 包名 
+	查看已安装:		npm list  列出所有已装包
+					npm outdated 版本对比(安装过得包)
+					npm info 包名 查看当前包所有信息
+	管理模块(项目):	
+		package.json的name的名字需要和项目目录名一致，不要和依赖的包重名
+		npm init 				初始化npm管理文件(package.json)
+			{
+			  "name": "npm",	项目名称
+			  "version": "0.0.1",	版本
+			  "description": "test and play",	描述
+			  "main": "index.js", 入口文件
+			  "dependencies": {  项目依赖  上线也要用
+			    "jquery": "^3.2.1"
+			  },
+			  "devDependencies": { 开发依赖 上线就不用
+			    "animate.css": "^3.5.2"
+			  },
+			  "scripts": {	命令行
+			    "test": "命令行"
+			  },
+			  "repository": {	仓库信息
+			    "type": "git",
+			    "url": "git+https://github.com/alexwa9.github.io/2017-8-28.git"
+			  },
+			  "keywords": [  //关键词
+			    "test",'xx','oo'
+			  ],
+			  "author": "wan9",
+			  "license": "ISC",	认证
+			  "bugs": {
+			    "url": "https://github.com/alexwa9.github.io/2017-8-28/issues"
+			  },
+			  "homepage": "https://github.com/alexwa9.github.io/2017-8-28#readme"
+			}
+	安装到项目依赖
+		npm install 包名 --save  /  -S
+	安装到开发依赖
+		npm install 包名 --save-dev /  -D
+
+	安装package.json里面指定的所有包:
+		npm install
+	版本约束：
+		^x.x.x   约束主版本，后续找最新
+		~x.x.x   保持前两位不变，后续找最新
+		*		 装最新
+		x.x.x 	 定死了一个版本
+
+	选择源
+		npm install nrm -g     安装选择源的工具包
+
+		nrm ls 查看所有源
+		nrm test 测试所有源
+		nrm use 源名
+	模块下载	(卡顿)   超过5分钟
+		ctrl + c -> npm uninstall 包名 -> npm cache clean清除缓存 -> npm install 包名
+
+	发布模块：
+		注册账号 	npmjs.com
+		登录:
+			npm login
+				输入 user/password/email
+		创建包目录->npm init -y -> 创建入口index.js -> 编写，输出-> npm publish发布
+
+		发布：npm publish
+		删除：npm unpublish
+
+		发布操作长时间没有做，邮箱需要确认，收取激活邮件
+
+--------------------------------------------------------------------------------------------
+
+
+express  库
+	干嘛的：nodejs库，不用基础做起，工作简单化
+	类似：koa
+express特点：
+	二次封装，非侵入式，增强形
+	send(any)  write(string|buffer)
+express搭建服务
+	express=require('express')
+	server=express()
+	server.listen(端口,地址,回调)
+静态页面托管
+	server.use() 响应 /
+	express.static('./wwww')
+	server.use(express.static('./wwww'));
+响应:
+	server|app == 服务
+	server.use(url|地址,(req,res,next)=>{})
+	server.get(url,(req,res,next)=>{})
+	server.post(url,(req,res,next)=>{})
+		  use 响应get和post请求 默认响应的是 /
+		  req / res 经过二次封装
+		  	res.send(any)	== res.write + end
+		  	req.query 获取get的数据
+		  	req.body 获取post的数据  依赖中间件  
+		  		中间件使用:body-parser  1. npm install xx  2. require   3. app.use(中间件())
+		  	req.method 获取前端提交方式
+		  next: 是个函数 调用下一个相同地址的响应,除了/
+中间件(middleware)：
+	body-parser
+	中间件:	npmjs.com   查看使用方式
+	body-parser			获取post数据，限定大小，约定返回数据类xx.urlencode({limit:xx})

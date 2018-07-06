@@ -1,0 +1,105 @@
+﻿大后端:
+	用户 - > 地址栏(http[s]请求) -> web服务器（收到) - > nodejs处理请求(返回静态、动态)->请求数据库服务(返回结果)->nodejs(接收)->渲染页面->浏览器（接收页面，完成最终渲染)
+大前端:
+	前端 - > http[s]请求 -> web服务器（收到) - > nodejs处理请求(返回静态、动态)->请求数据库服务(返回结果)->nodejs(接收)->返回给前端(渲染)->浏览器（接收页面，完成最终渲染)
+
+渲染页面(模板引擎):
+	前端：dom操作			虚拟dom操作	二次渲染，后期多次渲染， 优点：局部渲染
+		  jq/js/angularJs	vue/react/angular.......   渲染页面(数据整合到静态页面)
+	后端：
+		  抓取前端静态页面 + 渲染引擎 + 数据  返回data ->  send(data)
+		  渲染引擎: jade/pug / ejs / ....
+
+	arttemplate  underscore baiduTemplate mustach .......
+
+-------------------------------------------------------------------------------------------
+
+中间件:	cookie-parser  cookie-session
+
+用户和服务器交互通过什么?   http协议,http是无状态的
+	通过IP(公司环境)
+	通过浏览器保存一些信息，每次访问服务器带过去
+		如何保存信息给浏览器:
+			1. 前端种cookie/localstorage
+			2. 后端种: 前端请求后端，后端给前端种cookie(加了密)的同时，在服务器上生成sesion
+服务器给浏览器种只种cookie:  cookie-parser
+服务器给浏览器种cookie的同时在服务器上生成seesion:   cookie-session
+
+-------------------------------------------------------------
+jade: 库
+	侵入式，强依赖
+	jade.render('html'); 返回字符
+	jade.renderFile('jade模板文件'，{数据}，{pretty:true});	返回字符
+	jade模板语法
+		父子要缩进
+		属性：  标签(key=value,key2=value)
+		内容:	标签 内容
+-------------------------------------------------------------
+ejs：	模板渲染是异步的
+	非侵入式，温和，弱依赖
+
+	ejs.render(str)  返回  str
+	ejs.renderFile('ejs模板',{数据},回调(err,data))	data == str
+
+	ejs模板语法：
+		ejs 结构就是html
+		输出:	<%= 数据名|属性名|变量名  + 表达式 %>  
+		语句：	<% 语句 %>  需要被<%  %>  包裹
+		非转义输出:	<%- 数据名|变量名  + 表达式 %>
+
+		https://www.npmjs.com/package/ejs
+-------------------------------------------------------------
+multer:  文件上传
+	bodyParser -> req.body -> fs.writeFile()-->
+	multer->文件名会随机->fs模块改名->path系统模块解析磁盘路径
+
+	文件上传：前端表单->后端接收到文件本身->保存到服务器上->给数据库记录文件一些信息->库返回给nodejs相关信息->nodejs返回给前端
+			前端: file enctype="multipart/form-data"
+			后端：body-parser 接受 urlencode编码数据 ,数据回来的是字符
+
+		配置
+		let multer  = require('multer');	引入
+		let objMulter = multer({ dest: './upload' });	实例化  返回 multer对象
+			dest: 指定 保存位置（存到服务器)
+		app.use(objMulter.any());  	any 允许上传任何文件
+
+		req.files	数组
+			fieldname: 表单name名
+			originalname: 上传的文件名
+			encoding： 编码方式
+			mimetype: 文件类型
+			buffer: 文件本身
+			size：尺寸
+			destination: 保存路径
+			filename： 保存后的文件名  不含后缀
+			path：	保存磁盘路径+保存后的文件名 不含后缀
+fs模块:  操作是一步的
+	fs.rename('当前文件','该后的文件名',(err)=>{});
+path 系统模块
+		path.parse('c:\\wamp\\xx.png');	磁盘路径(str -> obj)
+			{
+			   root: 'c:\\', 盘符
+			   dir: 'c:\\wamp', 目录
+			   base: 'xx.png',  文件名
+			   ext: '.png', 扩展名
+			   name: 'xx' 	文件，不含扩展名
+			} 
+		path.format(obj) -> str
+
+		path.join('磁盘路径1','磁盘路径2')
+			__dirname 魔术变量  返回当前文件所在的磁盘路径
+
+
+		path.resolve('片段1','片段2',''片段1'')
+			解析路径片段  返回绝对路径 ,  自右向左找 /xx  
+-------------------------------------------------------------
+
+管理多个模板引擎	consolidate
+	server.set('view.engine','html');	模板最终	输出类型设置
+	server.set('views','./views');		引擎模板目录设置
+
+	server.engine('html',consolidate.ejs);	输出与引擎匹配
+	server.engine('css',consolidate.jade);	输出与引擎匹配
+
+	渲染API：
+	res.render('模板文件名',{数据}) 整合页面和数据，完成渲染，发往浏览器

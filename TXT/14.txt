@@ -1,0 +1,97 @@
+vue-cli + vue-router + axios + vue-aniamte + vuex .....   全家桶
+
+
+新闻客户端
+	1. 环境搭建(vue-cli +  vue-router + axios + vuex == 全家桶)
+	2. 项目分析(组件安排)
+		dist
+			|-...
+		static
+			|-data:
+				|-数据.json
+				....
+		src
+			|-assets
+				|-js
+				|-css
+				|-image
+			|-component
+				|-	navbar.vue / footbar.vue
+				|-	home.vue / follow.vue / column.vue / user.vue
+				|-  detail.vue / login.vue / reg.vue
+				|-	silder.vue / error.vue / list.vue
+			|-filters
+				date.js
+				fillzero.js
+			|-loading
+				index.js
+				|-component
+					|-loading.vue
+			|-store
+				|-index.js
+				|-actions.js
+				|-mutations.js
+				|-getters.js
+				|-state.js
+				|-types.js
+			main.js
+			App.vue
+			router.config.js
+		package.json
+	3. 布局
+		a) 切图(需要设计稿)
+		b) UI库	(bootstrap/elelementUI pc端 / mintUI移动端 / 妹子UI/ant.design/weex)
+		c) html+css模板 移植 到 组件
+			01 全局资源 在主入口文件(index.html)引入
+			02 全局资源 主程序(main.js)
+			03 自执行脚本，跟着当前组件走
+
+	4. 路由搭建
+
+	5. 数据交互+全局过滤器+全局组件（loading）
+
+	6. 非状态管理（控制导航显示)
+		this.$root  返回的是根实例  new Vue (main.js)  
+		this.$root.$data.根数据名;
+		this.$root.$data.根数据名=值
+		组件事件添加： @事件名.native="函数"
+
+	7. 状态管理
+
+		拦截器:axios
+
+			axios.interceptors.request.use(function (config) {
+			    做点事
+			    return config;
+			  }, function (error) {
+			    // Do something with request error
+			    return Promise.reject(error);
+			  });
+			 
+			axios.interceptors.response.use(function (response) {
+			    做点事
+			    return response;
+			  }, function (error) {
+			    // Do something with response error
+			    return Promise.reject(error);
+			  });
+
+	9. 组件懒加载
+
+		原理: 利用webpack对代码进行分割是懒加载的前提，懒加载就是异步调用组件，需要时候才下载,
+			  告诉webpack把组件打包成块，告诉路由激活时触发一个函数，函数再加载组件,加载时会请求组件的块代码，块代码会插入当前组件的样式
+		webpack配置:
+			output:
+				chunkFilename:'chunks/[name]-[chunkhash:8].js',//build之后的代码更便于识别
+		路由配置: 
+			const home =()=>import(/* webpackChunkName: "group-home" */ "../components/home.vue");
+			import 导入 需要安装 babel-plugin-syntax-dynamic-import 
+			配置 babelrc  "plugins": ["syntax-dynamic-import"]
+			webpackChunkName: "group-home" 给块命名 | 同名会拆到一个块，可减少请求次数
+		组件内部注册异步组件:
+			const navbar =()=>import(/* webpackChunkName: "group-home" */ "./components/navbar.vue");
+			components:{navbar}
+			navbar 不异步的话，代码会打到app.js,而不是home块或者navbar块
+	10. 高级异步组件
+		https://cn.vuejs.org/v2/guide/components.html#%E9%AB%98%E7%BA%A7%E5%BC%82%E6%AD%A5%E7%BB%84%E4%BB%B6
+	11. 前后端分离

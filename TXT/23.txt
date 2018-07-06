@@ -1,0 +1,52 @@
+路由检测问题:
+	render函数里面，完成路由检测
+异步路由:
+	知识点:
+		原生API
+		  import ("./ChildB.js").then(
+	        ChildB=>console.log(ChildB)
+	      )
+
+	使用流程:
+	 import Loadable from 'react-loadable';//依赖插件
+
+	  const Loading = () => <div>Loading...</div>;
+	  const Home = Loadable({
+	  	loader: () => import('./routes/Home'),
+	 	loading: Loading,
+	 	loading:()=>{return null}
+	  });
+
+	  路由 <Route path=.. component={Home}/>  路由懒加载
+
+	原理:
+	
+		const Child = asyncComponent(()=>import("./Child"))
+
+    	export default function asyncComponent(importComponent) {
+		  class AsyncComponent extends Component {
+		    constructor(props) {
+		      super(props);
+
+		      this.state = {
+		        component: null
+		      };
+		    }
+
+		    async componentDidMount() {
+		      const { default: component } = await importComponent();
+
+		      this.setState({
+		        component: component
+		      });
+		    }
+
+		    render() {
+		      const C = this.state.component;
+		      return C ? <C {...this.props} /> : null;
+		    }
+		  }
+
+		  return AsyncComponent;
+		}
+

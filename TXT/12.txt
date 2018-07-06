@@ -1,0 +1,50 @@
+vue动画
+
+	动画组件: transition|transition-group	谁做动画，就包着谁
+	
+	组件属性:
+		name =  "动画名"
+		enter-class = "类名"
+		enter-active-class = "类名"
+		leave-class = "类名"
+		leave-active-class = "类名"
+	样式：
+		.动画名-enter{..}  入场前(打哪来)
+		.动画名-enter-active{..} 入场后(来了停哪)
+		.动画名-leave{..} 离场前
+		.动画名-leave-active{..} 离开场后(到哪去)
+
+	transition组件事件:
+		@before-enter="方法(el)"   el==做动画的元素(原生)
+		@enter="方法"
+		@after-enter="方法"
+		@before-leave="方法"
+		@leave="方法"
+		@after-leave="方法"
+
+	1) css3
+		transition：无跳变
+			.动画名-enter{..} 打哪来   +   .动画名-leave-active{..} 到哪去
+		animation：有跳变
+			.动画名-enter-active{指定入场} 来了停哪 + .动画名-leave-active{指定离场}到哪去
+	2) css库 animate.css
+		同 animation 有跳变
+	3) js库 动画名  需要设定初始位置
+		下载 velocity.js   http://velocityjs.org/
+		使用:	Velocity(el,{css属性},{配置})
+
+		配置:
+			duration: 毫秒   事件
+			easing: 动画类别 ''
+			Queue
+			complete:fn()
+			progress:fn
+			loop: 1 次  true无限
+			delay: 毫秒 延时
+			display:'none/block' 动画结束时是否可见
+		注意：
+			leave(el,done){}
+	
+transition-group:
+	一组动画
+	transition-group 包着一组元素  ，每个元素要有key  其他的同transition

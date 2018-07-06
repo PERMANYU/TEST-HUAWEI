@@ -1,0 +1,148 @@
+echarts:
+	干嘛的：画图表的（直线图、曲线图、区域图、柱状图、饼状图、散状点图、仪表图、气泡图、瀑布流图）
+	echarts:  √		canvas  兼容一般   ZRender(渲染)  百度产品
+	hcharts:  svg/vml	兼容性不错   
+官网：http://echarts.baidu.com/
+学习一个库：
+		0. 下载库(cdn、本地、模块化安装+引入)
+		1. 快速上手/教程/quick start/...  概览
+		2. 查文档API(根据需求)  document/doc/API/文档....
+			属性：options{属性:xx}
+			方法:
+			事件:
+			...
+		3. 工作、找实例、改装
+		4. 社区、圈子（群）
+	使用：
+		1.	使用全局暴露对象
+		2.  实例化/初始化 目的：生成实例
+		3.  使用实例.方法()/属性
+		4.	传递、设置数据(option)
+
+	option  结构关系 看配置选项
+
+--------------------------------------------------------------
+
+touch端 事件js
+	移动端测试：
+		1) 模拟器	F12		不靠谱 70%   模拟软件安装
+		2) 真机   
+			a) 页面 传 外网(github duapp) -> 生成网址 ->生成二维码
+			b) 本机虚拟服务器(localhost) - > 手机安装对应APP
+				条件： PC 和手机，要在同一个局域网段
+				同一个局域网段: 同一个路由
+移动端:
+	obj.on事件名=函数  大部分可用
+
+	onmousedown/onmouseup/onmousemove 没有的
+					↓
+	ontouchstart/ontouchend/ontouchmove
+		事件对象描述的是手指信息
+		ev.targetTouches   返回 所有手指信息
+
+	推荐：obj.addEventListener('事件',fn,false)
+--------------------------------------------------------------
+移动端的库 (zepto.js|touch.js)
+
+zepto.js  
+
+	官网：http://zeptojs.com/
+	移动版的jquery，小库，完成移动的功能
+
+	css3能代替的，都没有封装，
+
+	默认功能：
+	zepto	核心方法模块、css attr....
+	event	基本事件  on() & off()  
+	ajax	XMLHttpRequest and JSONP 交互
+	form	表单数据交互
+	ie		pc 机	支持ie10 
+
+需要下载的	模块	(组件)	先引入zepto 
+	fx 动画模块 
+	fx_methods		动画方法
+	selector	扩展选择器
+	....
+------------------------------------------
+
+百度 touchjs
+	好处 事件全（触摸事件+手势), 模拟器真机效果同步
+	官网：http://touch.code.baidu.com/
+	API:	http://cloudajs.org/docs/step4_API_Documentation#h2_7
+
+	事件添加
+		事件绑定
+		touch.on( 元素, 事件类型, 回调 );
+				oLi/'li'
+
+		事件代理
+		touch.on( 事件代理元素DOM或选择器, 事件类型, 代理子元素选择器, 回调 );
+					oUl/'ul'				..			'li'
+	事件类型:
+		缩放:	pinchXX
+		旋转: 	rotateXX
+		滑动:	swipeXX
+		敲、按： tap、doubletap、hold（长按)
+		....
+-----------------------------------------------------------------
+
+iScroll
+	干嘛的：模拟系统滚动
+	应用场景：非框架情况下，做上拉加载，下拉刷新
+	官网：	http://iscrolljs.com/
+	中文：	http://www.cnblogs.com/leolai/articles/4204345.html
+	版本：
+		iscroll.js 基础版 两端
+		iscroll-lite.js 移动端
+		iscroll-probe.js 专有 做上拉加载，下拉刷新
+		iscroll-infinite.js 专有
+使用流程：快速上手/读API/例子/社区、圈子
+	1. new 实例化({配置})/全局对象.init()
+		var 实例 = new IScroll('滚动容器',{配置})
+	2. 
+		布局：
+			滚动容器>内容
+			#wrapper> scroller/content
+		配置: options
+			myScroll=new IScroll('滚动容器',{配置})
+
+			{  
+				属性:值
+			}
+		属性：
+			实例.属性;获取 实例.属性=值 设置
+		方法：
+			myScroll实例.方法()
+		事件:
+			myScroll.on('事件',fn)
+------------------------------------------------------------------------
+
+swiper:
+	干嘛的：轮播图/无限滚动/选项卡/微场景
+------------------------------------------------------------------------
+
+animate.css
+	css 动画库  通过animation实现  keysframes
+------------------------------------------------------------------------
+微场景：
+	1)	使用swiper 官网提供方案  此插件不适用于loop模式
+		预先引入swiper基础css和js
+		引入css/js插件
+			animate.css/swiper.animate.js
+		读：http://www.swiper.com.cn/usage/animate/index.html
+			场景元素运动时机:默认 onSlideChangeEnd 可修改js
+
+	2)	css实现		默认切换开始时，给要切换到的silder添加swiper-slide-active
+		预先引入swiper基础css和js
+		a) transtion
+			设定入场前、入场后的位置
+		b) animation
+			入场前的动作keyframes里面完成
+		c) animate库	引入animate.css
+
+	3) 第三方开发的UI工具 (策划市场) 花钱 没法定制
+	   兔展、易企秀、   参考（定风格，画风，动画节奏）
+------------------------------------------------------------------------
+
+地理定位:
+	

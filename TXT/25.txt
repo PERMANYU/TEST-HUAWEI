@@ -1,0 +1,76 @@
+﻿typescript
+	什么是 TypeScript:
+	    TypeScript 是 JavaScript 的一个超集，主要提供了类型系统和对 ES6 的支持，它由 Microsoft 开发，代码开源于 GitHub 上。
+	    官网：https://www.tslang.cn
+	特点：
+	    可以在编译阶段就发现大部分错误，这总比在运行时候出错好
+	    不显式的定义类型，也能够自动做出类型推论
+	    即使 TypeScript 编译报错，也可以生成 JavaScript 文件
+	    Google 开发的 Angular 就是使用 TypeScript 编写的
+	    TypeScript 拥抱了 ES6 规范，也支持部分 ES7 草案的规范
+	缺点：
+	    有一定的学习成本，需要理解接口（Interfaces）、泛型（Generics）、类（Classes）、枚举类型（Enums）等前端工程师可能不是很熟悉的东西
+	    短期可能会增加一些开发成本，多写一些类型的定义，长期维护的项目，TypeScript 能够减少其维护成本
+	安装：
+	    npm install -g typescript
+	编译一个 TypeScript 文件：
+	    tsc hello.ts   类型不匹配时，编辑报错，但可以生成js（编辑通过），如果不希望编译通过需要配饰tsconfig.json
+
+	类型：
+	    原始数据类型：尔值、数值、字符 串、null、undefined、Symbol  void any 
+	    内置对象: Boolean Error Date RegExp Math / Document HTMLElement Event NodeList
+
+
+	    数值、字符串
+	    布尔值 let isDone: boolean = false;
+	           NewBoolean: boolean = new Boolean(1);返回对象
+	           null undefined 同理
+	    空值  let unusable: void = undefined
+	          function alertName(): void{}
+	    注意：undefined 和 null 是所有类型的子类型，可以赋值给 number 类型的变量，而 void 类型的变量不能赋值给 number 类型的变量
+	    任意值：any 允许被赋值为任意类型，任何操作都返回任意值
+	        let myFavoriteNumber: any = 'seven';
+	        myFavoriteNumber = 7;
+	    类型推论
+	        没有明确的指定类型，依照值推断出一个类型。
+	    联合类型
+	        取值可以为多种类型中的一种,没列出的不可以
+	        let myFavoriteNumber: string | number
+
+	    对象类型：依赖接口来描述,不给类型可以推论
+	    接口定义：后续接口会单说
+	    	interface Person {
+				name: string;
+				age: number;
+			}
+			let p:Person={name:'xx',age:11}
+	    注意：定义的变量比接口少了一些属性是不允许
+	    可选属性: age?: number;
+	    任意属性: [propName: string]: any; 任意值
+	    注意：必填属性和可选属性都必须是任意属性的子属性  
+	    	  例如：[propName: string]: string  其他属性要是string子属性
+	    只读属性: readonly id: number; 只能创建的时候被赋值
+
+	    数组的类型: 
+	    变量:类型[]: 
+	    	let arr: number[] = [1, 1, 2, 3, 5];
+	        let arr: any[] = [1, 1, 2, 3, 5];
+	    Array<elemType>:  泛型 后面会单说
+	    	let arr: Array<number> = [1, 1, 2, 3, 5];  
+
+		 函数的类型：
+		    一个函数有输入和输出，进行约束，需要把输入和输出都考虑到
+		    function sum(x: number, y: number): number {}
+		    注意：输入多余的（或者少于要求的）参数，是不被允许的
+		    函数表达式：let mySum = function (x: number, y: number): number {}
+		    	let mySum: (x: number, y: number) => number = function (x: number, y: number): number {}
+		    	变量:输入类型=>输出类型=function(参数){}
+		    可选参数:   function buildName(a: string, b?: string) {}
+		        注意：可选参数在后
+		    参数默认值:  lastName: string = 'Liu'
+		    接口中函数的定义:
+		        interface SearchFunc {
+		          (a: string, b: number): boolean;
+		        }
+		        let c: SearchFunc=function() {return true}
+		        c('qq',11)

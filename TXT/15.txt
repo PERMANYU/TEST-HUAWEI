@@ -1,0 +1,65 @@
+解决前后端服务器共存
+		大后端：
+			 nodejs + express + router + ejs		后端处理路由，渲染页面
+			 html + css + js效果  http://localhost:3000   public
+		大前端：
+			Vue-cli + vue-router + axios/resource + vuex 	前端处理路由
+				this.$http(url:接口,params:{keyvalue})
+			nodeJs + express 
+				负责:写接口,处理后端到库，send（库数据) json() write+end()
+		前后端分离：
+			跨域：需要后台允许的， 设置头
+				a)  逐条设置  
+					res.setHeader('Access-Control-Allow-Origin', req.headers.origin|'http:localhost:8080')
+					问题：每一个路由都要设置
+				b)  统一设置(中间件cors)
+					app.use(cors({
+					  "origin": ['http://localhost:8080','http://localhost:8081'],
+					  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+					  allowedHeaders:['Content-Type', 'Authorization']
+					}));
+
+
+ 跨源凭证
+		ajax跨源请求数据，默认不提供凭据(cookie,http认证，客户端SSL证明)
+		流程：假设
+			vue->用户中心->vue发送请求->nodejs响应判断无session,返回给vue->vue路由切换到登录页面->vue发送登录请求->nodejs响应，兜库，种cookie(需要凭证)，返回用户数据->vue 路由跳转，传递接受到的数据给 "用户中心组件"
+
+			切换到其他路由，再切回来（用户中心)->vue发送请求->nodejs响应判断有session,返回vue的是 已登录|兜库拿用户数据
+		使用携带跨源凭据|反向跨域
+			前端: 携带
+				a)	逐条允许 axios({})
+					withCredentials: true,//携带跨源凭证
+				b) axios.defaults.withCredentials=true 
+			后端：允许携带
+				a) 逐条允许
+					res.setHeader('Access-Control-Allow-Credentials', true);
+				b) 中间件统一配置(cors)
+					
+
+	前端原生：请求头里面带凭证，带cookie
+	var xhr = new XMLHttpRequest(); 
+	xhr.open("post", "xxx/xxx", true);
+	xhr.withCredentials = true;		放在 open 方法后面比较靠谱
+	xhr.onload = function(){}
+	xhr.send("a=1&b=2");
+
+	前端jqAjax:	请求头里面带凭证，带cookie
+		$.ajax({
+			type:'get',
+			url:"http://localhost:3000/logouts",
+			dataType:"json",
+			xhrFields: {
+				withCredentials: true
+			},
+			success:function(data){
+				console.log(data);
+			}
+		})
+		前端:vue-resource
+				this.$http.get(url,{credentials:true}) 追条
+
+			Vue.http.interceptors.push(function(request, next) {
+			  request.credentials = true  统一
+			  next();
+			});

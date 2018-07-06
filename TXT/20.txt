@@ -1,0 +1,83 @@
+﻿状态管理
+	flux(思想) vue实现(vuex) react实现(react-redux)
+
+状态管理(redux)：可以同一个地方查询状态，改变状态，传播状态
+何时用：中大项目,组件状态需要共享，在任何地方都可以拿到，组件需要改变全	局状态，一个组件需要改变另外一个组件的状态
+思维：
+		在顶层组件创建store(状态),其他底层组件共享这个store(状态)
+数据流动：
+	component->action->reducer->state->component
+	component: 展示结果(含处理结果代码)
+	action: 动作转发,异步请求， 
+	reducer: 业务处理逻辑,返回(return)新state
+	state:	状态收集，更新内部state状态，更新订阅(store.subscribe)state的组件（component）
+
+	通过store.dispatch发送action 给 reducer
+	在组件内部 通过 store.getState() 抓state状态  特点 只抓一次
+			   store.subscribe() 订阅  数据更新，会触发
+			   getState放在subscribe内部
+操作流程：
+	1. {createStore} from 'redux'
+	2. 生成默认state defaultState={}
+	3.	创建reducer 
+		const reducer = (state=defaultState,action)=>{
+			let {type,payload}=action
+			swtich type
+				case XXXXX
+				更新copy后的state  Object.assign(空,老,新)
+			default:
+				return state
+		}
+	4. 创建store对象
+		store = createStore(reducer,defaultState)
+
+	5. store传递给组件
+		<组件名 store={store}/>
+
+	6. 更新，状态获取
+		组件内部:	this.props.store== store
+			this.props.store.dispatch({type:xxx,payload:ooo}) 发送action给reducer
+			this.props.store.subscribe(回调)  订阅 state  更新state时触发
+			this.props.store.getState() 获取状态，执行一次
+
+
+react-redux
+	基于redux思想,专门为react而生
+
+思想:  容器组件, UI组件
+	App: 拿到store,修改、获取store
+	store:外面
+index.js:
+	import {Provider,connect} from react-redux
+
+	<Provider store={store}>
+		<容器组件/>
+	</Provider>
+---------------------------------------------------------------------------------------------------
+思想:
+	组件拆分目标:为了复用
+	组件如何拆：单一原则
+	状态应该给谁: 
+		尽量给顶层组件(状态提升),->props->子组件
+		可以从 props(属性) 或者 state(状态) 得到，那么它可能不应该在 state(状态) 中
+		方法-》操作数据(数据|状态在哪，方法就应该在哪)
+	props取名：从组件本身的角度来命名, 而不是它被使用的上下文环境
+	纯函数:
+		不会试图改变它们的输入，并且对于同样的输入,始终可以得到相同的结果,React 
+	组件都必须是纯函数，并禁止修改其自身 props
+
+		一个函数的返回结果只依赖于它传入参数
+		输出可控
+		不修改外部资源
+		一定要有返回值
+
+		function(a,b){不会随机，不会修改a和b的值，输出可控}
+	setState: 是异步的,会将多个 setState() 调用合并为一次更新,所以不能同步依赖上一个setState的值，作为下一个setState的参数
+		解决：
+			1) this.setState(function(prevState,props){})
+			  函数接收前一个状态值作为第 1 个参数， 并将更新后的值作为第 2个参数
+		      
+		      更新会被合并,浅合并
+		    2) 函数节流(异步操作)
+		    3) ev.target......
+

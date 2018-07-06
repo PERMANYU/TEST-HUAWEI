@@ -1,0 +1,199 @@
+﻿大后端:
+	用户 - > 地址栏(http[s]请求) -> web服务器（收到) - > nodejs处理请求(返回静态、动态)->请求数据库服务(返回结果)->nodejs(接收)->渲染页面->浏览器（接收页面，完成最终渲染)
+大前端:
+	前端 - > http[s]请求 -> web服务器（收到) - > nodejs处理请求(返回静态、动态)->请求数据库服务(返回结果)->nodejs(接收)->返回给前端(渲染)->浏览器（接收页面，完成最终渲染)
+
+数据库:(mysql , mongodb)
+
+mysql: 关系数据库(二维表(表头))
+	数据库：需要安装服务
+		服务： 
+			a) 安装wamp 开启 mysql服务	
+			b) 安装mysql 开启服务
+	库操作：
+		客户端：软件操作(UI工具)/命令行操作
+			wamp的客户端是phpmyadmin
+			navicat 收费
+			nodeJs(后台管理程序),依赖mysql库
+		服务端:
+			mysql
+	链接库：
+		wamp\mysql
+		c:P..G..\mysql
+	库操作  编码方式 UUC
+		建|删 库(目录)
+		建:	CREATE DATABASE  `2017-12-6` DEFAULT CHARACTER SET armscii8 COLLATE armscii8_general_ci;
+		建|删|改 表(文件)
+			创建表头(字段头)
+			CREATE TABLE  `2017-12-6`.`user` (
+			`name` VARCHAR( 32 ) NOT NULL ,
+			`age` INT( 3 ) NOT NULL ,
+			`address` VARCHAR( 128 ) NOT NULL
+			) ENGINE = INNODB
+	表操作	增删改查
+		增：
+			INSERT INTO 表 (字段列表) VALUES(值列表) 
+			INSERT INTO user (name,age,address) VALUES('苏菲',38,'')
+		删:
+			DELETE FROM 表 WHERE 字段名=值
+			DELETE FROM user WHERE name='alex'
+		改:
+			UPDATE 表 SET 字段名=值 WHERE 字段名=值
+			UPDATE user set name='sufei' WHERE name='苏菲' 
+		查:
+			SELECT ? FROM 表
+			SELECT * FROM user  查所有
+
+项目：
+	1. 定义数据字典(数据库设计)
+		banner：	ID title sub_title src
+		news:	ID title des author author_icon post_time content
+		user:	ID username password follow fans icon
+	2. 素材准备(静态页面模板)
+	3. 搭建服务器
+	4. 处理 http请求，拿到数据，渲染页面
+
+
+路由(router):  告诉你去哪
+	前端：导向 路由就告诉你应该去哪
+	后端: 子服务	一个路由就是一个小的服务(server/app)
+
+	创建路由
+		router = express.Router();  返回路由对象
+		server.use('地址,接口',router); 响应的处理过程给了router(子服务)
+
+		处理过程：
+		router.get('/',fn)
+		router.get('/1',fn)
+		router.get('/2',fn)
+--------------------------------------------------------------------------------
+
+
+mongoDb
+	干嘛的：数据库,nosql(非关系型)
+	场景：解决大规模数据集合多重数据种类
+	下载：https://www.mongodb.com/download-center
+	启动库：启动数据库服务(服务端)
+		C:\Program Files\MongoDB\Server\3.4\bin
+			mongod.exe 启动
+			port=27017	默认端口
+			mongodb://127.0.0.1:27017	协议+IP+端口
+	指定数据存储目录： 需要指定一次
+		mongod --dbpath c:\data\db
+	环境变量：为了在任意盘符下去启动库  mongod 
+		C:\Users\user\AppData\Roaming\npm;C:\Users\user\AppData\Local\atom\bin;C:\Program Files\MongoDB\Server\3.4\bin
+
+	开启客户端: mongo 回车
+		UI: 收费(下载+缴费)
+		命令行(shell):	cmd->mongo回车	git bash - > mongo回车     webstrom->dos/linux
+
+	和mysql对比
+	名词
+		mysql			mongoDb
+
+		database(库)	database(库)
+		table(表)		collection(集合)
+		row(一条数据)	document(文档)
+		column(字段)	field(区域)
+		...
+	存储方式:
+		mysql 二维表
+		MongoDB json
+
+
+	库操作:
+		查: show dbs 
+			db 查看当前库
+		建:	use 库名	没有建，有就切换 
+		删: db.dropDatabase()  删除当前库
+	集合(表)操作:
+		建：db.createCollection('表名',{配置})
+			配置：{size:文件大小,capped:true,max:条数|文档数} capped定量
+			db.表(集合).isCapped() 返回 true/false 是否是定量
+		查：show collections / db.getCollectionNames()
+		删：db.表|集合.drop()
+	文档(row)操作:
+		增：
+			db.集合.save({}) / db.集合.insert({})  添加一条
+			db.saveOne({})
+			db.insertOne({})
+
+			db.集合.save([{},{}]) / db.集合.insert([{},{}]) 多条
+			insert  不会替换相同ID	save会
+
+		删:
+			db.集合.deleteOne({}) db.集合.remove({},true)  一条
+			db.集合.remove({要删数据条件描述}) 多条
+			db.集合.remove({}) 清空表
+		改:
+			db.集合.udpate({要替换的数据条件描述},{替换后的},bl插入,bl全替换)
+			替换后的：
+				{$set:{数据},$inc:{age:1}}
+		查:
+			所有：db.集合.find(条件)
+			条数: db.集合.find().count()
+			去重：db.集合.distinct(key)
+
+			条件
+				{age:22}		age == 22
+				{age:{$gt:22}}	age > 22
+				{age:{$lt:22}}    age < 22
+				{age:{$gte:22}}	age>=22
+				{age:{$lte:22}}	age<=22
+				{age:{$lte:122,$gte:22}}	age<=122 && age>=22
+				{$or:[{age:22},{age:122}]}	22 or 122
+				{key:value,key2:value2}  value && value2
+				{name:/正则/}
+
+			db.集合.find({条件},{指定要显示列区域})
+				指定要显示列区域: 区域名username:1 显示着个区域，其他不显示
+				指定要显示列区域: 区域名username:0 不显示着个区域，其他显示
+				_id 是默认显示
+			限定：
+				db.集合.find().limit(number)  限定
+				db.集合.find().skip(number)	跳过
+				db.集合.findOne() / db.集合.find().limit(1)  查询第一条
+		排
+			升：db.集合.find().sort({key:1})
+			降：db.集合.find().sort({key:-1})
+
+
+		db.集合.find({条件},{指定显示区域}).skip(10).limit(10).sort({key:1})
+		db.insertOne({数据描述})	
+------------------------------------------------------------------
+
+
+nodejs + mongodb
+	1.	require('mongodb'); 引入模块  第三方模块
+	2.	创建客户端	mongoCt = mongodb.MongoClient
+	3.	创建链接	mongoCt.connect('协议://地址:端口',回调(err,client))
+	3.5 链库 		client.db('库名') 
+	4.	链接集合（表)	user = db.collection('集合名');
+	5.	user.API()  表操作		返回 对象
+		one === 1  Many 多个
+
+		insertOne(对象数据,(err,res)=>{})  res = 对象  res.result 结果
+		insertMany(arr数据,(err,res)=>{}) res = 对象  res.result 结果
+		updateOne({条件},{更新后},(err,res)=>{})
+		updateMany({条件},{更新后},(err,res)=>{})
+
+		user.find({条件},{projection:{name:1}}).toArray((err,result)=>{reulst==arr})
+
+-----------------------------------------------------------------
+脚手架：
+	干嘛的：自动搭建项目环境的，无需手动
+		命令行： 脚手架名称 目录 回车
+	安装：需要安装到全局
+		npm install express -g   验证 express -h
+		提示错误:	npm install express-generator -g
+	创建项目:
+		express -e 目录 | express -f  创建到当前命令行所在的目录
+		cd 目录
+		npm install 		安装依赖包
+		npm start    -> node ./bin/www
+
+	问题：每次都需要重启服务，需要自动重启服务
+	安装： npm i supervisor -g   
+	通过supervisor 启动服务： supervisor server.js|./bin/www
+
+-----------------------------------------------------------------
