@@ -3955,7 +3955,7 @@ phoneGap:
 		pc: phonegap desktop   |  搭建项目环境
 		移动端: phonegap developer | 测试查看的  | 保证手机和电脑要在同一个网段(连了同一个wifi，同一路由)
 
-	开发:	
+	开发:	                                                                                    
 		无框架：使用
 			
 		vue:   使用
