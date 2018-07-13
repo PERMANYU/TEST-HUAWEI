@@ -1,0 +1,78 @@
+微信公众号开发：
+  为什么要公众号:
+    被关注:
+      可以实时推送一些信息
+      希望利用微信推广个人(订阅号)，企业(企业号)
+      使用微信一些基本功能(摇一摇周边,投票，微信小店,微信支付)
+      希望调取设备信息
+  开发方式
+    a) 申请，设置 (商务，业务人员)
+	    公众平台->注册(公众号:订阅号，企业号)
+	       注册：基本信息  2 选择类型  3 信息登记  4 公众号信息
+	       登录: user/pass -> 微信扫一下(注册时填入微信号)
+
+    b) 定制， wx_jssdk
+
+      开发：放到用户域名 uncle9.bceapp.com ,通过过微信公众号|微信浏览器跳转,才可以使用wx_jssdk
+
+
+b) 定制， wx_jssdk
+
+  服务器端配置:   uncle8.bceapp.com
+    提供文件：
+      wx_sample.php 	后台验证
+      MP_verify..txt 	验证文本
+      hello world 示例代码
+
+  微信端配置:  登录公众号管理平台
+    通过公众号|微信浏览器  跳转  服务器
+
+  1. wx_sample.php  下载一个  
+  2. MP_verify..txt
+    公众号设置->功能设置->JS接口安全域名->填入  后台域名(不含http) | uncle9.duapp.com ->下载MP文件
+
+  3. 示例代码  下载  微信端
+    开发->开发者工具->开发者文档(API)->微信网页开发->微信js-sdk说明文档->拉到最后
+
+    copy pnp目录 到svn 地址下
+
+
+
+  4. 微信公共平台信息，录入到 wx_sample.php 、sample.php
+
+    1）修改sample.php 开发秘钥(微信端->基本配置->开发者ID|密码) 
+
+    2）开发->基本配置->修改配置->
+      URL:  xx.duapp.com/wx_sample.php 
+      Token:  xxxx        Token 对应 wx_sample.php 里面token
+      随机生成key:  一旦生成，请快速提交
+
+  调试:
+    {errMsg:'config,ok'}  
+    
+      1. 测试号
+        开发者工具->开始开发-接口测试号申请->获取测试id/秘钥
+        设置:url:	http://xx.duapp.com/xx/wx_sample.php
+        token: wx_sample.php里面的token
+      2. wx_sample.php文件
+
+
+vue + jssdk
+	sample.php 
+		转移 根index.php
+		在jssdk后面引入  <script src="./dist/build.js"></script>
+		修改路径：require_once "./php/jssdk.php"
+		添加: div#app
+		wx.config 部分保留
+    
+	webpack.config.js
+		path: path.resolve(__dirname, '../baeapp-k9myv52k5emj/dist'),
+    	publicPath: '../baeapp-k9myv52k5emj/dist/',
+    main.js
+    	import './mo/wx.js';  wx.js 自定义的公共模块
+    wx.js == 自定义全局模块模块
+    	wx.ready
+    		wx.onMenuShareTimeline
+    		wx.onMenuShareAppMessage
+    app.vue
+    	methods里面，使用wx全局对象的api

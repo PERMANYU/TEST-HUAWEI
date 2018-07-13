@@ -1,0 +1,77 @@
+﻿微信小程序：
+	帮助：微信公众平台->首页->开发文档
+	注册小程序帐号:
+		公众平台->注册->小程序(公众平台->微信小程序接入指南->注册小程序帐号->获取AppID)
+	后去拿到开发秘钥:
+		公众平台->微信小程序接入指南->注册小程序帐号->获取AppID
+		获取AppID:小程序->设置-开发设置->wxf34e69dfcc966870
+	工具安装:
+		https://developers.weixin.qq.com/miniprogram/dev/devtools/devtools.html 
+	简易教程:
+		创建项目
+	框架：
+		为了方便开发者减少配置项，描述页面的四个文件必须具有相同的路径与文件名。
+		逻辑层:
+			注册页面或者主页面 app({配置})|pages({配置})
+			配置:
+				data:{}  数据
+				钩子函数:(){}
+				自定义函数:(){  this  指向 当前模块 }
+				自定义属性:值
+
+			this.data.数据  获取当前模块数据
+			app.全局属性.数据名  获取app数据
+
+			this.setData({数据名:值})  修改当前模块数据
+			app.setData({数据名:值})  修改APP模块数据
+			app.setData({数据名:值},callback)  修改APP模块数据
+
+			事件：
+				bindXxx   Xxx=事件名 
+				catchXxx
+				bind事件会冒泡，catch事件不冒泡。
+			路由方式: 页面栈
+				重定向(redirect|reLaunch)|返回|转发 导致当前页面出栈(onUnLoad)
+				子路由，跳转会导致中间栈出栈 | 转发 不会
+			注意:
+				navigateTo, redirectTo 只能打开非 tabBar 页面。
+				switchTab 只能打开 tabBar 页面。
+				reLaunch 可以打开任意页面。
+				页面底部的 tabBar 由页面决定，即只要是定义为 tabBar 的页面，底部都有 tabBar。
+				调用页面路由带的参数可以在目标页面的onLoad中获取。
+		视图层:
+			WXML:	组件，非标签
+			WXCSS:	CSS
+				尺寸：  rpx  
+					1rpx = 0.5px = 1 物理像素
+
+API:
+	聚合
+	https://www.juhe.cn
+	https://www.juhe.cn/docs/api/id/42
+	AppKey：baf18d858bfc7b9ab200acc4a47bad7d
+
+
+
+
+构建：
+	1. 编译
+		ts->js
+	2. 合并
+	ng build->dist
+
+多环境:	测试|开发|生产|源码
+	angular-cli.json -> environment -> 环境文件定义
+		environment 环境测试
+			dev 开发环境
+			prod 生产环境
+	环境切换
+		package.json->scripts->start-> 添加: --env=prod   
+
+部署: 与服务端整合
+	ng build -env=prod -> dist ->copy 到 node服务器的www
+	问题：刷新会出错  如：localhost:8000/product/1 浏览器不知道访问的顺序，hash模式就可以
+	解决：客户端修改app.module->添加一个providers，hash地址策略
+		providers:[
+			{provide:LocationStrategy,userClass:HashLocationStrategy}
+		]
