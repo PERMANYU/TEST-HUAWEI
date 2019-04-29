@@ -1,0 +1,57 @@
+{
+    "workbench.startupEditor": "welcomePage",
+    "update.channel": "none",
+    "editor.fontFamily": "Consolas, 'Courier New', monospace,'ÀŒÃÂ'",
+    "background.enabled": false,
+    "files.associations": {
+        "*.cjson": "jsonc",
+        "*.wxss": "css",
+        "*.wxs": "javascript"
+    },
+    "emmet.includeLanguages": {
+        "wxml": "html"
+    },
+    "minapp-vscode.disableAutoConfig": true,
+    "git.confirmSync": false,
+    "window.zoomLevel": -1,
+    "eslint.autoFixOnSave": true,
+    "eslint.validate": [
+        "javascript",
+        "javascriptreact",
+        {
+            "language": "html",
+            "autoFix": true
+        },
+        {
+            "language": "vue",
+            "autoFix": true
+        }
+    ],
+    "vetur.format.defaultFormatter.html": "js-beautify-html",
+    "editor.detectIndentation": false,
+    "vetur.format.options.tabSize": 4,
+    // ’Î∂‘ [yaml] ”Ô—‘£¨≈‰÷√ÃÊ¥˙±‡º≠∆˜…Ë÷√°£
+    "[yaml]": {
+        "editor.insertSpaces": true,
+        "editor.tabSize": 4,
+    },
+    "editor.wordWrap": "off",
+    "workbench.colorTheme": "An Old Hope Classic",
+    "editor.colorDecorators": false,
+    "vetur.format.defaultFormatterOptions": {
+        "js-beautify-html": {
+          "wrap_attributes": "auto"
+        },
+        "prettyhtml": {
+          "printWidth": 100,
+          "singleQuote": false,
+          "wrapAttributes": false,
+          "sortAttributes": false
+        }
+    },
+    "editor.mouseWheelZoom": true,
+    // Set backgroundColor
+    "highlight-icemode.backgroundColor": "red",
+    // Set Border Color
+    "highlight-icemode.borderColor": "golden",
+}
