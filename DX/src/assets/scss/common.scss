@@ -1,0 +1,572 @@
+/*暂无数据*/
+
+.app__data-none {
+	width: 100%;
+	height: 120px;
+	background: url(./../images/data_none.png) no-repeat center;
+	position: relative;
+
+	span {
+		display: block;
+		position: absolute;
+		width: 100%;
+		text-align: center;
+		bottom: 0;
+		color: #6d6d6d;
+		line-height: 20px;
+	}
+}
+
+/*二级头部效果*/
+
+.app__title {
+	display: inline-block;
+	height: 50px;
+	line-height: 50px;
+	font-size: 14px;
+	color: #5c9cf3;
+	background-repeat: no-repeat;
+	background-position: center left;
+
+	&.app__title-basic {
+		background-image: url(./../images/title/basic.png);
+	}
+
+	&.app__title-business {
+		background-image: url(./../images/title/business.png);
+	}
+
+	&.app__title-cost {
+		background-image: url(./../images/title/cost.png);
+	}
+
+	&.app__title-expansion {
+		background-image: url(./../images/title/expansion.png);
+	}
+
+	&.app__title-terminal {
+		background-image: url(./../images/title/terminal.png);
+	}
+
+	&.app__title-bticon {
+		background-image: url(./../images/title/bticon.png);
+	}
+}
+
+/*一级头部样式*/
+.app__top {
+	display: block;
+	width: 100%;
+	height: 30px;
+	background-color: #f5f6fa;
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
+	margin-bottom: 20px;
+
+	.app__top-left{
+		display: block;
+		width: 130px;
+		height: 30px;
+		line-height: 30px;
+		font-size: 14px;
+		color: #fff;
+		text-align: center;
+		background-color: #5c9cf3;
+		border-top-left-radius: 10px;
+	}
+}
+
+/*选择tab效果*/
+
+.app__tab {
+	position: relative;
+	height: calc(100% + 2px);
+
+	&.active {
+		color: $mainColor;
+		border-bottom: 2px solid $mainColor;
+	}
+
+	&:before {
+		content: '';
+		display: block;
+		position: absolute;
+		width: 0;
+		height: 0;
+		left: calc(50% - 5px);
+		bottom: 0;
+		border-width: 5px;
+		border-style: solid;
+		border-color: transparent transparent $mainColor transparent;
+		z-index: 0;
+	}
+
+	&:after {
+		content: '';
+		display: block;
+		position: absolute;
+		width: 0;
+		height: 0;
+		left: calc(50% - 4px);
+		bottom: -2px;
+		border-width: 4px;
+		border-style: solid;
+		border-color: transparent transparent #fff transparent;
+		z-index: 1;
+	}
+}
+
+/*输入框*/
+
+.app__input {
+	height: 30px;
+	line-height: 30px;
+	padding: 0 5px;
+	outline: 0;
+	border: 1px solid #d8dcdf;
+	border-radius: 4px;
+	background-color: #fff;
+	color: #7a7a86;
+	vertical-align: middle;
+
+	&:focus {
+		border: 1px solid $mainColor !important;
+	}
+}
+
+/*多行输入框*/
+
+.app__textarea {
+	width: 100%;
+	height: 60px;
+	padding: 5px;
+	outline: 0;
+	border: 1px solid #d8dcdf;
+	border-radius: 4px;
+	resize: none;
+	color: #7a7a86;
+
+	&:focus {
+		border: 1px solid #59bffd;
+	}
+}
+
+/*按钮*/
+
+.app__btn {
+	display: inline-block;
+	height: 30px;
+	line-height: 28px;
+	padding: 0 20px;
+	border: 1px solid transparent;
+	border-radius: 4px;
+	cursor: pointer;
+	font-size: 12px;
+
+	/*添加按钮*/
+
+	&.app__btn-add {
+		padding: 0 15px 0 30px;
+		background-color: #fff;
+		color: #a0d468;
+		border: 1px solid #a0d468;
+		background-image: url(./../images/btn/add.png);
+		background-repeat: no-repeat;
+		background-position: 10px;
+	}
+
+	&.app__btn-add:hover {
+		background-color: #a0d468;
+		color: #fff;
+		background-image: url(./../images/btn/add_hover.png);
+		background-repeat: no-repeat;
+		background-position: 10px;
+	}
+
+
+	/*修改按钮*/
+
+	&.app__btn-mod {
+		padding: 0 15px 0 30px;
+		background-color: #fff;
+		color: $mainColor;
+		border: 1px solid $mainColor;
+		background-image: url(./../images/btn/edit.png);
+		background-repeat: no-repeat;
+		background-position: 10px;
+	}
+
+	&.app__btn-mod:hover {
+		background-color: $mainColor;
+		color: #fff;
+		background-image: url(./../images/btn/edit_hover.png);
+		background-repeat: no-repeat;
+		background-position: 10px;
+	}
+
+
+	/*删除按钮*/
+
+	&.app__btn-del {
+		padding: 0 15px 0 30px;
+		background-color: #fff;
+		color: #ff7e00;
+		border: 1px solid #ff7e00;
+		background-image: url(./../images/btn/delete.png);
+		background-repeat: no-repeat;
+		background-position: 10px;
+	}
+
+	&.app__btn-del:hover {
+		background-color: #ff7e00;
+		color: #fff;
+		background-image: url(./../images/btn/delete_hover.png);
+		background-repeat: no-repeat;
+		background-position: 10px;
+	}
+
+
+	/*历史版本查询按钮*/
+
+	&.app__btn-history {
+		padding: 0 15px 0 30px;
+		background-color: #fff;
+		color: $mainColor;
+		border: 1px solid $mainColor;
+		/*background-image: url(./../images/btn/delete.png);
+		background-repeat: no-repeat;
+		background-position: 10px;*/
+	}
+
+	&.app__btn-history:hover {
+		background-color: $mainColor;
+		color: #fff;
+		/*background-image: url(./../images/btn/delete_hover.png);
+		background-repeat: no-repeat;
+		background-position: 10px;*/
+	}
+
+
+	/*取消按钮*/
+
+	&.app__btn-clear {
+		text-align: center;
+		border: 1px solid $mainColor;
+		color: $mainColor;
+	}
+
+	&.app__btn-clear:hover {
+		background-color: $mainColor;
+		color: #fff;
+	}
+
+
+	/*确定按钮*/
+
+	&.app__btn-confirm {
+		text-align: center;
+		background-color: $mainColor;
+		color: #fff;
+	}
+
+	&.app__btn-confirm:hover {
+		opacity: .8;
+	}
+
+
+	/*下一步按钮*/
+
+	&.app__btn-next {
+		width: 100px;
+		text-align: center;
+		background-color: $mainColor;
+		color: #fff;
+	}
+
+	&.app__btn-next:hover {
+		opacity: .8;
+	}
+
+
+	/*上一步按钮*/
+
+	&.app__btn-prev {
+		width: 100px;
+		text-align: center;
+		background-color: $mainColor;
+		color: #fff;
+	}
+
+	&.app__btn-prev:hover {
+		opacity: .8;
+	}
+
+
+	/*保存按钮*/
+
+	&.app__btn-save {
+		width: 100px;
+		text-align: center;
+		background-color: #a0d468;
+		color: #fff;
+	}
+
+	&.app__btn-save:hover {
+		opacity: .8;
+	}
+
+
+	/*导出按钮*/
+
+	&.app__btn-pull {
+		padding: 0 15px 0 30px;
+		background-color: #fff;
+		color: $mainColor;
+		margin-right: 10px;
+		border: 1px solid $mainColor;
+		background-image: url(./../images/btn/export.png);
+		background-repeat: no-repeat;
+		background-position: 10px;
+	}
+
+	&.app__btn-pull:hover {
+		background-color: $mainColor;
+		color: #fff;
+		background-image: url(./../images/btn/export_hover.png);
+		background-repeat: no-repeat;
+		background-position: 10px;
+	}
+
+
+	/*发起需求单*/
+
+	&.app__btn-newRequire {
+		padding: 0 15px 0 30px;
+		background-color: #fff;
+		color: #a0d468;
+		border: 1px solid #a0d468;
+		background-image: url(./../images/btn/initiate.png);
+		background-repeat: no-repeat;
+		background-position: 10px;
+	}
+
+	&.app__btn-newRequire:hover {
+		background-color: #a0d468;
+		color: #fff;
+		background-image: url(./../images/btn/initiate_hover.png);
+		background-repeat: no-repeat;
+		background-position: 10px;
+	}
+
+
+	/*展开按钮*/
+
+	&.app__btn-show {
+		padding: 0 15px 0 30px;
+		background-color: #fff;
+		color: $mainColor;
+		margin-right: 10px;
+		border: 1px solid $mainColor;
+		background-image: url(./../images/btn/expand.png);
+		background-repeat: no-repeat;
+		background-position: 10px;
+	}
+
+
+	/*收起按钮*/
+
+	&.app__btn-slide {
+		padding: 0 15px 0 30px;
+		background-color: #fff;
+		color: $mainColor;
+		margin-right: 10px;
+		border: 1px solid $mainColor;
+		background-image: url(./../images/btn/slide.png);
+		background-repeat: no-repeat;
+		background-position: 10px;
+	}
+
+
+	/*配置按钮*/
+
+	&.app__btn-set {
+		width: 100px;
+		text-align: center;
+		background-color: $mainColor;
+		color: #fff;
+	}
+
+	&.app__btn-set:hover {
+		opacity: .8;
+	}
+
+
+	/*返回按钮*/
+
+	&.app__btn-back {
+		width: 100px;
+		text-align: center;
+		background-color: #ff7e00;
+		color: #fff;
+	}
+
+	&.app__btn-back:hover {
+		opacity: .8;
+	}
+
+}
+
+
+
+
+/*表格样式*/
+.app__table{
+	.app__table-thead {
+		font-weight: bold;
+		text-align: center;
+		background-color: #fafbff;
+		border-top: 1px solid $mainColor;
+
+		.app__table-left,.app__table-right{
+			background-color: #f8fcff;
+		}
+
+		>.col {
+			border-right: 1px solid #f1f5fa;
+			text-align: left;
+			padding-left: 15px;
+		}
+	}
+
+	.app__table-item{
+		>.col {
+			text-align: left;
+			padding-left: 15px;
+		}
+
+		&:nth-child(2n) {
+			background-color: #fff;
+
+			.app__table-left,.app__table-right{
+				background-color: #fff;
+			}
+		}
+
+		&:nth-child(2n+1) {
+			background-color: #fbfcfe;
+
+			.app__table-left,.app__table-right{
+				background-color: #fbfcfe;
+			}
+		}
+
+		&:hover {
+			background-color: #dff1fc;
+			.app__table-left,.app__table-right{
+				background-color: #dff1fc;
+			}
+		}
+	}
+
+}
+
+/*列表样式*/
+.app__table__inner{
+	.app__table-thead {
+		font-weight: bold;
+		background-color: #f5f6fa;
+		border: 1px solid #eee;
+
+		.app__table-left,.app__table-right{
+			background-color: #f5f6fa;
+		}
+
+		>.col {
+			text-align: left;
+			padding-left: 15px;
+		}
+	}
+
+	.app__table-item{
+		color: #647283;
+
+		border:{
+			width: 1px;
+			style: solid;
+			color: transparent #eee #eee;
+		}
+
+		>.col {
+			text-align: left;
+			padding-left: 15px;
+		}
+
+		&:hover {
+			color: $mainColor;
+			.app__table-left,.app__table-right{
+				background-color: #fff;
+			}
+		}
+	}
+}
+
+.app__clear {
+	clear: both;
+}
+
+
+/*弹框按钮样式*/
+.app__icon-btn{
+	display: inline-block;
+	width: 16px;
+	height: 16px;
+	vertical-align: middle;
+	cursor: pointer;
+
+	/*选中*/
+	&.app__icon-choose{
+		background: url(../images/btn/choose.png) no-repeat center;
+	}
+	/*删除*/
+	&.app__icon-delete{
+		background: url(../images/btn/delete.png) no-repeat center;
+	}
+	/*添加*/
+	&.app__icon-plus{
+		background: url(../images/btn/plus.png) no-repeat center;
+	}
+}
+/*列表里的icon*/
+.app__icon {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    vertical-align: middle;
+    cursor: pointer;
+    margin-right: 40px;
+
+    /*添加功能产品*/
+    &.app__icon-plus {
+        background: url("../images/icon/addm.png") no-repeat center;
+    }
+    &.app__icon-plus:hover {
+        background: url("../images/icon/add.png") no-repeat center;
+    }
+    /*修改*/
+    &.app__icon-update {
+        background: url("../images/icon/editm.png") no-repeat center;
+    }
+    &.app__icon-update:hover {
+        background: url("../images/icon/edit.png") no-repeat center;
+    }
+    /*删除*/
+    &.app__icon-delete {
+        background: url("../images/icon/delm.png") no-repeat center;
+    }
+    &.app__icon-delete:hover {
+        background: url("../images/icon/del.png") no-repeat center;
+    }
+}
+.icon-Select-fang{
+    color: $mainColor;
+}
