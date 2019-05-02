@@ -4610,6 +4610,27 @@ react 脚手架
 			扩展服务里面找mysql信息(user/pass/port/database/host)
 			参考：https://cloud.baidu.com/doc/BAE/ExtensionService.html#Node.js.E8.BF.9E.E6.8E.A5MongoDB
 
-	
+
+获取cookie   
+/**
+ * 获取cookies
+ * @param key
+ * @returns {string}
+ */
+export function getCookie(key) {
+  let ca = document.cookie.split(";");
+  for (let i = 0; i < ca.length; i++) {
+    let c = ca[i];
+    while (c.charAt(0) == " ") {
+      c = c.substring(1);
+    }
+    if (c.indexOf(key) != -1) {
+      return c.substring(name.length, c.length);
+    }
+  }
+  return "";
+}
+
+C:\Windows\System32\drivers\etc   HOST文件修改
 
 
