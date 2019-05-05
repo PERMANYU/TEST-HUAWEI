@@ -1,0 +1,49 @@
+开发测试环境
+	->http://cpc.te.sh.ctc.com:8082 前端地址
+	-> git dev分支 上传源代码 PAAS平台流水线发布 
+	->PASS平台流水线地址 http://10.145.196.77:9997/#/flow-line/flow-line-list
+	->流水线名称：cpc-fe-workbench-publish
+
+
+集成测试环境1.0b
+	->http://cpc1b.test.sh.ctc.com:8172
+	->git release-1.0b分支  上传打包后的dist文件夹 找人发布
+	->打包命令 npm run build release
+
+集成测试环境1.0
+	->	
+	->git release-1.0分支  上传打包后的dist文件夹 找人发布
+	->打包命令 npm run build release-1.0
+	
+
+生产测试环境
+	->http://cpc1.sh.ctc.com:8082
+	->git prod-publish-1.0分支  上传打包后的dist文件夹 找人发布
+	->打包命令 npm run build production
+
+
+1	CPC	虞洛浦	yuluopu@shflier.com	bss_cpc_yuluopu	1qazxsw@
+
+
+
+
+政企  开发10.145.209.146:8065/#/home
+
+      http://test.sh.ctc.com/CPC/#/login
+      集成10.145.131.187:8169/#/home
+CRM管理平台  https://test.sh.ctc.com/zqcrmsso/cmb/cmbdatainterfaceconvert/enterCMB
+
+
+
+http://test.sh.ctc.com/CPC/#/main/requirement?CPC-SID=848cdf2d-846f-42bf-ac2d-a3aebeb80e25
+
+OA : https://www.sh.ctc.com/portalserverU/wps/myportal/Home/dx_xzhb/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8ziPQNcHA0tTIx8_J2dDA0cPUI9DcM8HI0MLMz0w8EKDHAARwP9KEL6o8BK0PU5BRk5GRsYuPsbYVWAYkVBboRBpqOiIgBg8Sdy/dz/d5/L2dBISEvZ0FBIS9nQSEh/
+
+
+
+
+CRM管理门户并行环境地址
+OA入口：https://www.sh.ctc.com/     账号：w_sts_wl
+平台入口：http://fe.pr.sh.ctc.com/cmb/fe/#/login   账号：jianglimiao
+
+

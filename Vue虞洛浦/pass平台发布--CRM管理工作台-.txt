@@ -1,0 +1,78 @@
+开发测试环境
+访问地址：http://10.145.196.77:9024/oauth/login?clientId=6cb0822c54374184aa23cdf3d35d3bdc&returnTo=%2Foauth%2Fauthorize%3FresponseType%3Dcode%26scope%3Duser%26clientId%3D6cb0822c54374184aa23cdf3d35d3bdc%26state%3D26582%26redirectUri%3Dhttp%3A%2F%2F10.145.196.77%3A9995%2F#/callback
+用户名：teecpmt
+密码：123456788
+
+集成测试环境
+访问地址：http://10.145.129.2:9021/
+用户名：testecp
+密码：Ecp@1234
+
+正式环境
+访问地址：http://10.145.129.2:9021/
+用户名：ecpmnt
+密码：Td3Rm&Vx
+
+W_FSGS_GYJ   137
+
+
+政企门户
+	童承权    18019061025    qq： 976346716    tcq71074647@shtel.com.cn   申请服务和容器
+	杨浪浪       容器问题查证
+	雷欢欢     eop负责   qq：524617251     电话：137 6147 7925
+
+
+CRM管理平台
+地址：http://10.145.131.187:8169/#/login
+
+
+
+
+gitLab 账号密码
+http://10.145.196.76:9080/crm/cmb/cmb-web
+bss_ecp_shenpeng    sp123456			用户名：shenpeng@shflier.com
+
+
+CMB
+开发测试环境
+       账号：tecmbmt
+       密码：123456788
+       URL：http://10.145.196.77:9999
+
+
+    集成测试环境
+
+        账号：testcmb
+        密码：Cmb@1234
+        url：http://10.145.129.2:9021
+
+
+   用测环境
+	uecmbfe/Ji0Ks1Wp
+	http://10.145.168.244:5300 
+
+
+
+CRM管理门户并行环境地址
+OA入口：https://www.sh.ctc.com/     账号：w_sts_wl
+平台入口(生产)：http://fe.pr.sh.ctc.com/cmb/fe/#/login   账号：jianglimiao   123456
+
+平台入口(生产):http://fe.sh.ctc.com/cmb/fe/#/login  生产 w_sts_wl
+
+平台入口(用测)：https://test.sh.ctc.com/portalserverqy/wps/myportal
+
+
+	
+
+【5月04号发布内容】
+微服务变更编号：201905041902
+微服务变更需求提出人：王尧
+微服务变更引擎：CMB(前端服务)
+变更环境：天翼云用户测试环境、天翼云生产环境
+变更时间：20190504 19:02
+批准人：吴宇星
+默认引擎发布顺序：无发布顺序
+微服务变更列表：微服务名     微服务Tag 
+
+ue-cmb-web   v1.2.16-20190504-ue
+cmb-prod-web v1.2.16-20190504-prod

@@ -1,0 +1,90 @@
+﻿export default{
+	'dev': {apiServer: 'http://cpc.te.sh.ctc.com:8082/cpc',
+			flowImgServer: {
+				definitions:'http://10.145.208.183:25513/process-definitions/showPic/tecpcmt',
+				instance:'http://10.145.208.183:5603/capacity/custom/getProcessInstanceImage',
+				design:'http://10.145.208.183:5600/editor/cpcdefine/{type}/{bpmsTenantId}/{bpmsAuthCode}'
+			},
+			windowOpenServer: '/#'},
+	'release-1.0': {apiServer: 'http://cpc1.test.sh.ctc.com:8183/cpc1',
+			flowImgServer: {
+				definitions:'http://10.145.208.183:25513/process-definitions/showPic/tecpcmt',
+				instance:'http://10.145.208.183:5603/capacity/custom/getProcessInstanceImage',
+				design:'http://10.145.208.183:5600/editor/cpcdefine/{type}/{bpmsTenantId}/{bpmsAuthCode}'
+			},
+			windowOpenServer: '/#'},
+	'release': {apiServer: 'http://cpc1b.test.sh.ctc.com:8172/cpc1b',
+			flowImgServer: {
+				definitions:'http://10.145.208.183:25513/process-definitions/showPic/tecpcmt',
+				instance:'http://10.145.208.183:5603/capacity/custom/getProcessInstanceImage',
+				design:'http://10.145.208.183:5600/editor/cpcdefine/{type}/{bpmsTenantId}/{bpmsAuthCode}'
+			},
+			windowOpenServer: '/#'},
+	'production': {apiServer: `${window.location.origin}/CPC/cpc1web`,
+			flowImgServer: {
+				definitions:'http://10.145.132.52:8099/process-definitions/showPic/cpc1mnt',
+				instance:'http://10.145.132.52:8099/custom/getProcessInstanceImage',
+				design:'http://10.145.132.52:80/editor/cpcdefine/{type}/{bpmsTenantId}/{bpmsAuthCode}'
+			},
+			windowOpenServer: '/CPC/cpc1web/fe/#'},
+	'default': {apiServer: 'http://cpc.te.sh.ctc.com:8082/cpc',
+			flowImgServer: {
+				definitions:'http://10.145.208.183:25513/process-definitions/showPic/tecpcmt',
+				instance:'http://10.145.208.183:5603/capacity/custom/getProcessInstanceImage',
+				design:'http://10.145.208.183:5600/editor/cpcdefine/{type}/{bpmsTenantId}/{bpmsAuthCode}'
+			},
+			windowOpenServer: '/#'},
+	'release-ue': {apiServer: 'http://fe.ue.sh.ctc.com/cpc1',
+			flowImgServer: {
+				definitions:'http://10.145.208.183:25513/process-definitions/showPic/tecpcmt',
+				instance:'http://10.145.208.183:5603/capacity/custom/getProcessInstanceImage'
+			},
+			windowOpenServer: '/#'},
+	'release-prod': {apiServer: 'http://fe.pr.sh.ctc.com/cpc1',
+			flowImgServer: {
+				definitions:'http://10.145.208.183:25513/process-definitions/showPic/tecpcmt',
+				instance:'http://10.145.208.183:5603/capacity/custom/getProcessInstanceImage'
+			},
+			windowOpenServer: '/#'}
+}
+
+
+
+
+
+ AnyOffice：72614311
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+多久没喝奶茶了。。。。。。。。
