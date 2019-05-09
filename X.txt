@@ -4985,3 +4985,111 @@ if(monitorCfg.enableAjax){//AJAX页面性能监控
 	}
 // 完美
 	getStuffAwesome({ id: 150, force: true, verbose: true })
+
+
+
+==================================================================
+
+	JSON转换成树结构
+
+	
+	var  json = [
+    {"id":1,"parentId":0,name:'上海市'},
+    {"id":2,"parentId":1,name:'宝山区'},
+    {"id":3,"parentId":1,name:'黄浦区'},
+    {"id":4,"parentId":1,name:'浦东新区'},
+    {"id":5,"parentId":0,name:'北京区'},
+    {"id":6,"parentId":5,name:'房山区'},
+    {"id":7,"parentId":5,name:'还定区'},
+    {"id":8,"parentId":2,name:'昌邑路'},
+    {"id":9,"parentId":2,name:'逸仙路'},
+]
+方法：1.
+var attributes = {    //定义数据属性名称
+    id: 'id',
+    parentId: 'parentId',
+    name: 'name',
+    rootId: 0
+}
+function quickTree(data, attributes) {
+    let resData = data;
+    let tree = [];
+    for(let i = 0; i < resData.length; i++) {
+        if(resData[i][attributes.parentId] === attributes.rootId) {
+            let obj = {
+                id: resData[i][attributes.id],
+                title: resData[i][attributes.name],
+                children: []
+            };
+            tree.push(obj);
+            resData.splice(i, 1);
+            i--;
+        }
+    }
+    run(tree);
+ 
+    function run(chiArr) {
+        if(resData.length !== 0) {
+            for(let i = 0; i < chiArr.length; i++) {
+                for(let j = 0; j < resData.length; j++) {
+                    if(chiArr[i].id == resData[j][attributes.parentId]) {
+                        let obj = {
+                            id: resData[j][attributes.id],
+                            title: resData[j][attributes.name],
+                            children: []
+                        };
+                        chiArr[i].children.push(obj);
+                        resData.splice(j, 1);
+                        j--;
+                    }
+                }
+                run(chiArr[i].children);
+            }
+        }
+    }
+ 
+    return tree;
+}
+
+方法：2
+    function parseSimpleTreeData(treeData,{ id ='id',parentId = 'parentId',rootId = 0} = {}) {
+        debugger
+        const keyNodes = {};
+        const rootNodeList = [];
+
+
+        const nodeList = treeData.map(node => {
+            const clone = {...node}
+            const key = clone[id];
+            keyNodes[key] = clone;
+            clone.value = clone.key || key;
+            return clone
+        })
+
+        nodeList.forEach(node => {
+            const parentKey = node[parentId]
+            const parent = keyNodes[parentKey]
+
+            if(parent) {
+                parent.children = parent.children || [];
+                parent.children.push(node)
+            }
+
+            if(parentKey === rootId || (!parent && rootId === null)) {
+                rootNodeList.push(node)
+            }
+
+            delete node[id]
+            delete node[parentId]
+        });
+
+
+        return rootNodeList
+
+    }
+    console.log(parseSimpleTreeData(json));
+
+
+let a = quickTree(json,attributes)
+ console.log(JSON.stringify(a));
+ =============================================================================
