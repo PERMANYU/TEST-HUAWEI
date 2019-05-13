@@ -4773,12 +4773,12 @@ var str = "AbC";
 
 //冒泡排序
     function sudoSort(array) {
-       for (let index = 0; index < array.length - 1; index++) {
-            for (let imd = 0; imd < array.length - index - 1; imd++) {
-                if(array[imd] > array[imd + 1]) {
-                    var temp = array[imd + 1];
-                    array[imd + 1] = array[imd];
-                    array[imd] = temp;
+       for (let i = 0; i < array.length - 1; i++) {
+            for (let j = 0; j < array.length - i - 1; j++) {
+                if(array[j] > array[j + 1]) {
+                    var temp = array[j + 1];
+                    array[j + 1] = array[j];
+                    array[j] = temp;
                 }
             }           
        }
@@ -4788,15 +4788,15 @@ var str = "AbC";
     // function sudoSort(array) {
     //     var len = array.length;
     //     var minIndex, temp;
-    //     for (let index = 0; index < len - 1; index++) {
-    //         minIndex = index;
-    //         for (var imd = index + 1; imd < len; imd++) {
-    //             if(array[imd] < array[minIndex]) {
-    //                 minIndex = imd
+    //     for (let i = 0; i < len - 1; i++) {
+    //         minIndex = i;
+    //         for (var j = i + 1; j < len; j++) {
+    //             if(array[j] < array[minIndex]) {
+    //                 minIndex = j
     //             }
     //         }
-    //         temp = array[index];
-    //         array[index] = array[minIndex];
+    //         temp = array[i];
+    //         array[i] = array[minIndex];
     //         array[minIndex] = temp;
     //     }
     //     return array
@@ -4969,7 +4969,6 @@ if(monitorCfg.enableAjax){//AJAX页面性能监控
 	const nums = [2 ,4 , 6, ...odd];
 	// 将数组展开作为参数传给一个方法
 	Math.max.call(null, ...arr);
-
 12. 命名参数
 
 	/ 我们尝尝使用的写法
@@ -4986,24 +4985,21 @@ if(monitorCfg.enableAjax){//AJAX页面性能监控
 // 完美
 	getStuffAwesome({ id: 150, force: true, verbose: true })
 
-
-
+getStuffAwesome
 ==================================================================
-
 	JSON转换成树结构
-
 	
 	var  json = [
-    {"id":1,"parentId":0,name:'上海市'},
-    {"id":2,"parentId":1,name:'宝山区'},
-    {"id":3,"parentId":1,name:'黄浦区'},
-    {"id":4,"parentId":1,name:'浦东新区'},
-    {"id":5,"parentId":0,name:'北京区'},
-    {"id":6,"parentId":5,name:'房山区'},
-    {"id":7,"parentId":5,name:'还定区'},
-    {"id":8,"parentId":2,name:'昌邑路'},
-    {"id":9,"parentId":2,name:'逸仙路'},
-]
+				    {"id":1,"parentId":0,name:'上海市'},
+				    {"id":2,"parentId":1,name:'宝山区'},
+				    {"id":3,"parentId":1,name:'黄浦区'},
+				    {"id":4,"parentId":1,name:'浦东新区'},
+				    {"id":5,"parentId":0,name:'北京区'},
+				    {"id":6,"parentId":5,name:'房山区'},
+				    {"id":7,"parentId":5,name:'还定区'},
+				    {"id":8,"parentId":2,name:'昌邑路'},
+				    {"id":9,"parentId":2,name:'逸仙路'},
+				]
 方法：1.
 var attributes = {    //定义数据属性名称
     id: 'id',
@@ -5036,7 +5032,7 @@ function quickTree(data, attributes) {
                         let obj = {
                             id: resData[j][attributes.id],
                             title: resData[j][attributes.name],
-                            children: []
+                            loadChildren: []
                         };
                         chiArr[i].children.push(obj);
                         resData.splice(j, 1);
@@ -5053,7 +5049,6 @@ function quickTree(data, attributes) {
 
 方法：2
     function parseSimpleTreeData(treeData,{ id ='id',parentId = 'parentId',rootId = 0} = {}) {
-        debugger
         const keyNodes = {};
         const rootNodeList = [];
 
@@ -5093,3 +5088,22 @@ function quickTree(data, attributes) {
 let a = quickTree(json,attributes)
  console.log(JSON.stringify(a));
  =============================================================================
+ 、
+
+ javascript 如何得到link标签全部内容
+var links = document.getElementsByTagName('head')[0].getElementsByTagName('link');
+for (var i = 0; i < links.length; i++) {
+var str= //
+}
+
+用links[i].getAttribute('href')获得href属性，再用getValue()或 .value 获得到属性值
+
+
+ if(document.querySelector('link[rel="stylesheet"]') != null){
+    let cssUrl = document.querySelector('link[rel="stylesheet"]').href;
+    this.passWord = cssUrl.split("app.")[1].split(".css")[0];
+} else {
+    this.passWord = '123456'
+} 
+
+================================================================================
