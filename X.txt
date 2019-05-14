@@ -5047,7 +5047,9 @@ function quickTree(data, attributes) {
     return tree;
 }
 
-方法：2
+
+
+	方法：2
     function parseSimpleTreeData(treeData,{ id ='id',parentId = 'parentId',rootId = 0} = {}) {
         const keyNodes = {};
         const rootNodeList = [];
