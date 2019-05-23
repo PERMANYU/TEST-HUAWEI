@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        div {
+            float: left;
+            width: 800px;
+            height: 100px;
+            background-color: #ccc
+        }
+
+        div:nth-child(3)::after {
+            content: "  ";
+            border-top: 17px solid transparent;
+            border-bottom: 17px solid transparent;
+            border-left: 17px solid #fbfdfb;
+            /*箭头背景颜色，覆盖前面的#eee颜色，使其颜色与整体颜色一致*/
+            position: absolute;
+            top: 27px;
+            left: 17px;
+        }
+
+        p {
+            width: 100px;
+            height: 100px;
+            background-color: #f000
+        }
+
+        p::after {
+            content: "";
+            border-left: 17px solid transparent;
+            border-right: 17px solid transparent;
+            border-top: 17px solid #000;
+            position: absolute;
+            top: 30px;
+            right: 0px;
+        }
+
+        #column {
+            -moz-column-count: 3;
+            /* Firefox */
+            -webkit-column-count: 3;
+            /* Safari and Chrome */
+            column-count: 3;
+        }
+
+        /* 渐变色 */
+        #color {
+            width: 100px;
+            height: 100px;
+            FILTER: progid:DXImageTransform.Microsoft.Gradient(gradientType=0, startColorStr=#AC07BD, endColorStr=#f6f6f8);
+            /*IE 6 7 8*/
+        }
+    </style>
+</head>
+
+<body>
+    <div id="column">
+
+    </div>
+
+    <div id="color">
+
+    </div>
+    <div>
+
+    </div>
+    <div>
+        <p></p>
+    </div>
+</body>
+<script>
+    async function foo() {
+        var a = await new Promise((resolve) => {
+            setTimeout(() => {
+                resolve(1);
+            }, 2000);
+        });
+        console.log(a); // 第2秒时输出: 1
+
+        try {
+            var b = await new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    reject(2);
+                }, 1000);
+            })
+        } catch (e) {
+            console.log(e); // 第3秒时输出: 2
+        }
+
+        // 函数暂停2秒后再继续执行
+        var sleep = await new Promise((resolve) => {
+            setTimeout(() => {
+                resolve('sleep');
+            }, 2000);
+        });
+
+        var c = await 3;
+        console.log(c); // 第5秒时输出: 3
+    }
+    foo()
+
+    /* async function timeout() {
+        return 'hello world'
+    }
+    timeout().then(result => {
+        console.log(result);
+    })
+    console.log('虽然在后面，但是我先执行') */
+    function doTask({
+        id,
+        success = true,
+        time = 100
+    }) {
+        return new Promise(function (resolve, reject) {
+            setTimeout(function () { // 模拟异步
+                var msg
+                if (success) {
+                    msg = `thing ${id} is done`
+                    console.log(msg)
+                    resolve(msg);
+                } else {
+                    msg = `thing ${id} failed`
+                    console.error(msg)
+                    reject(msg)
+                }
+            }, time)
+        })
+    }
+    async function doParallelTing() {
+        var [res1, res2, res3] = await Promise.all([
+            doTask({
+                id: 1
+            }),
+            doTask({
+                id: 2,
+                time: 1000
+            }),
+            doTask({
+                id: 3
+            })
+        ])
+        console.log(res1, res2, res3)
+    }
+
+    doParallelTing()
+
+
+
+
+
+    function ajax(url, funSuccess, funError) {
+        var xmlhttp;
+        //非IE浏览器创建XmlHttpRequest对象
+        if (window.XmlHttpRequest) {
+            xmlhttp = new XmlHttpRequest();
+        }
+        //IE浏览器创建XmlHttpRequest对象
+        if (window.ActiveXObject) {
+            try {
+                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+            } catch (e) {
+                try {
+                    xmlhttp = new ActiveXObject("msxml2.XMLHTTP");
+                } catch (ex) {}
+            }
+        }
+        //连接服务器
+        xmlhttp.open("GET", "", true)
+        //发送请求
+        xmlhttp.send();
+        //接受返回
+        xmlhttp.onreadystatechange = function () {
+            /*0 （未初始化） 还没有调用open()方法
+              1 (载入) 已经调用send()方法，正则发送请求
+              2 （载入完成） send() 方法完成，已经收到全部响应
+              3 （解析） 正则解析响应内容
+              4 （完成） 响应内容解析完成，可以在客户端调用 */
+            if (xmlhttp.readyState == 4) {
+                if (xmlhttp.status == 200) { /// 成功
+                    //return xmlhttp.responseText;
+                    funSuccess(xmlhttp.responseText);;
+                } else {
+                    if (funError) {
+                        funError(xmlhttp.status);
+                    }
+
+                }
+            }
+        }
+    }
+    ajax()
+</script>
+
+</html>

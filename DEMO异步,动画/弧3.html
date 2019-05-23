@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>666</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      font-family: 微软雅黑;
+      overflow: hidden;
+    }
+
+    body {
+      background: #000
+    }
+
+    canvas {
+      background: #fff;
+    }
+  </style>
+
+
+</head>
+
+<body>
+
+  <canvas width="800" height="450" id="c1"></canvas>
+
+  <script>
+    function rnd(n, m) {
+      return parseInt(Math.random() * (m - n) + n);
+    }
+    function d2a(n) {
+      return Math.PI / 180 * n
+    }
+    function a2d(n) {
+      return Math.PI / n * 180
+    }
+    function fillzero(n) {
+      return n < 10 ? '0' + n : '' + n;
+    }
+    var oC = document.querySelector("#c1"); //DOM
+    var gd = oC.getContext('2d'); //画笔对象
+
+
+    setInterval(function () {
+      var d = new Date();
+      var h = d.getHours();
+      var m = d.getMinutes();
+      var s = d.getSeconds();
+      var ms = d.getMilliseconds();
+
+      gd.clearRect(0, 0, oC.width, oC.height);
+      // drawArc(gd,200,200,80,'#939',0,h%12*30);//时
+      // drawArc(gd,200,200,100,'#393',0,m*6);//分
+      // drawArc(gd,200,200,120,'#993',0,s*6);//秒
+      drawArc(gd, 200, 200, 120, '#999', 0, 360);//
+      drawArc(gd, 200, 200, 100, '#888', 0, 360);//
+      drawArc(gd, 200, 200, 80, '#777', 0, 360);//
+      drawArc(gd, 200, 200, 120, '#939', 0, s * 6 + ms / 1000 * 6);//秒
+      drawArc(gd, 200, 200, 100, '#393', 0, m * 6 + s / 60 * 6);//分
+      drawArc(gd, 200, 200, 80, '#993', 0, h % 12 * 30 + m / 60 * 30);//小时
+
+      gd.textAlign = "center";
+      gd.textBaseline = 'middle';
+      gd.fillText(`劳力士`, 200, 194);
+      gd.fillText(`${fillzero(h)}:${fillzero(m)}:${fillzero(s)}`, 200, 206);
+
+    }, 16);
+
+    function drawArc(gd, cx, cy, r, color, start, end) {
+      gd.strokeStyle = color || '#399';
+      gd.lineWidth = 20;
+      start = start - 90;
+      end = end - 90;
+
+      gd.beginPath();
+      gd.arc(cx, cy, r, d2a(start), d2a(end));
+      gd.stroke();
+    }
+
+  </script>
+
+</body>
+
+</html>

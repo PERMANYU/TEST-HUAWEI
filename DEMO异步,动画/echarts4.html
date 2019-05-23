@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="./echarts.js"></script>
+</head>
+
+<body>
+
+  <!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->
+  <div id="main" style="height:400px;"></div>
+  <script>
+    // console.log(echarts);
+    let myChart = echarts.init(document.getElementById('main')); // init 方法会返回一个echarts实例
+
+    // 1. 模拟兜库取数据
+    let data1 = ["衬衫", "羊毛衫", "雪纺衫", "裤子", "高跟鞋", "袜子", "皮带"];
+    let data2 = [5, 20, 36, 10, 10, 20, 300];
+    let data3 = ['销量']
+
+    //2. 空坐标
+    myChart.showLoading();
+    myChart.setOption({
+      // title: {
+      //   text: 'loading....'
+      // },
+      tooltip: {},
+      legend: {
+        data: []
+      },
+      xAxis: {
+        data: []
+      },
+      yAxis: {},
+      series: [{
+        name: '销量',
+        type: 'bar',
+        data: []
+      }]
+    })
+    //3. 数据到位后绘制
+    setTimeout(function () {
+      myChart.hideLoading();
+      myChart.setOption({
+        title: {
+          text: 'ECharts 入门示例'
+        },
+        legend: {
+          data: data3
+        },
+        xAxis: {
+          data: data1
+        },
+        series: [{
+          name: '销量',
+          type: 'bar',
+          data: data2
+        }]
+      })
+
+      //update 更新
+      function rnd(n, m) { return parseInt(Math.random() * (m - n) + n) }
+
+      setInterval(function () {
+        for (var i = 0; i < data2.length; i++) {
+          data2[i] += rnd(-50, 50);
+        }
+        myChart.setOption({
+          series: [{
+            name: '销量',
+            type: 'bar',
+            data: data2
+          }]
+        });
+
+      }, 1000);
+
+    }, 2000);
+
+    myChart.on('click', function (params) {
+      // console.log(params);
+      window.open('https://www.baidu.com/s?wd=' + encodeURIComponent(params.name));
+    });
+
+  </script>
+</body>
+
+</html>

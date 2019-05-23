@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    
+    <!-- <script>
+        // var a = [{"areaCode":1,"condition":[{"name":"层级","value":"8"},{"name":"方案","value":"3"}]},
+        // {"areaCode":1,"condition":[{"name":"层级","value":"8"},{"name":"方案","value":"3"}]},
+        // {"areaCode":1,"condition":[{"name":"层级","value":"8"}]}];
+        
+        
+        var arJsonNesting = [{id:1,name:"zhang3"
+                                ,children:[{id:2,name:"zhang33"},{id:3,name:"zhang44"}]}
+                            ,{id:4,name:"li4"}];//注意有的JSON对象有子对象children
+        var arJson = new Array();
+        function refining(a,arJson) {//将嵌套的JSON对象遍历出来，转为二维数组
+            for (var i = 0,j = arJson.length; i < a.length; i++) {
+                arJson[j] = {
+                    Id:a[i].id
+                    ,Name:a[i].name
+                };
+                j++;
+        
+                if(a[i].children){
+                    refining(a[i].children,arJson);
+                }
+                
+            }
+        }
+        console.log(refining(arJson))
+    </script> -->
+    <script>
+
+        var a = [{"areaCode":2,"condition":[{"name":"层级","value":"8"},{"name":"方案","value":"2"}]},
+        {"areaCode":2,"condition":[{"name":"层级","value":"8"}]},
+        {"areaCode":3,"condition":[{"name":"层级","value":"10"}]},
+        {"areaCode":3,"condition":[{"name":"层级","value":"9"},{"name":"方案","value":"2"}]}];
+        
+            fo = function(a){
+                for(let j=0;j<a.length;j++){
+                var b = a[j+1];
+                var c=a[j];
+                if(b.areaCode.value == c.areaCode.value){
+                        if(b.condition.length == c.condition.length){
+                            for(let k=0;k<b.condition.length;k++){
+                                    if (b.condition[k].name.value == c.condition[k+1].name.value && b.condition[k].value.value == c.condition[k+1].value.value){
+                                            return true
+                                        }else{return false} 
+                                    }    
+                        }else{
+                            return false
+                        } 
+                    }else{
+                        return false
+                    }
+                }   
+           
+                        
+                    
+            }
+            fo(a);
+            console.log(fo)
+            if(fo){
+                console.warn('存在相同的对象')
+            }else{
+                console.log('未发现相同的对象')
+            }
+        // checkArea(a){
+        //     for(let i=0;i<a.length;i++){
+        //         if(a[i].areaCode.value == a[i+1].areaCode.value){
+                    
+        //         }
+        //     }
+        // }
+        
+        
+        
+        
+        
+    </script>
+</body>
+</html>

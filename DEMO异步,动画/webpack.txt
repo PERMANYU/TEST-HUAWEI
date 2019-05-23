@@ -1,0 +1,234 @@
+webpack 4
+	官网: http://webpack.github.io/docs/
+	中文: https://doc.webpack-china.org/concepts/|https://www.webpackjs.com/
+	前身: browserify	缺点，只能转化js
+webpack作用?
+	干嘛的:	项目管理、打包、模块管理、加载资源(js/css/html/png../woff/data/vue...),转换器(loader)
+	前身：grunt/gulp/browserify->webpack
+
+webpack的历史
+	webpack1支持CMD和AMD，同时拥有丰富的plugin和loader，webpack逐渐得到广泛应用。
+	webpack2 支持ES Module，分析ESModule之间的依赖关系，webpack1必须将ES，Module转换成CommonJS模块，2支持tree sharking
+	webpack3 新的特性大都围绕ES Module提出，如Scope Hoisting和Magic Comment；
+
+环境支持： Node8 
+
+安装：
+	全局
+	npm i webpack webpack-cli
+	cli 命令行工具 打包会依赖cli
+
+	本地
+	npm i webpack webpack-cli --save-dev 开发依赖
+
+打包
+	webpack  --mode development  会自动找src/index.js 到 dist/main.js
+	要求设置开发模式|生产模式
+
+	webpack 入口地址 --mode development  指定入口
+
+		development:
+			a.浏览器调试工具
+			b.注释、开发阶段的详细错误日志和提示
+			c.快速和优化的增量构建机制
+		production:a.开启所有的优化代码
+			b.更小的main大小
+			c.去除掉只在开发阶段运行的代码
+			d.Scope hoisting和Tree-shaking
+
+自动解决依赖:
+	
+	原理：Webpack 会分析入口文件，解析包含依赖关系的各个文件。这些文件（模块）都打包到 main.js 。Webpack 会给每个模块分配一个唯一的 id 并通过这个 id 索引和访问模块。在页面启动时，会先执行 main.js 中的代码，其它模块会在运行 require 的时候再执行。
+
+loader：
+	webpack默认只支持javascript文件(默认)
+	* 其他文件(CSS/LEASS/..)	需要用加载器(loader)
+
+	loader:	类似一种转化器， 它可以把一个东西，转成另一个
+		需要下载	style-loader(读取到的css文件插到页面)	css-loader(读取css文件)
+		下载: npm install style-loader css-loader -D
+		require('style-loader!css-loader!./xx.css')
+
+配置 webpack.config.js  是一个nodejs
+	作用: 配置一些webpack需要入口、出口、loader、Chunk代码块、Plugin扩展插件、Module模块
+
+	编写：
+		module.exports={
+			entry:'./src/index.js'	入口文件
+			output:{ 默认输出到dist
+				path:path.resolve(__dirname,'dist')//指定编译目录  不写默认指定到dist
+				filename:'js/boundle.js'//以编译目录为根的出口文件路径
+			},
+			module{
+				rules:[
+					{test:'/\.css$/',use:['style-loader','css-loader']}
+				]
+			},
+			mode:'development' | production 区别环境
+		}
+
+	
+
+	entry: 入口接收string | json
+		{app:'index1.js',app2:'index2.js'} 输出要求多输出
+	output: {
+		path:path.resolve(__dirname,'dist') //指定编译目录
+		publicPath:'dist', //指定虚拟目录 不写指向编译目录，html引入js时，必填
+		filename:'bundle.js' 单文件输出 | '[name].js' 多输出  html引入app和app2 配合
+	}
+
+	webpack	开发环境下编译(打包到bundle.js)
+	webpack -p	生产环境下编译(打包到bundle.js,并压缩)
+	webpack -w	监听文件改动,自动编译,不用每次运行,但不会自动刷新浏览器
+--------------------------------------------------------------------------------
+babel使用: ES6->ES5  tracuer  babel
+	npm install babel-loader babel-core babel-preset-es2015 -D
+	做个js文件模块，测试导出引入
+	导出模块:
+		export default {}
+
+	引入模块:
+		import 名字 from 模块名
+
+	配置babel预设:
+		module>rules> + {}
+		  {
+	        test:/\.js$/,
+	        exclude:/node_modules/, 排除
+	        use:[{
+	          loader:'babel-loader',
+	          options:{
+	            presets:['env']
+	          }
+	        }]
+	      }
+----------------------------------------------
+
+需要自动刷新： webServer 搭建前端开发服务器
+	cnpm install webpack-dev-server -g | -D
+	参数:
+		命令行
+		webpack-dev-server --port 8088 --open -mode development
+
+		写到webpack.config.js配置文件:
+
+		devServer: {//和module同级
+			port: 8088,
+			open:true
+		}
+
+		终端运行方式2: webpack-dev-server 
+
+	
+	把运行命令放到package.json文件:	devServer可以不要了
+		"scripts":{
+			"dev": "webpack-dev-server  --port 8088 --open"
+		}
+
+		终端: npm run dev
+	问题：代码错误没有报到正确位置
+	解决：devtool:'source-map'
+---------------------------------------------------
+省略引入文件名后缀
+	配置webpack.config.js
+	resolve: { 	与module同级
+		extensions: [ '.js', '.css', '.json', '.jsx'] 
+	}
+	require('./style') 可以省略后缀名
+---------------------------------------------------
+产出html
+	npm i html-webpack-plugin ---save-dev
+	const HtmlWebpackPlugin = require('html-webpack-plugin')
+	plugins:[
+	        new HtmlWebpackPlugin({
+	            template: './index.html',
+      			filename: './index.html',//默认到output目录
+	            hash:true,//防止缓存,会给文件后面加入hash
+	            minify:{
+	                removeAttributeQuotes:true//压缩 去掉引号
+	            }
+	        })
+	]
+
+	publicPath: '/', 指定虚拟目录为空，因为index进入到dist目录里了，不在外面了
+	filename: 'js/[name].js',
+---------------------------------------------------
+
+css抽离
+	yarn add extract-text-webpack-plugin@next --dev
+	npm i extract-text-webpack-plugin@next --save-dev | -D
+		@next 兼容webpack4 未来会不需要
+
+	const extractTextPlugin = require("extract-text-webpack-plugin")
+
+	loader配置：
+	use: ExtractTextWebapckPlugin.extract({
+          use: 'css-loader'
+        }) //不再需要style-loader
+
+	new ExtractTextWebapckPlugin('css/[name][hash:6].css')
+---------------------------------------------------
+
+图片打包
+yarn add url-loader file-loader --dev
+npm u url-loader file-loader --save-dev
+	url-loader 存base64  file-loader存文件
+	{
+        test:/\.(png|jpg|gif)/,
+        use:[{
+          loader: 'url-loader',
+          options: {
+            limit: 5000,
+            outputPath: 'images/', 5000意思存到images
+          }
+        }]
+      }
+
+css中引入 | js动态(模块化) 引入
+
+
+资源copy： 静态资源(js，数据图片，json) 生产环境
+ 	require('copy-webpack-plugin')
+ 	new CopyWebpackPlugin([
+      { from: path.resolve(__dirname,'static'), to: path.resolve(__dirname,'build/static') }
+    ])
+
+拆分公共模块：
+	分片打包？使用第三方类库？
+由于CommonChunkPlugin已被webpack4废弃，webpack4推荐使用SplitChunkPlugin来提取公共模块
+
+entry: {
+    'vendor/react': 'react',
+    'vendor/react-dom': 'react-dom',
+  }
+
+和plugin评级
+optimization: {
+    splitChunks: {
+      cacheGroups: {
+        jq: {// 自定义
+          test: /jquery/,
+          chunks: 'initial',//有三个可选值：initial(初始块)、async(按需加载块)、all(全部块)，默认为all;
+          name: 'vendor/jquery',//拆分出来块的名字(Chunk Names)，默认由块名和hash值自动生成；设置ture则使用默认值
+          priority: 10//表示缓存的优先级
+        },
+        cm: {
+          test: /common/,
+          chunks: 'initial',
+          name: 'vendor/common',
+          priority: 10
+        }
+      }
+    }
+  }
+
+http://www.php.cn/js-tutorial-390965.html
+
+--------------------------------------------------
+
+webpack.config -> webpack.config.dev|prod 
+
+
+	"dev": "webpack --mode development --config config/webpack.config.dev.js",
+    "build": "webpack --mode production --config config/webpack.config.prod.js",
+    "server": "webpack-dev-server --mode development --config config/webpack.config.dev.js"

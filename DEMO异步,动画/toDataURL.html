@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>666</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      font-family: 微软雅黑;
+      overflow: hidden;
+    }
+    body{background: #ccc}
+    canvas{
+      background: #fff;
+    }
+  </style>
+
+
+</head>
+<body>
+
+<canvas width="800" height="450" id="c1"></canvas>
+
+<input type="button" value="按钮" id="btn1">
+
+
+<script>
+  function rnd(n,m) {
+    return parseInt(Math.random()*(m-n)+n);
+  }
+  function d2a(n) {
+    return Math.PI/180*n
+  }
+  function a2d(n) {
+    return Math.PI/n*180
+  }
+  function fillzero(n) {
+    return n<10?'0'+n:''+n;
+  }
+  var oC = document.querySelector("#c1"); //DOM
+  var gd = oC.getContext('2d'); //画笔对象
+
+  //变形  平移/旋转/缩放
+  var x=200,y=200,w=200,h=100;
+
+    let d = 45;
+
+    setInterval(function () {
+      gd.clearRect(0,0,oC.width, oC.height);
+      // gd.rotate(d2a(45));//平移  配置 累加 （记录到画布状态)
+      gd.save();
+      gd.translate(x,y);
+      gd.rotate(d2a(d++));
+
+      gd.fillRect(0, 0, w, h);
+      gd.restore();
+    },16)
+
+
+  btn1.onclick=function () {
+    console.log(oC.toDataURL()); // 返回base64
+    let oImg = new Image();
+    oImg.src = oC.toDataURL();
+    document.body.appendChild(oImg);
+  }
+
+
+
+</script>
+
+</body>
+</html>

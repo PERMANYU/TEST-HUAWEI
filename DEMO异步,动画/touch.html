@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="./zepto.js"></script>
+  <script src="./touch-0.2.14.js"></script>
+  <style>
+    div{width:100px;height:100px;background:red; margin:10px auto;
+    transition: .5s ease all;}
+  </style>
+  <script>
+    $(function(){
+      
+      touch.on($('div:nth-child(1)'),'tap',function(ev){
+        $(this).css('background','#399');
+      })
+      touch.on($('div:nth-child(2)'),'doubletap',function(ev){
+        $(this).css('background','#399');
+      })
+      touch.on($('div:nth-child(3)'),'hold',function(ev){
+        $(this).css('background','#399');
+      })
+      touch.on($('div:nth-child(4)'),'swipe',function(ev){
+        $(this).css('background','#399');
+      })
+      touch.on($('div:nth-child(5)'),'swipeleft',function(ev){
+        $(this).css('background','#399');
+      })
+      touch.on($('div:nth-child(6)'),'swipeup',function(ev){
+        $(this).css('background','#399');
+      })
+      touch.on($('div:nth-child(7)'),'swiperight',function(ev){
+        $(this).css('background','#399');
+      })
+      touch.on($('div:nth-child(8)'),'swipedown',function(ev){
+        $(this).css('background','#399');
+        return false;
+      })
+
+    })
+  </script>
+</head>
+<body>
+  <div>tap</div>
+  <div>doubletap</div>
+  <div>hold</div>
+  <div>swipe</div>
+  <div>swipeleft</div>
+  <div>swipeup</div>
+  <div>swiperight</div>
+  <div>swipedown</div>
+</body>
+</html>
+
+
+

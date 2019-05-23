@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>666</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      font-family: 微软雅黑;
+    }
+    body{background: #000}
+    canvas{
+      background: #fff;
+    }
+  </style>
+
+
+</head>
+<body>
+
+<canvas width="800" height="450" id="c1"></canvas>
+
+<script>
+  function rnd(n,m) {
+    return parseInt(Math.random()*(m-n)+n);
+  }
+  var oC = document.querySelector("#c1"); //DOM
+  var o2d = oC.getContext('2d'); //画笔对象
+
+  var data=[];
+  var n=5;
+  for (var i=0;i<n;i++){
+    data.push({
+      x:rnd(0,oC.width),
+      y:rnd(0,oC.height)
+    })
+  }
+  console.log(data);
+
+  o2d.beginPath();
+  o2d.moveTo(data[0].x, data[0].y);
+  for (var i=1;i<data.length;i++){
+    o2d.lineTo(data[i].x,data[i].y);
+  }
+  o2d.closePath();
+  o2d.stroke();
+
+</script>
+
+</body>
+</html>

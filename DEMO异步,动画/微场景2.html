@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Swiper demo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+
+  <!-- Link Swiper's CSS -->
+  <link rel="stylesheet" href="./swiper.css">
+  <link rel="stylesheet" href="./animate.css">
+
+  <!-- Demo styles -->
+  <style>
+    html,
+    body {
+      position: relative;b
+      height: 100%;
+    }
+
+    body {
+      background: #eee;
+      font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+      font-size: 14px;
+      color: #000;
+      margin: 0;
+      padding: 0;
+    }
+
+    .swiper-container {
+      width: 100%;
+      height: 100%;
+    }
+
+    .swiper-slide {
+      text-align: center;
+      font-size: 18px;
+      background: #fff;
+
+      /* Center slide text vertically */
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: -webkit-flex;
+      display: flex;
+      -webkit-box-pack: center;
+      -ms-flex-pack: center;
+      -webkit-justify-content: center;
+      justify-content: center;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      -webkit-align-items: center;
+      align-items: center;
+    }
+  </style>
+  <style>
+    .swiper-slide p{
+      transition: 1s ease all;
+      position: absolute;
+    }
+    /* 元素初始状态 p1*/
+    .p1_1{left:-110px;top:-220px;}
+    .p1_2{left:-10px;top:-320px;}
+    .p1_3{left:-140px;top:-20px;}
+
+    /* 元素激活状态 布局位置 */
+    .swiper-slide-active .p1_1{left:110px;top:20px;}
+    .swiper-slide-active .p1_2{left:210px;top:250px;transition-delay: 0.5s}
+    .swiper-slide-active .p1_3{left:10px;top:260px;transition-delay: 1s}
+
+
+
+
+
+    /* 元素初始状态 p2*/
+    .p2_1{left:110px;top:20px;}
+    .p2_2{left:210px;top:250px;}
+    .p2_3{left:10px;top:260px;}
+
+    /* 元素激活状态 布局位置 */
+    .swiper-slide-active .p2_1{
+      animation-name: bounce;
+      animation-duration: 1s;
+    }
+    .swiper-slide-active .p2_2{
+      animation-name: zoomInLeft;
+      animation-duration: 1s;
+    }
+    .swiper-slide-active .p2_3{
+      animation-name: zoomInRight;
+      animation-duration: 1s;
+    }
+
+
+
+
+  </style>
+</head>
+
+<body>
+  <!-- Swiper -->
+  <div class="swiper-container">
+    <div class="swiper-wrapper">
+      <div class="swiper-slide" style="background:#399">
+        <p class="p1_1">p1_1</p>
+        <p class="p1_2">p1_2</p>
+        <p class="p1_3">p1_3</p>
+      </div>
+      <div class="swiper-slide" style="background:#939">
+        <p class="p2_1">p2_1</p>
+        <p class="p2_2">p2_2</p>
+        <p class="p2_3">p2_3</p>
+      </div>
+      <div class="swiper-slide" style="background:#393">THX:)</div>
+    </div>
+    <!-- Add Pagination -->
+    <div class="swiper-pagination"></div>
+  </div>
+
+  <!-- Swiper JS -->
+  <script src="./swiper.js"></script>
+
+  <!-- Initialize Swiper -->
+  <script>
+    var swiper = new Swiper('.swiper-container', {
+      direction: 'vertical',
+      pagination: {
+        el: '.swiper-pagination',
+      }
+    });
+
+  </script>
+</body>
+
+</html>

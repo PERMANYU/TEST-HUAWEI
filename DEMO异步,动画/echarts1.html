@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="./echarts.js"></script>
+  <style>
+  body,html{
+    width: 100%;
+  }
+  *{
+    margin: 0; padding: 0;
+  }
+  #main{
+    width: 60%;
+    background-color: #ccc;
+    margin: 0 auto;
+    min-width: 768px;
+  }
+  #main ul{
+    display: flex;
+    width: 100%;
+    height: 100%;
+  }
+  #main ul li{
+    list-style: none;
+    flex:1;
+    height: 100%;
+    background: #fff
+  }
+  </style>
+</head>
+
+<body>
+
+  <!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->
+  <div id="main" style="height:321px;">
+      <ul>
+        <li id="add"></li>
+        <li id="baifang"></li>
+        <li id="success"></li>
+        <li id="money"></li>
+      </ul>
+  </div>
+  
+  <script>
+var dom1 = document.getElementById("add");
+var dom2 = document.getElementById("baifang");
+var dom3= document.getElementById("success");
+var dom4= document.getElementById("money");
+var myChart1 = echarts.init(dom1);
+var myChart2 = echarts.init(dom2);
+var myChart3 = echarts.init(dom3);
+var myChart4 = echarts.init(dom4);
+var app = {};
+option = null;
+app.title = '环形图';
+
+option = {
+    tooltip: {
+        trigger: 'item',
+        formatter: "{a} <br/>{b}: {c} ({d}%)",
+      },
+    color:['#43DCFF', '#C0EF84','yellow','blueviolet'],
+    legend: {
+        orient: 'horizontal',
+        y: 'bottom',
+        data:[{name:'商机客户数',
+                textStyle:{
+                    fontSize:12,
+                    fontWeight:'bolder',
+                    color:'#cccccc'
+                },
+                icon:'image://./pic2476.png'
+             },{
+               name:'成交客户数',
+                textStyle:{
+                    fontSize:12,
+                    fonWeighr:'bolder',
+                    color:'#ccc'
+                },
+                icon:'image://./pic2476.png'
+             }
+            ]
+          },
+    series: [
+        {
+            name:'访问来源',
+            type:'pie',
+            radius: ['40%', '60%'],
+            avoidLabelOverlap: false,
+            label: {
+                normal: {
+                    show: false,
+                    position: 'center'
+                },
+                emphasis: {
+                    show: true,
+                    textStyle: {
+                        fontSize: '30',
+                        fontWeight: 'bold'
+                    }
+                }
+            },
+            labelLine: {
+                normal: {
+                    show: false
+                }
+            },
+            data:[
+                {value:335, name:'商机客户数'},
+                {value:800, name:'成交客户数'},
+               /*  {value:234, name:'日常拜访'},
+                {value:135, name:'任务拜访'},
+                {value:1548, name:'搜索引擎'} */
+            ]
+        }
+    ]
+};
+
+
+var mycharts =  function(option,chart){
+  if (option && typeof option === "object") {
+   return chart.setOption(option, true);
+  }
+}
+mycharts(option,myChart1)
+mycharts(option,myChart3)
+mycharts(option,myChart4)
+mycharts(option,myChart2) 
+       </script>
+</body>
+
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>666</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      font-family: 微软雅黑;
+      overflow: hidden;
+    }
+    body{background: #000}
+    canvas{
+      background: #fff;
+    }
+  </style>
+
+
+</head>
+<body>
+
+<canvas width="800" height="450" id="c1"></canvas>
+
+<script>
+  function rnd(n,m) {
+    return parseInt(Math.random()*(m-n)+n);
+  }
+  function d2a(n) {
+    return Math.PI/180*n
+  }
+  function a2d(n) {
+    return Math.PI/n*180
+  }
+  var oC = document.querySelector("#c1"); //DOM
+  var gd = oC.getContext('2d'); //画笔对象
+
+  gd.font="24px 黑体";
+  gd.textAlign="center"//center/right
+  gd.textBaseline="middle";//middle/bottom
+  // gd.fillText('1802',100,100)
+  gd.strokeText('九哥',100,100);
+
+
+  gd.textAlign="left"//center/right
+  gd.textBaseline="top";//middle/bottom
+  gd.strokeText('九哥',0,0);
+
+
+  gd.textAlign="right"//center/right
+  gd.textBaseline="top";//middle/bottom
+  gd.strokeText('九哥',oC.width,0);
+
+  gd.textAlign="right"//center/right
+  gd.textBaseline="bottom";//middle/bottom
+  gd.strokeText('九哥',oC.width,oC.height);
+
+  gd.textAlign="left"//center/right
+  gd.textBaseline="bottom";//middle/bottom
+  gd.strokeText('九哥',0,oC.height);
+
+  gd.textAlign="center"//center/right
+  gd.textBaseline="middle";//middle/bottom
+  gd.strokeText('九哥',oC.width/2,oC.height/2);
+
+  //1.
+  gd.beginPath();
+  gd.moveTo(100,0);
+  gd.lineTo(100,oC.height);
+  gd.stroke();
+
+  //2.
+  gd.beginPath();
+  gd.moveTo(0,100);
+  gd.lineTo(oC.width,100);
+  gd.stroke();
+
+
+</script>
+
+</body>
+</html>

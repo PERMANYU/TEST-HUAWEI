@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>666</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      font-family: 微软雅黑;
+      overflow: hidden;
+    }
+    body{background: #000}
+    canvas{ background: #000;}
+  </style>
+</head>
+<body>
+
+<canvas width="800" height="450" id="c1"></canvas>
+
+<script>
+  function rnd(n,m) {
+    return parseInt(Math.random()*(m-n)+n);
+  }
+  var oC = document.querySelector("#c1"); //DOM
+  var gd = oC.getContext('2d'); //画笔对象
+
+  let winW = oC.width = document.documentElement.clientWidth;
+  let winH = oC.height = document.documentElement.clientHeight;
+
+  var N=5;  //点个数
+  var aPoint=[]; //[{x,y,iSpeedX,iSpeedY},{},{}]
+
+  var LEN=50; //尾巴个数
+  var oldArr=[]; //尾巴数组 [[{},{}],[]]
+
+  for(var i=0; i<N; i++){
+    aPoint[i]={
+      x:rnd(0,winW),
+      y:rnd(0,winH),
+      iSpeedX:rnd(-14,14),
+      iSpeedY:rnd(-14,14)
+    };
+  }
+
+  setInterval(function () {
+    gd.clearRect(0,0,oC.width, oC.height);
+
+    //绘制点
+    for (var i=0;i<aPoint.length;i++){
+      aPoint[i].x+=aPoint[i].iSpeedX;//每次坐标都在变化
+      aPoint[i].y+=aPoint[i].iSpeedY;//计算
+
+      //限定
+      if(aPoint[i].x<=0){
+        aPoint[i].x=0;
+        aPoint[i].iSpeedX*=-1;
+      }
+      if(aPoint[i].x>=winW){
+        aPoint[i].x=winW;
+        aPoint[i].iSpeedX*=-1;
+      }
+      if(aPoint[i].y>=winH){
+        aPoint[i].y=winH;
+        aPoint[i].iSpeedY*=-1;
+      }
+      if(aPoint[i].y<=0){
+        aPoint[i].y=0;
+        aPoint[i].iSpeedY*=-1;
+      }
+
+      drawPoint(aPoint[i]);//使用
+    }
+
+    //画线
+    gd.beginPath();
+    gd.strokeStyle='#fff';
+    gd.moveTo(aPoint[0].x,aPoint[0].y);
+    for(var i=1; i<aPoint.length; i++){
+      gd.lineTo(aPoint[i].x, aPoint[i].y);
+    }
+    gd.closePath();
+    gd.stroke();
+
+    //画尾巴
+    var arr=[];
+    for(var i=0; i<aPoint.length; i++){
+      arr[i]={//把当前点集合收集到arr数组
+        x:aPoint[i].x,
+        y:aPoint[i].y
+      };
+    }
+
+    oldArr.push(arr);//没收集一个丢到尾巴对象里面
+
+    if(oldArr.length>LEN){ //超过尾巴总量，就弹掉一个
+      oldArr.shift();
+    }
+
+    // [[{},{}],[]]
+    for(var i=0; i<oldArr.length; i++){//根据尾巴个数
+      gd.beginPath();
+
+      var opacity=i/oldArr.length;//靠后的尾巴透明度调整
+      gd.strokeStyle='rgba(255,255,255,'+opacity+')';
+      gd.moveTo(oldArr[i][0].x, oldArr[i][0].y);//移动到第i个尾巴第0个点
+
+      for(var j=1; j<oldArr[i].length; j++){
+        gd.lineTo(oldArr[i][j].x, oldArr[i][j].y);//连线到第i个尾巴第j个点
+      }
+
+      gd.closePath();
+      gd.stroke();
+    }
+
+  },16)
+
+  function drawPoint(p){
+    var pW=1;
+    var pH=1;
+    gd.fillStyle='#fff';
+    gd.fillRect(p.x-pW/2,p.y-pH/2,pW,pH);
+  }
+
+</script>
+
+</body>
+</html>

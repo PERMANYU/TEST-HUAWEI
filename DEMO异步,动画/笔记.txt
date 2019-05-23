@@ -1,0 +1,127 @@
+CANVAS:
+	干嘛的：画图的
+	目标： 做效果、画图表（柱状图，饼图..)、小游戏
+	特点： 没有事件系统
+	类似:
+		svg 需要的数据xml /有事件系统 / 矢量图 / 地图
+		canvas 需要的数据任意 推荐json/没有事件系统 / 位图 / 游戏
+canvas: 是个标签、天生透明、提供画布、绘制靠js、宽高需要DOM属性来指定
+	兼容： IE9+
+画笔：
+	o2d = canvas.getContext('2d');
+	o2d==画笔 、特点：所有和绘制相关属性、方法、都在画笔o2d身上
+
+	属性：
+		o2d.strokeStyle='rgba(255,34,24,1)';描边色
+     	o2d.fillStyle='blue';填充色
+      	o2d.lineWidth=10;线条粗细
+      	o2d.font='字体大小 字体'
+
+      	o2d.lineCap='butt' round square 端点样式
+      	o2d.lineJoin='miter';//bevel 斜切 round  接洽点样式
+      	o2d.shadowOffsetX=number x 方向偏移
+      	o2d.shadowOffsetY=number y 方向偏移
+      	o2d.shadowBlur=number 模糊、失焦、扩散
+      	o2d.shadowColor='blue/#xxxxx/rgb/rgba'
+      	o2d.textAlign='right';//left|center|right  文字水平对齐 默认left
+      	o2d.textBaseline='bottom';//top|middle|bottom 文字垂直对齐 默认文本基线
+	方法：
+		o2d.moveTo(x,y) 移动到
+		o2d.lineTo(x,y) 连线到
+		o2d.closePath();闭合路径  绘制在最后一笔
+		o2d.fill() 填充  使用fillStyle的颜色，默认是黑色
+		o2d.stroke() 描边 使用strokeStyle的颜色，默认是黑色
+		o2d.beginPath();	开启新路径
+		o2d.strokeRect(x,y,w,h) 描边矩形
+		o2d.fillRect(x,y,w,h) 填充矩形	绘制的是图形
+		o2d.rect(x,y,w,h) 路径矩形 需要描边才看的到
+		o2d.clearRect(x,y,w,h) 擦除操作	
+		o2d.arc(cx,cy,r,start,end,false); 路径  start=开始弧度 false 是否顺逆 是个路径
+		o2d.fillText(string,x,y) 填充文字
+		o2d.strokeText(string,x,y) 描边文字
+		gd.measureText('九叔').width  返回文字宽
+		o2d.isPointInPath(x,y) 返回 true/false  只检测路径
+		o2d.save() 保存当前画笔状态
+		o2d.restore() 回复上一次保存的画笔状态
+		o2d.translate(x,y) 平移
+		o2d.rotate(弧度值) 旋转
+		o2d.scale(x,y)  默认1  必须两个值都要写2017-8-15
+
+
+绘制流程
+	1.	选色、线条样式、变形 -> 配置画笔
+
+		beginPath/save
+	
+	2.	moveTo/lineTo/drawImage... 	-> 绘制
+	
+		closePath/restore
+	
+	3.	fill/stroke -> 填充、描边  -> 着色
+
+动画:	定时器(setInterval,requestAnimationFrame)
+		帧频：
+			低： 30	 DOM渲染
+			高:  16~17   1000/60     60fps  canvas渲染	
+
+效果：
+		分析：线在动(点构成)->点(需要数据)在动
+		运动：定时器->画点->点.速度(数据取)->连线->边缘碰撞检测
+		拖尾：oldArr 控制length oldArr.push(aPoint)
+		变色: 作业
+
+事件：
+	没有事件系统,事件添加给画布，画笔没有事件系统
+	添加canvas,手动检测区域
+
+		矩形：ev.clientX>x && ev.clientX<x+w && ev.clientY>y && ev.clientY<y+h
+		圆:
+			cx2=clientX   cx1= x坐标
+			a=cx1-cx2
+			b=cx2-cy2
+			c=Math.sqrt(a*a+b*b);
+			if(c<r){检测}
+		异形:
+			规则形状 || 规则形状
+
+	自动检测
+			o2d/gd.isPointInPath(x,y) 返回 true/false 一个点是否在意个路径范围内
+
+	变形: 操作的是画笔	(中心点都在画布左上角)
+		平移: 效果累加
+			o2d/gd.translate(x,y)
+		旋转: 不会累加
+			o2d/gd.rotate(弧度值) -> d2a
+			旋转是画笔（中心点画布左上角）
+			需求：中心点在物体中心
+				理解：物体+中心点绘制画布左上角->旋转/缩放->平移目标位置
+				t书写：ranslate(w/2+x,h/2+y)->rotate(弧度)->fillRect(-w/2,-h/2);
+		缩放:
+			o2d/gd.scale(x,y) 俩个值都必须写
+		....
+
+图片操作：
+	canvas -画布导出-> 图片
+	路径填充  - 平铺背景
+	图片画笔  - game
+
+canvas导出  格式base64
+	oC.toDataURL('类型') image/png image/jpeg image/gif 
+	返回： base64 
+
+图片填充
+	提供图片(资源)->加载完毕->使用图片
+	var pat = o2d.createPattern(图片对象|canvas|视频对象,平铺方式)
+		平铺方式: string	=  'repeat|no-repeat|repeat-x|repeat-y'
+		返回值： pattern 对象  可以作为xxxStyle的值
+图片绘制：（画笔状态）
+	gd.drawImage(图片对象,x,y)  x y 绘制到的画布位置
+	gd.drawImage(图片对象,x,y,w,h)  w h 画多大
+	gd.drawImage(图片对象,sx,sy,sw,sh,dx,dy,dw,dh)  
+		s = source 原图	位置 宽高
+		d = destination 目标（画布）画在哪，画多大
+		
+作业：
+		屏保：要有颜色变化
+		心动邮箱
+		canvas绘制米老鼠

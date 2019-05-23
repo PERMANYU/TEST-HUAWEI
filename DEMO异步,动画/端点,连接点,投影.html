@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>666</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      font-family: 微软雅黑;
+      overflow: hidden;
+    }
+    body{background: #000}
+    canvas{
+      background: #fff;
+    }
+  </style>
+
+
+</head>
+<body>
+
+<canvas width="800" height="450" id="c1"></canvas>
+
+<script>
+  function rnd(n,m) {
+    return parseInt(Math.random()*(m-n)+n);
+  }
+  function d2a(n) {
+    return Math.PI/180*n
+  }
+  function a2d(n) {
+    return Math.PI/n*180
+  }
+  function fillzero(n) {
+    return n<10?'0'+n:''+n;
+  }
+  var oC = document.querySelector("#c1"); //DOM
+  var gd = oC.getContext('2d'); //画笔对象
+
+
+  //v
+      gd.beginPath();
+      gd.lineWidth=20;
+
+      gd.shadowOffsetX=1;
+      gd.shadowOffsetY=1;
+      gd.shadowColor='rgba(34,43,23,.4)';
+      gd.shadowBlur=4;
+
+      // gd.lineCap="square";
+
+      gd.lineJoin='bevel';//miter round
+
+      gd.moveTo(100,100);
+      gd.lineTo(250,200);
+      gd.lineTo(400,100);
+
+      gd.stroke();
+
+      //矩形接洽
+      gd.lineWidth=20;
+      gd.lineJoin='bevel';
+      gd.strokeRect(100,100,300,200);
+
+  /*gd.shadowOffsetX=1;
+  gd.shadowOffsetY=1;
+  gd.shadowColor='rgba(0,0,0,1)';
+  gd.shadowBlur=4;
+
+  //v
+  gd.beginPath();
+  gd.lineWidth=20;
+
+  gd.lineJoin='bevel';//miter round
+
+  gd.moveTo(100,100);
+  gd.lineTo(250,200);
+  gd.lineTo(400,100);
+
+  gd.stroke();
+
+  //矩形接洽
+  gd.lineWidth=20;
+  gd.lineJoin='bevel';
+  gd.strokeRect(100,100,300,200);*/
+
+
+
+</script>
+
+</body>
+</html>

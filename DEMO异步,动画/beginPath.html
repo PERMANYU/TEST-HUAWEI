@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>666</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+			font-family: 微软雅黑;
+		}
+
+		body {
+			background: #000
+		}
+
+		canvas {
+			background: #fff;
+		}
+	</style>
+
+
+</head>
+
+<body>
+
+	<canvas width="800" height="450" id="c1"></canvas>
+
+	<script>
+		var oC = document.querySelector("#c1"); //DOM
+		var o2d = oC.getContext('2d'); //画笔对象
+
+		//配置画笔
+		o2d.strokeStyle = "green";
+		o2d.lineWidth = 10;
+
+		//绘制
+		o2d.moveTo(174, 366);
+		o2d.lineTo(174, 134);
+
+		//着色
+		o2d.stroke(); //描边
+
+		o2d.beginPath(); //开启新路径
+
+		o2d.strokeStyle = "red";
+		o2d.lineWidth = 10;
+
+		//绘制
+		o2d.moveTo(335, 366);
+		o2d.lineTo(335, 134);
+
+		//着色
+		o2d.stroke(); //描边
+	</script>
+
+</body>
+
+</html>

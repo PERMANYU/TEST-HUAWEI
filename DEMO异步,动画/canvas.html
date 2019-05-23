@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>666</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+			font-family: 微软雅黑;
+		}
+
+		body {
+			background: #000
+		}
+
+		canvas {
+			background: #fff;
+		}
+	</style>
+
+
+</head>
+
+<body>
+
+	<select name="s2" size="6" style="width:100px;" id="s2" multiple="multiple">
+		<option>选项1</option>
+		<option>选项2</option>
+		<option>选项3</option>
+		<option>选项4</option>
+		<option>选项5</option>
+	</select>
+
+	<script>
+		var oC = document.querySelector("#c1"); //DOM
+		var o2d = oC.getContext('2d'); //画笔对象
+
+		//配置画笔
+		o2d.strokeStyle = "red";
+		o2d.fillStyle = "green";
+		o2d.lineWidth = 10;
+
+		//绘制
+		o2d.moveTo(191, 298);
+		o2d.lineTo(300, 127);
+		o2d.lineTo(395, 298);
+		// o2d.lineTo(191,298);
+		o2d.closePath(); //合并路径
+
+		//着色
+		o2d.fill();
+		o2d.stroke(); //描边
+	</script>
+
+</body>
+
+</html>

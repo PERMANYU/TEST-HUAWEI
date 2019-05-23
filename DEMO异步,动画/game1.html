@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>666</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <style>
+    * {
+      margin: 0;
+              padding: 0;
+              font-family: 微软雅黑;
+                }
+                canvas {
+                          background: url("./img/game_bg_2_hd.jpg");
+                                  margin: 0 auto;
+                                }
+                      </style>
+    </head>
+    <body>
+
+<canvas id="c1" width="800" height="600"></canvas>
+<script>
+  let JSON={};//{'fish1':oImg,xx:oo,..,..}
+  function loadImg(resource,success,progress) {
+    let count=0;
+              for (var i=0;i<resource.length;i++){
+                let oImg=new Image();
+                (function (index) {
+        oImg.onload = function(){
+          JSON[resource[index]]=this;
+          count++;
+          progress && progress(count, resource.length);
+          if (count === resource.length){
+            success && success();
+          }
+        };
+      })(i);
+      oImg.src = './img/'+resource[i]+'.png';
+    }
+  }
+</script>
+<script>
+
+  //加资源
+  loadImg(
+    [
+      'fish1','fish2','fish3','fish4','fish5',
+      'cannon1','cannon2','cannon3','cannon4','cannon5','cannon6','cannon7',
+      'bottom','bullet','coinAni1','coinAni2','web'
+    ],
+    function(){
+      console.log('complete',JSON);
+      //使用
+    },
+    function(loaded,total){
+      console.log(loaded/total*100+'%')
+    }
+  )
+
+
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            font-family: 微软雅黑;
+        }
+
+        body {
+            text-align: center;
+        }
+
+        canvas {
+            background: url("./img/game_bg_2_hd.jpg");
+        }
+    </style>
+</head>
+
+<body>
+    <canvas width="800" height="600" id="c1"></canvas>
+    <!-- tools.js -->
+</body>
+<script>
+    function rnd(n, m) {
+        return parseInt(Math.random() * (m - n) + n);
+    }
+    function d2a(n) {
+        return Math.PI / 180 * n
+    }
+    function a2d(n) {
+        return n * 180 / Math.PI
+    }
+    function fillzero(n) {
+        return n < 10 ? '0' + n : '' + n;
+    }
+</script>
+<!-- loading.js -->
+<script>
+    let JSON = {};//{'fish1'：oImg,xx:oo,..,..}
+    function loadImg(resource, success, progress) {
+        let count = 0;
+        for (var i = 0; i < resource.length; i++) {
+            let oImg = new Image();
+            (function (index) {
+                oImg.onload = function () {
+                    JSON[resource[index]] = this;
+                    count++
+                    progress && progress(count, resource.length)
+                    if (count === resource.length) {
+                        success && success();
+                    }
+                };
+            })(i);
+            oImg.src = './img/' + resource[i] + '.png';
+        }
+    }
+</script>
+<!-- fish.js -->
+<script>
+    //鱼类
+    class Fish {
+        constructor(type) {
+            this.type = type || 1;
+            this.x = 0;
+            this.y = 0;
+            this.rotate = 0;
+            this.speed = 1;
+            this.cur = 0;
+            this.move();//鱼一出现需要移动
+        }
+        draw(gd) {
+            //保存画笔状态
+            gd.save();
+            //绘制
+            let w = Fish.FISH_SIZE[this.type].w;
+            let h = Fish.FISH_SIZE[this.type].h;
+
+            gd.translate(this.x, this.y);
+            gd.rotate(d2a(this.rotate));
+            //跳转投影冲下
+            if (this.rotate > 90 && this.rotate < 270) {
+                gd.scale(1, -1);//镜像
+            };
+            gd.drawImage(
+                JSON['fish' + this.type],
+                0, h * this.cur, w, h,
+                -w / 2, -h / 2, w, h
+            );
+            //恢复画笔状态
+            gd.restore();
+        }
+        move() {
+            setInterval(function () {
+                this.x += Math.cos(d2a(this.rotate)) * this.speed;
+                this.y += Math.sin(d2a(this.rotate)) * this.speed;
+            }.bind(this), 30)
+            setInterval(function () {
+                this.cur++;
+                if (this.cur === 4) {
+                    this.cur = 0;
+                }
+            }.bind(this), 250)
+        }
+        isIn(x, y) {
+            let a = this.x - x;
+            let b = this.y - y;
+            let c = Math.sqrt(a * a + b * b);
+            if (c < Fish.FISH_SIZE[this.type].collR) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }
+
+    Fish.FISH_SIZE = [
+        null,
+        { w: 55, h: 37, collR: 17 },
+        { w: 78, h: 64, collR: 24 },
+        { w: 72, h: 56, collR: 20 },
+        { w: 77, h: 59, collR: 22 },
+        { w: 107, h: 122, collR: 29 }
+    ];
+</script>
+<!-- cannon.js -->
+<script>
+    class Cannon {
+        constructor(type) {
+            this.type = type || 1;
+            this.x = 426;
+            this.y = 570;
+            this.rotate = 0;
+            this.cur = 0;
+        }
+        draw(gd) {
+            let w = Cannon.CANNON_SIZE[this.type].w;
+            let h = Cannon.CANNON_SIZE[this.type].h;
+            gd.save();
+            gd.translate(this.x, this.y);
+            gd.rotate(d2a(this.rotate));
+            gd.drawImage(
+                JSON['cannon' + this.type],
+                0, this.cur * h, w, h,
+                -w / 2, -h / 2, w, h,
+            );
+            gd.restore();
+        }
+        emit() {
+            let timer = setInterval(function () {
+                this.cur++;
+                if (this.cur === 5) {
+                    this.cur = 0;
+                    clearInterval(timer);
+                };
+            }.bind(this), 30)
+        }
+    }
+    Cannon.CANNON_SIZE = [
+        null,
+        { w: 74, h: 74 },
+        { w: 74, h: 76 },
+        { w: 74, h: 76 },
+        { w: 74, h: 83 },
+        { w: 74, h: 85 },
+        { w: 74, h: 90 },
+        { w: 74, h: 94 }
+    ];
+</script>
+<!-- bullet.js -->
+<script>
+    class Bullet {
+        constructor(type) {
+            this.type = type || 1;
+            this.x = 0;
+            this.y = 0;
+            this.rotate = 0;
+            this.speed = 10;
+            this.timerMove = null;
+            this.move();
+            this.playsong();
+        }
+        playsong() {
+            //let audio =new Audio();
+            //audio.src = './snd/cannon.mp3';
+            //audio.play();
+        }
+        draw(gd) {
+            let x = Bullet.BULLET_SIZE[this.type].x;
+            let y = Bullet.BULLET_SIZE[this.type].y;
+            let w = Bullet.BULLET_SIZE[this.type].w
+            let h = Bullet.BULLET_SIZE[this.type].h
+            gd.save();
+            gd.translate(this.x, this.y);
+            gd.rotate(d2a(this.rotate));
+            gd.drawImage(
+                JSON['bullet'],
+                x, y, w, h,
+                -w / 2, -h / 2, w, h,
+            );
+            gd.restore();
+        }
+        move() {
+            var _this = this;
+            this.timerMove = setInterval(function () {
+                _this.x += Math.sin(d2a(_this.rotate)) * _this.speed;
+                _this.y -= Math.cos(d2a(_this.rotate)) * _this.speed;
+            }, 30)
+        }
+        clear() {
+            clearInterval(this.timerMove)
+        }
+    }
+    Bullet.BULLET_SIZE = [
+        null,
+        { x: 86, y: 0, w: 24, h: 26 },
+        { x: 62, y: 0, w: 25, h: 29 },
+        { x: 30, y: 0, w: 31, h: 35 },
+        { x: 32, y: 35, w: 27, h: 31 },
+        { x: 30, y: 82, w: 29, h: 33 },
+        { x: 0, y: 82, w: 30, h: 34 },
+        { x: 0, y: 0, w: 30, h: 44 }
+    ];
+</script>
+<!-- Coin.js -->
+<script>
+    class Coin {
+        constructor(type) {
+            this.type = type || 1;
+            this.x = 0;
+            this.y = 0;
+            this.cur = 0;
+            this.scale = 1;
+            this.timer = null;
+            this.move();
+            this.playSong();
+        }
+        draw(gd) {
+            gd.save();
+            gd.translate(this.x, this.y);
+            //gd.rotate(d2a(this.rotate));
+            gd.scale(this.scale, this.scale);
+            switch (this.type) {
+                case 1:
+                case 2:
+                    gd.drawImage(
+                        JSON['coinAni1'],
+                        0, this.cur * 60, 60, 60,
+                        -60 / 2, -60 / 2, 60, 60
+                    );
+                    break;
+                case 3:
+                case 4:
+                case 5:
+                    gd.drawImage(
+                        JSON['coinAni2'],
+                        0, this.cur * 60, 60, 60,
+                        -60 / 2, -60 / 2, 60, 60
+                    );
+                    break;
+            }
+            gd.restore();
+        }
+        move() {
+            let _this = this;
+            this.coinTimer = setInterval(function () {
+                _this.x += (0 - _this.x) / 9;
+                _this.y += (600 - _this.y) / 9;
+                _this.scale -= 0.01;
+                _this.cur++;
+                if (_this.cur === 10) {
+                    _this.cur = 0;
+                }
+            }, 30)
+        }
+        clear() {
+            clearInterval(this.coinTimer);
+        }
+        playSong() {
+            let audio = new Audio();
+            audio.src = './snd/coin.wav';
+            audio.play();
+        }
+    }
+</script>
+<!-- dieFish.js -->
+<script>
+    class DieFish extends Fish {
+        constructor(type) {
+            super(type);
+            this.dieFishTimer = null;
+        }
+        draw(gd) {
+            //保存画笔状态 
+            gd.save();
+            //绘制
+            let w = Fish.FISH_SIZE[this.type].w;
+            let h = Fish.FISH_SIZE[this.type].h;
+            console.log(this.type);
+
+            gd.translate(this.x, this.y);
+            gd.rotate(d2a(this.rotate));
+
+            //跳转投影冲下
+            if (this.rotate > 90 && this.rotate < 270) {
+                gd.scale(1, -1);//镜像
+            };
+            gd.drawImage(
+                JSON['fish' + this.type],
+                0, h * (this.cur + 4), w, h,
+                -w / 2, -h / 2, w, h
+            );
+            //恢复画笔状态
+            gd.restore();
+        }
+        move() {
+            let timer = setInterval(function () {
+                this.cur++;
+                if (this.cur === 4) {
+                    this.cur = 0;
+                }
+                // console.log('dieFish move')/
+            }.bind(this), 100);
+            setTimeout(() => {
+                clearInterval(timer);
+            }, 250);
+        }
+    }
+</script>
+<!-- web -->
+<!-- <script>
+    class Web extends Fish{
+         constructor(type){
+            super(type);
+            this.WebTimer = null;
+        }
+        draw(gd){
+            //保存画笔状态 
+            gd.save();
+            //绘制
+            let w=Web.WEB_SIZE[this.type].w;
+            let h=Web.WEB_SIZE[this.type].h;
+            console.log(this.type);
+
+            gd.translate(this.x,this.y);
+            gd.rotate(d2a(this.rotate));
+
+            //跳转投影冲下
+            if(this.rotate>90 && this.rotate<270){
+              gd.scale(1,-1);//镜像
+            };
+            gd.drawImage(
+                JSON['web'+this.type],
+                0,h*(this.cur+4),w,h,
+                -w/2,-h/2,w,h
+            );
+            //恢复画笔状态
+            gd.restore();
+        }
+        move(){
+            let timer = setInterval(function(){
+                this.cur ++;
+                if(this.cur===2){
+                    this.cur=0;
+                }
+                // console.log('dieFish move')/
+            }.bind(this),100);
+            setTimeout(() => {
+                clearInterval(timer);
+            }, 250);
+        }
+     }
+
+     var WEB_SIZE=[
+	null,
+];
+</script> -->
+<!-- 业务 -->
+<script>
+    loadImg(
+        [
+            'fish1', 'fish2', 'fish3', 'fish4', 'fish5',
+            'cannon1', 'cannon2', 'cannon3', 'cannon4', 'cannon5', 'cannon6', 'cannon7',
+            'bottom', 'bullet', 'coinAni1', 'coinAni2', 'web'
+        ],
+        function () {
+            init();
+        },
+        function (loaded, total) {
+            console.log(loaded / total * 100 + '%')
+        }
+    );
+    function init() {
+        let oC = document.querySelector('#c1');
+        let gd = oC.getContext('2d');
+
+        let arrBullet = [];//收集炮弹
+        let arrFish = [];//收集鱼
+        let arrCoin = [];//收集金币
+        let arrDieFish = [];//收集死鱼
+        let out = 50;//边界
+        let rules = .1;
+
+        let c = new Cannon(7);
+        //画笔角色统一绘制
+        setInterval(function () {
+            gd.clearRect(0, 0, oC.width, oC.height);
+
+            if (Math.random() < rules) {
+                let f = new Fish(rnd(1, 6));
+                if (Math.random() < .5) {
+                    f.x = 0 - out;
+                    f.rotate = rnd(-45, 45);
+                } else {
+                    f.x = oC.width + out;
+                    f.rotate = rnd(135, 225);
+                }
+                f.y = rnd(100, oC.height - 100);
+                arrFish.push(f);
+            }
+            //绘制炮弹
+            for (var i = 0; i < arrBullet.length; i++) {
+                arrBullet[i].draw(gd);
+            }
+            //绘制鱼
+            for (var i = 0; i < arrFish.length; i++) {
+                arrFish[i].draw(gd);
+            }
+            //    绘制死鱼
+            for (var i = 0; i < arrDieFish.length; i++) {
+                //console.log(arrDieFish[i]);
+                arrDieFish[i].draw(gd);
+            }
+            //绘制金币
+            for (var i = 0; i < arrCoin.length; i++) {
+                arrCoin[i].draw(gd);
+            }
+            //碰撞检测
+            for (var i = 0; i < arrFish.length; i++) {
+                for (var j = 0; j < arrBullet.length; j++) {
+                    if (arrFish[i].isIn(arrBullet[j].x, arrBullet[j].y)) {
+                        //arrFish.clear();
+                        let x = arrFish[i].x;
+                        let y = arrFish[i].y
+                        let type = arrFish[i].type;
+                        let rotate = arrFish[i].rotate;
+
+                        arrFish.splice(i, 1);//鱼死
+                        arrBullet[j].clear();
+                        arrBullet.splice(j, 1);//蛋挂
+
+
+                        //出金币
+                        let coin = new Coin(type);
+                        coin.x = x;
+                        coin.y = y;
+                        arrCoin.push(coin);
+
+                        //出死鱼
+                        let die = new DieFish(type);
+                        die.x = x;
+                        die.y = y;
+                        die.rotate = rotate;
+                        arrDieFish.push(die);
+                    }
+                }
+            }
+            //炮台
+            gd.drawImage(
+                JSON['bottom'],
+                0, 0, 765, 72,
+                0, oC.height - 70, 765, 72
+            );
+
+            //f.draw(gd);
+            c.draw(gd);//炮筒
+            //优化
+            //炮弹
+            for (var i = 0; i < arrBullet.length; i++) {
+                if (
+                    arrBullet[i].x < -out ||
+                    arrBullet[i].x > oC.width + out ||
+                    arrBullet[i].y < -out ||
+                    arrBullet[i].y > oC.height + out
+                ) {
+                    arrBullet[i].clear();
+                    arrBullet.splice(i, 1);
+                }
+            }
+            //金币
+            for (var i = 0; i < arrCoin.length; i++) {
+                if (
+                    arrCoin[i].scale < .1
+                ) {
+                    arrCoin[i].clear();
+                    arrCoin.splice(i, 1);
+                }
+            }
+            //死鱼 
+            for (var i = 0; i < arrDieFish.length; i++) {
+                setTimeout(function () {
+                    arrDieFish.shift();
+                }, 250);
+            }
+            //console.log(arrDieFish);
+        }, 16);
+        oC.onmousemove = function (ev) {
+            console.log(1)
+            var x = ev.clientX - oC.offsetLeft - c.x;
+            var y = c.y - (ev.clientY - oC.offsetTop);
+            var d = 90 - a2d(Math.atan2(y, x));
+            c.rotate = d;
+            //发射
+            c.emit();
+            let b = new Bullet(c.type);
+            b.x = c.x;
+            b.y = c.y;
+            b.rotate = c.rotate;
+            arrBullet.push(b);
+        }
+    }
+</script>
+
+</html>

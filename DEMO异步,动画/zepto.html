@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="./zepto.js"></script>
+  <style>
+    #div1{
+      width:100px;height:100px;background:red;position: absolute;left:0;top:0;
+      transition: .5s ease all;
+    }
+  </style>
+  <script>
+    $(function(){
+      $('#div1').click(function(){
+        $(this).css('background','yellow');
+        $(this).attr('title','');
+        $(this).css('left','300px');
+      })
+    })
+  </script>
+</head>
+<body>
+  <div id="div1">box</div>
+</body>
+</html>

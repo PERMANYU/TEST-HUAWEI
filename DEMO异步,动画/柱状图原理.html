@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>666</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        body{
+            background: #000;
+        }
+        canvas{
+            background: #fff;
+            padding: 50px;
+        }
+        span{
+            color: #fff;
+            font-size: 50px;
+        }
+    </style>
+    <script>
+        function rnd(n,m){
+            return parseInt(Math.random()*(m-n))+n;
+        }
+        window.onload=function(){
+            var oC=document.getElementById('c1');
+
+            var gd=oC.getContext('2d'); //画笔
+
+            var arr=[300,200,50,800,150,900,340];//数据
+
+            //alert(Math.max(12,45,60,101));
+            var iMax=Math.max.apply(null,arr);//找最大
+
+            //求出每根柱子高度在 画布范围内
+            var aHeight=[];
+
+            for(var i=0; i<arr.length; i++){
+                aHeight[i]=arr[i]/iMax*oC.height;   
+            }
+
+            //画柱子
+            var w=oC.width/(3*aHeight.length-2);
+            var space=w*2;
+
+            for(var i=0; i<aHeight.length; i++){
+                gd.fillStyle='rgb('+rnd(0,256)+','+rnd(0,256)+','+rnd(0,256)+')';
+                gd.strokeRect(i*w+space*i,oC.height-aHeight[i],w,aHeight[i]);
+                gd.fillRect(i*w+space*i,oC.height-aHeight[i],w,aHeight[i]);
+            }
+        };
+    </script>
+</head>
+<body>
+    <canvas id="c1" width="700" height="500">
+        <span>您的浏览器版本过低了，不支持canvas</span>
+    </canvas>
+</body>
+</html>
+
+
+
+
