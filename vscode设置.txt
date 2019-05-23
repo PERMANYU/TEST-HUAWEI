@@ -36,7 +36,7 @@
         "editor.tabSize": 4,
     },
     "editor.wordWrap": "off",
-    "workbench.colorTheme": "An Old Hope Classic",
+    "workbench.colorTheme": "Visual Studio Light",
     "editor.colorDecorators": false,
     "vetur.format.defaultFormatterOptions": {
         "js-beautify-html": {
