@@ -1,5 +1,4 @@
-﻿===========================
-三阶段大纲：
+===========================
 1. touchWeb
 	兼容手机设备的js
 2. nodejs 
@@ -4610,6 +4609,824 @@ react 脚手架
 			扩展服务里面找mysql信息(user/pass/port/database/host)
 			参考：https://cloud.baidu.com/doc/BAE/ExtensionService.html#Node.js.E8.BF.9E.E6.8E.A5MongoDB
 
+
+获取cookie   
+/**
+ * 获取cookies
+ * @param key
+ * @returns {string}
+ */
+export function getCookie(key) {
+  let ca = document.cookie.split(";");
+  for (let i = 0; i < ca.length; i++) {
+    let c = ca[i];
+    while (c.charAt(0) == " ") {
+      c = c.substring(1);
+    }
+    if (c.indexOf(key) != -1) {
+      return c.substring(name.length, c.length);
+    }
+  }
+  return "";
+}
+
+
+
+var run = function(){
+    var _promise = new Promise(function(resolve, reject){
+        setTimeout(function(){
+            var rand = Math.random();
+            if(rand<0.5){
+                resolve("resolve" + rand);
+            }else{
+                reject("reject" + rand);
+            }
+        },1000);
+    });
+    return _promise;
+}
+run();
+
+PROMISE的用法
+
+promise.all
+//第一个异步任务
+function run_a(){
+    return new Promise(function(resolve, reject){                
+        //假设已经进行了异步操作，并且获得了数据
+        resolve("step1")
+    });
+}
+//第二个异步任务
+function run_b(){
+    return new Promise(function(resolve, reject){
+        //假设已经进行了异步操作，并且获得了数据
+        resolve("step2");
+    });
+}
+//第三个异步任务
+function run_c(){
+    return new Promise(function(resolve, reject){
+        //假设已经进行了异步操作，并且获得了数据
+        resolve("step3");
+    });
+}
+
+Promise.all([run_a(),run_b(),run_c()]).then(function(data){
+    console.log(data);
+},function(data){
+    console.log(data);
+});
+
+
+axios.all()axios并发请求
+
+getInfo(){
+    var that = this
+    
+    let obj = {
+        banner: axios.get(that.url + 'home.php?Action=banner&setaction=banner'),
+        logo: axios.get(that.url + 'home.php?Action=advertising&setaction=logo'),
+        code: axios.get(that.url + 'home.php?Action=advertising&setaction=code'),
+        himg: axios.get(that.url + 'home.php?Action=advertising&setaction=himg'),
+        link: axios.get(that.url + 'home.php?Action=infolist&QType=link'),
+        qq: axios.get(that.url + 'home.php?Action=infocontent&setaction=qq'),
+        mail: axios.get(that.url + 'home.php?Action=infocontent&setaction=mail'),
+        phone: axios.get(that.url + 'home.php?Action=infocontent&setaction=phone'),
+        Hotline: axios.get(that.url + 'home.php?Action=infocontent&setaction=Hotline')
+    }
+    
+    return obj
+    }
+var that = this
+    axios.all([that.getInfo().banner, that.getInfo().logo, that.getInfo().code,
+        that.getInfo().himg, that.getInfo().link, that.getInfo().qq, that.getInfo().mail,
+        that.getInfo().phone, that.getInfo().Hotline
+    ])
+    .then(axios.spread(function(banner,logo,code,himg,link,qq,mail,phone,Hotline){
+        that.banner = banner.data
+        var swiper1 = new Swiper('.banners', {
+            pagination: {
+                el: '.swiper-pagination',
+            },
+            autoplay: true,
+            speed: 800,
+            observer:true,
+        });
+        that.logo = logo.data.photo
+        that.code = code.data.photo
+        that.htxtimg = himg.data.photo
+        that.link = link.data
+        that.qq = qq.data.Content
+        console.log(qq);
+        that.mail = mail.data.Content
+        that.phone = phone.data.Content
+        that.Hotline = Hotline.data.Content
+    }))
+
+
+
+C:\Windows\System32\drivers\etc   HOST文件修改
+127.0.0.1       www.sh.ctc.com
+
+
+
+//地址配置
+
+const apiPath = {
+    'dev': '/ue/proxy/api/cmb/cmbdatainterfaceconvert',
+    'release': `${window.location.origin}/cmb/cmbdatainterfaceconvert`
+}[BUILD_SERVICE_CONFIG || 'dev'];
+
+const serverConfig = {
+    apiPath, //api服务地址配置
+    apiGeneralInterface: `${apiPath}/generalInterface`, //透传地址配置
+    cpcMainServer: {
+        'dev': 'cpc1',
+        'release': 'cpc1'
+    }[BUILD_SERVICE_CONFIG || 'dev'], //cpc主数据地址配置
+
+    fileServer: 'custbizrelmng', //直连下载模板地址
+
+    resServer: `${window.location.origin}/RSCC/res/resbizauth/mktrescenter/bizservice/auth/sso?url={urlAddr}`, //营销资源跳转地址配置
+    basServer: `${window.location.origin}/KFCS/dist/#/main/{urlAddr}`, //基础引擎跳转地址配置
+    cpcServer: `${window.location.origin}/CPC/cpc1/#/main/{urlAddr}`, //CPC管理工作台跳转地址配置
+}
+
+export { serverConfig }
+
+
+module.exports = {
+    '/dev/proxy/api': {
+        target: 'http://10.145.209.146:8065',
+        changeOrigin: true,
+        pathRewrite: {
+            '^/dev/proxy/api': '/'
+        }
+    },
+    '/release/proxy/api': {
+        target: 'http://10.145.131.187:8169',
+        changeOrigin: true,
+        pathRewrite: {
+            '^/release/proxy/api': '/'
+        }
+    },
+    '/ue/proxy/api': {
+        target: 'http://fe.ue.sh.ctc.com',
+        changeOrigin: true,
+        pathRewrite: {
+            '^/ue/proxy/api': '/'
+        }
+    },
+    '/pr/proxy/api': {
+        target: 'http://fe.pr.sh.ctc.com',
+        changeOrigin: true,
+        pathRewrite: {
+            '^/pr/proxy/api': '/'
+        }
+    }
+}
+
+===========================================================================
+
+js字母大小写转换方法：
+1、转换成大写：toUpperCase()
+2、转换成小写：toLowerCase()
+
+var str = "AbC";
+// for(var i = 0 ; i < str.length; i++) {
+//    1. /[A-Z]/.test(str[i]) ? str = str.split(str[i]).join(str[i].toLowerCase()) : str = str.split(str[i]).join(str[i].toUpperCase());
+//    2. /[A-Z]/.test(str[i]) ? str = str.replace(str[i],str[i].toLowerCase()) : str = str.replace(str[i],str[i].toUpperCase())
+// }
+
+===========================================================================
+    var array = [3,42,1,1,4,45,5,2,3354,53,6];
+
+//冒泡排序
+    function sudoSort(array) {
+       for (let i = 0; i < array.length - 1; i++) {
+            for (let j = 0; j < array.length - i - 1; j++) {
+                if(array[j] > array[j + 1]) {
+                    var temp = array[j + 1];
+                    array[j + 1] = array[j];
+                    array[j] = temp;
+                }
+            }           
+       }
+       return array
+    }
+//选择排序
+    // function sudoSort(array) {
+    //     var len = array.length;
+    //     var minIndex, temp;
+    //     for (let i = 0; i < len - 1; i++) {
+    //         minIndex = i;
+    //         for (var j = i + 1; j < len; j++) {
+    //             if(array[j] < array[minIndex]) {
+    //                 minIndex = j
+    //             }
+    //         }
+    //         temp = array[i];
+    //         array[i] = array[minIndex];
+    //         array[minIndex] = temp;
+    //     }
+    //     return array
+    // }
+
+    console.log(sudoSort(array) );
+
+=================================================================================================================================
+for (let i = 100; i < 1000; i++) {
+    var a = i%10;  //%10,指除以10并取其余数。该余数为个位数
+    var b = parseInt((i/10)%10);  //十位数，这里不用parseInt方法会产生小数
+    var c = parseInt(i/100);   //百位数
+}
+=================================================================================================================================
+//监控引擎配置文件
+
+const API_PAGE = {
+	'dev': 'http://10.145.208.177:9076/pagemetirc'
+}[BUILD_SERVICE_CONFIG || 'dev'];
+
+const API_AJAX = {
+	'dev': 'http://10.145.208.177:9076/ajaxmetirc'
+}[BUILD_SERVICE_CONFIG || 'dev'];
+
+
+const SETTINGS = {
+//监控引擎
+	MONITOR: {
+		//页面监控 后端接收监控数据 API接口地址
+		API_PAGE: API_PAGE,
+		//Ajax请求性能监控 后端接收监控数据 API接口地址
+		API_AJAX: API_AJAX,
+		enablePage: true, //页面性能监控开关
+		enableAjax: true, //Ajax请求性能监控开关
+		//附加字段信息
+		sysName: "CPCP管理工作台", //系统名称
+		funcName: "CMB", //功能名
+		desc: "CPCP管理工作台", //描述
+	}
+};
+
+const monitorCfg = SETTINGS.MONITOR; //监控配置信息
+
+if(monitorCfg.enablePage){//开启页面性能监控
+	let perf = window._wyPerformance;
+	if(perf){
+		perf.setXhrConfig( {
+		url: SETTINGS.MONITOR.API_PAGE, //记录监控数据的接口地址；
+		//headers: { token: ""}, //token;
+		});
+		perf.setSysName(monitorCfg.sysName); //设置系统名称
+		perf.setFunName(monitorCfg.funcName); //设置功能名称
+		perf.setDesc(monitorCfg.desc); //设置描述
+
+		perf.execute(); //启动页面监控
+	}
+}
+
+//AJAX性能监控
+if(monitorCfg.enableAjax){//AJAX页面性能监控
+	let myxhr = window._wyxhr;
+	if(myxhr){
+		myxhr.setXhrConfig( {
+		url: SETTINGS.MONITOR.API_AJAX, //记录AJAX监控数据的接口地址；
+		//headers: { token: ""}, //token;
+		}); 
+		myxhr.watch(); //开始监控
+	}
+}
+
+=============================================================================================================================================
+
+
+1. 三元操作符
+	const x = 20;
+	let num;
+	if (x > 10) {
+	  num= 'num > 10';
+	} else {
+	  num= 'num <= 10';
+	}
+简写:const num = x > 10? 'num > 10': 'num <= 10';
+
+2. 短路求值
+	if (method !== null || method !== undefined || method !== '') {
+	  method ();
+	}
+简写:method && method()
+
+3. 默认参数
+ 	function fn (x) {
+	  var x = x || 10;
+	}
+简写:function fn (x = 10) {}
+
+4. 声明变量
+	let x = 5;
+	let y;
+	let z = 10;
+简写:let x = 5, y, z = 10;
+简写: let [x, y, z] = [5, , 10];
+
+5. 解构赋值
+	function fn (options) {
+	  let a = options.a;
+	  let b = options.b;
+	  let c = options,c;
+	}
+简写:let {a, b, c} = options;
+
+6. if条件
+ 	if (a === true) // do it
+ 简写:if (a) // do it
+			//or
+		if (!a) // do not
+
+7. javascript循环
+	for (var i = 0; i < arr.length; i++) {
+	}
+简写:
+	for (var i in arr) {
+	} || 
+	arr.forEach((item, index) => {
+	})
+8. 箭头函数
+	function max (arr) {
+	  return Math.max.apply(null, arr);
+	}
+简写:
+	const max = arr => Math.max.apply(null, arr);
+9. 对象属性
+	const x = 0, y = 1;
+	 const obj = {
+	  x: x,
+	  y: y
+	}
+简写:
+	const obj = {x, y}
+
+10. 模板字符串
+
+	const db = 'http://' + host + ':' + port + '/' + database;
+	const template = 'Lorem ipsum dolor sit amet, consectetur\n\t'
+	+ 'adipisicing elit, sed do eiusmod tempor incididunt\n\t'
+简写:
+	const db = `http://${host}:${port}/${database}`;
+	const template = `Lorem ipsum dolor sit amet, consectetur
+	adipisicing elit, sed do eiusmod tempor incididunt
+11. 扩展运算符
+
+	// 对象拼接
+	const params = { b: 2,c: 3 };
+	const obj = { 
+	  a: 1,
+	  b: params.b,
+	  c: params.c
+	}
+	// 数组拼接
+	const odd = [1, 3, 5 ];
+	const nums = [2 ,4, 6].concat(odd);
+简写:
+	// 对象拼接
+	const params = { b: 2,c: 3 };
+	const obj = { 
+	  a: 1,
+	  ...params
+	}
+	// 数组拼接
+	const odd = [1, 3, 5 ];
+	const nums = [2 ,4 , 6, ...odd];
+	// 将数组展开作为参数传给一个方法
+	Math.max.call(null, ...arr);
+12. 命名参数
+
+	/ 我们尝尝使用的写法
+	const getStuffNotBad = (id, force, verbose) => {
+	  ...do stuff
+	}
+	// 当我们调用函数时， 明天再看，尼玛 150是啥，true是啥
+	getStuffNotBad(150, true, true)
+
+	// 看完本文你啥都可以忘记, 希望够记住下面的就可以了
+	const getStuffAwesome = ({id, name, force, verbose}) => {
+	  ...do stuff
+	}
+// 完美
+	getStuffAwesome({ id: 150, force: true, verbose: true })
+
+getStuffAwesome
+==========================================================================================================================================================================================
+	JSON转换成树结构
 	
+	var  json = [
+				    {"id":1,"parentId":0,name:'上海市'},
+				    {"id":2,"parentId":1,name:'宝山区'},
+				    {"id":3,"parentId":1,name:'黄浦区'},
+				    {"id":4,"parentId":1,name:'浦东新区'},
+				    {"id":5,"parentId":0,name:'北京区'},
+				    {"id":6,"parentId":5,name:'房山区'},
+				    {"id":7,"parentId":5,name:'还定区'},
+				    {"id":8,"parentId":2,name:'昌邑路'},
+				    {"id":9,"parentId":2,name:'逸仙路'},
+				]
+方法：1.
+var attributes = {    //定义数据属性名称
+    id: 'id',
+    parentId: 'parentId',
+    name: 'name',
+    rootId: 0
+}
+function quickTree(data, attributes) {
+    let resData = data;
+    let tree = [];
+    for(let i = 0; i < resData.length; i++) {
+        if(resData[i][attributes.parentId] === attributes.rootId) {
+            let obj = {
+                id: resData[i][attributes.id],
+                title: resData[i][attributes.name],
+                children: []
+            };
+            tree.push(obj);
+            resData.splice(i, 1);
+            i--;
+        }
+    }
+    run(tree);
+
+    function run(chiArr) {
+        if(resData.length !== 0) {
+            for(let i = 0; i < chiArr.length; i++) {
+                for(let j = 0; j < resData.length; j++) {
+                    if(chiArr[i].id == resData[j][attributes.parentId]) {
+                        let obj = {
+                            id: resData[j][attributes.id],
+                            title: resData[j][attributes.name],
+                            loadChildren: []
+                        };
+                        chiArr[i].children.push(obj);
+                        resData.splice(j, 1);
+                        j--;
+                    }
+                }
+                run(chiArr[i].children);
+            }
+        }
+    }
+ 
+    return tree;
+}
 
 
+
+	方法：2
+    function parseSimpleTreeData(treeData,{ id ='id',parentId = 'parentId',rootId = 0} = {}) {
+        const keyNodes = {};
+        const rootNodeList = [];
+
+
+        const nodeList = treeData.map(node => {
+            const clone = {...node}
+            const key = clone[id];
+            keyNodes[key] = clone;
+            clone.value = clone.key || key;
+            return clone
+        })
+
+        nodeList.forEach(node => {
+            const parentKey = node[parentId]
+            const parent = keyNodes[parentKey]
+
+            if(parent) {
+                parent.children = parent.children || [];
+                parent.children.push(node)
+            }
+
+            if(parentKey === rootId || (!parent && rootId === null)) {
+                rootNodeList.push(node)
+            }
+
+            delete node[id]
+            delete node[parentId]
+        });
+
+
+        return rootNodeList
+
+    }
+    console.log(parseSimpleTreeData(json));
+
+
+let a = quickTree(json,attributes)
+ console.log(JSON.stringify(a));
+ =====================================================================================================================================================================================================
+//求100以内的质数
+
+var count = 0;
+for (var i = 2; i < 100; i++) {
+	for (var j = 1; j <= Math.sqrt(i); j++) {
+		if(i % j == 0) {
+			count ++ ;
+		}             
+	}   
+	if(count == 1) {
+		document.write(i + ' ');
+	}
+	count = 0;         
+}
+//尾数为7 能被7整除的数字   continue
+for (let i = 0; i < 100; i++) {
+	if(i % 7 ==0 || i % 10 ==7) {
+		continue;
+	}            
+	console.log(i);    
+}
+=============================================================================================================================
+ javascript 如何得到link标签全部内容
+var links = document.getElementsByTagName('head')[0].getElementsByTagName('link');
+for (var i = 0; i < links.length; i++) {
+var str= //
+}
+
+用links[i].getAttribute('href')获得href属性，再用getValue()或 .value 获得到属性值
+
+
+ if(document.querySelector('link[rel="stylesheet"]') != null){
+    let cssUrl = document.querySelector('link[rel="stylesheet"]').href;
+    this.passWord = cssUrl.split("app.")[1].split(".css")[0];
+} else {
+    this.passWord = '123456'
+} 
+
+
+
+========================================================================================================================================================================================================
+ var num = 10101010;
+ var test = parseInt(num,2);以2进制转换成10进制（）里面的为目标进制；
+ test.toString(16);   以10进制转换为目标进制的过程。
+ ========================================================================================================================================================================================
+一、选择题（选择代码执行结果，每题5分）
+
+1.(function () {
+    return typeof arguments;
+})();
+A: "object"​​B: "array"
+C: "arguments"​D: "undefined"
+
+2. var f = function g() {
+    return 23;
+};
+typeof g();
+A: "number"​​B: "undefined"
+C: "function"​​D: Error
+
+3. var y = 1, x = y = typeof x;
+x;
+A: 1​​​​B: "number"
+C: undefined​​D: "undefined"
+
+4. var foo = {
+    bar: function () {
+        return this.baz;
+    },
+    baz: 1
+};
+(function () {
+    return typeof arguments[0]();
+})(foo.bar);
+A: "undefined"​B: "object"
+C: "number"​​D: "function"
+
+5. var x = [typeof x, typeof y][1];
+typeof typeof x;
+A: "number"​​B: "string"
+C: "undefined"​D: "object"
+
+6. var foo = {
+    bar: function () {
+        return this.baz;
+    },
+    baz: 1
+}
+typeof (f = foo.bar)();
+A: "undefined"​​B: "object"
+C: "number"​​​D: "function"
+
+7.(function f() {
+    function f() { return 1; }
+    return f();
+    function f() { return 2; }
+})();
+A: 1​​​​​B: 2
+C: Error(e.g. "Too much recursion")​D: undefined
+
+8. var x = 1;
+if (function f() { }) {
+    x += typeof f;
+}
+x;
+A: 1​​​​B: "1function"
+C: "1undefined"​D: NaN
+
+1. 简答题（1～5每题4分，第6题10分）
+1. http状态码的含义302___________，304___________
+
+2. 手动写动画，你认为最小时间间隔是多久，为什么？
+
+
+3. display: inline - block 什么时候会显示间隙？
+
+
+4. H5新标签有哪些
+
+
+5. position：fixed 如何定位
+
+
+6. setTimeout(function () { console.log(1) }, 0);
+new Promise(function executor(resolve) {
+    console.log(2);
+    for (var i = 0; i < 10000; i++) {
+        i == 9999 && resolve();
+    }
+    console.log(3);
+}).then(function () {
+    console.log(4);
+});
+console.log(5);
+输出顺序是什么
+
+三、编程题（每题10分）
+
+1. 完成下图布局
+
+2. 实现一个对象深拷贝方法(优先考虑非递归实现)
+
+
+
+3. 实现Man函数，能用以下方式调用，并按注释输出
+Man(“Hank”)
+//Hi! This is Hank!
+
+Man(“Hank”).sleep(10).eat(“dinner”)
+// Hi! This is Hank!
+// 等待10秒..
+// Wake up after 10
+// Eat dinner~
+
+Man(“Hank”).eat(“dinner”).eat(“supper”)
+// Hi This is Hank!
+// Eat dinner~
+// Eat supper~
+
+Man(“Hank”).sleepFirst(5).eat(“supper”)
+// 等待5秒
+// Wake up after 5
+// Hi This is Hank!
+// Eat supper
+
+=========================================================================================================================================
+1-JavaScript运行三部曲
+语法分析
+预编译
+解释执行
+语法分析很简单，就是引擎检查你的代码有没有什么低级的语法错误； 
+解释执行顾名思义便是执行代码了； 
+预编译简单理解就是在内存中开辟一些空间，存放一些变量与函数 ；
+
+2-JS预编译什么时候发生
+预编译到底什么时候发生 ？ 
+误以为预编译仅仅发生在script内代码块执行前 
+这倒并没有错 
+预编译确确实实在script代码内执行前发生了 
+但是它大部分会发生在函数执行前
+
+3-实例分析
+先来区分理解一下这2个概念： 
+变量声明 var… 
+函数声明 function…
+===========================================================================================================================================
+VUE页面加载顺序在页面首次加载执行顺序有如下：
+
+beforeCreate                //在实例初始化之后、创建之前执行
+created                         //实例创建后执行
+beforeMounted             //在挂载开始之前调用
+filters      //挂载前加载过滤器
+computed                     //计算属性
+directives-bind              //只调用一次，在指令第一次绑定到元素时调用
+directives-inserted        //被绑定元素插入父节点时调用
+activated                       //keek-alive组件被激活时调用，则在keep-alive包裹的嵌套的子组件中触发
+mounted     //挂载完成后调用
+
+{{}}                                //mustache表达式渲染页面
+
+
+
+修改页面input时，被自动调用的选项顺序如下：
+watch                           //首先先监听到了改变事件
+filters     //过滤器没有添加在该input元素上，但是也被调用了
+beforeUpdate              //数据更新时调用，发生在虚拟dom打补丁前
+directived-update        //指令所在的组件的vNode更新时调用，但可能发生在其子vNode更新前
+directives-componentUpdated//指令所在的组件的vNode及其子组件的vNode全部更新后调用
+updated                      //组件dom已经更新
+
+
+
+组件销毁时，执行顺序如下
+beforeDestroy            //实例销毁之前调用
+directives-unbind       //指令与元素解绑时调用，只调用一次
+deactivated                //keep-alive组件停用时调用
+destroyed                  //实例销毁之后调用
+--------------------- 
+
+
+
+
+
+
+================================================================================================================
+原型链
+function Cat(name) {
+    //
+   this.name = name;
+   Cat.prototype.say = function() {
+        return "Hello, " + this.name + "!";
+   }
+}
+// 测试:
+var kitty = new Cat('Kitty');
+var doraemon = new Cat('哆啦A梦');
+console.log(kitty.say());
+if (kitty && kitty.name === 'Kitty' && kitty.say && typeof kitty.say === 'function' && kitty.say() === 'Hello, Kitty!' && kitty.say === doraemon.say) {
+    console.log('测试通过!');
+} else {
+    console.log('测试失败!');
+}
+
+console.log(kitty.say === doraemon.say);
+console.log(kitty);
+console.log(kitty.name);
+console.log(kitty.say);
+console.log(typeof(kitty.say));
+console.log(kitty.say() === 'Hello, Kitty!');
+
+
+================================================================================================
+new一个对象时候做了哪些事情
+
+当一个构造函数前加上new的时候，背地里来做了四件事：
+1.生成一个空的对象并将其作为 this；
+2.将空对象的 __proto__ 指向构造函数的 prototype；
+3.运行该构造函数；
+4.如果构造函数没有 return 或者 return 一个返回 this 值是基本类型，则返回this；如果 return 一个引用类型，则返回这个引用类型。
+
+=======================================================================================================
+https://img-blog.csdn.net/20180509222526400   页面性能解析地址
+
+===========================================================================================================
+
+看视频
+tampermonkey
+
+https://github.com/syhyz1990/media
+
+=========================================================================================================
+
+async getScheduleList(selectDate) {
+	let response;
+	// 这里request为向服务的发请求的方法
+	await request(api.getScheduleList, {
+		date: selectDate
+	}).then(res => {
+		response = res;
+	});
+	return response
+}
+
+init() {
+	this.getScheduleList(selectDate).then(res => {
+		console.log(res)
+	}）
+}
+————————————————
+swichMenu: async function() {
+	//点击其中一个 menu
+	const num = await  getNum()
+	return num
+}
+
+swichMenu().then(res => {
+	console.log(res)
+})
+
+async function testSync() {
+   const response = await new Promise(resolve => {
+       setTimeout(() => {
+           resolve("async await test...");
+         }, 1000);
+    });
+      console.log(response);
+ }
+ 
+testSync();//async await test...
